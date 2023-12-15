@@ -58,7 +58,7 @@ CREATE TABLE creditos (
     monto DECIMAL(10, 2) NOT NULL,
     interes DECIMAL(5, 2),
     fecha_inicio DATE NOT NULL,
-    FechaVencimiento DATE NOT NULL,
+    Fecha_vencimiento DATE NOT NULL,
     Estado boolean NOT NULL,
     FOREIGN KEY (id_usuario_credito_crea) REFERENCES usuarios(id_usuario),
     foreign key (id_usuario_credito_revisa) references usuarios(id_usuario)

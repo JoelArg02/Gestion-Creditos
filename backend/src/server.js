@@ -4,26 +4,43 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5200;
 
+// Suponiendo que tienes estos archivos y rutas correctamente definidos
 const usuarioRoutes = require('./routes/usuarioRoutes');
+const creditosRoutes = require('./routes/creditoRoutes');
+const referenciaRoutes = require('./routes/referenciaRoutes');
 
-// Configuración para permitir cualquier origen (CORS)
-app.use(cors());
+// Configuración de CORS para permitir solicitudes de cualquier origen
+app.use(cors({
+  origin: '*', // Permite todas las fuentes
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 204
+}));
 
+// Parsear el cuerpo de las solicitudes como JSON
 app.use(bodyParser.json());
 
-// Ruta predeterminada para la URL raíz
+// Ruta principal
 app.get('/', (req, res) => {
   res.send('¡Bienvenido a la aplicación de gestión de créditos!');
 });
 
+// Rutas de referencia
+app.use('/api/referencia', referenciaRoutes);
+
 // Rutas de usuario
 app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/usuarios/register', usuarioRoutes);
-app.use('/api/usuarios/login', usuarioRoutes);
+
+// Rutas de créditos
+app.use('/api/creditos', creditosRoutes);
+
 // Manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Algo salió mal' });
+  res.status(500).send({ error: 'Algo salió mal' });
+});
+
+app.use((req, res, next) => {
+  res.status(404).send({ error: 'Ruta no encontrada' });
 });
 
 // Iniciar el servidor

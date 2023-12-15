@@ -1,10 +1,25 @@
-import React from 'react';
-import { Carousel, Card, Button, Container, Row, Col } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Carousel, Card, Button, Container, Row, Col } from "react-bootstrap";
+import ModalSeguridad from "../modal/ModalSeguridad";
+import ModalAnalisis from "../modal/ModalAnalisis";
+import ModalAcceso from "../modal/ModalAcceso";
 
 function HomePage() {
+  const [showModalSeguridad, setShowModalSeguridad] = useState(false);
+  const [showModalAnalisis, setShowModalAnalisis] = useState(false);
+  const [showModalAcceso, setShowModalAcceso] = useState(false);
+
+  const handleShowModalSeguridad = () => setShowModalSeguridad(true);
+  const handleCloseModalSeguridad = () => setShowModalSeguridad(false);
+
+  const handleShowModalAnalisis = () => setShowModalAnalisis(true);
+  const handleCloseModalAnalisis = () => setShowModalAnalisis(false);
+
+  const handleShowModalAcceso = () => setShowModalAcceso(true);
+  const handleCloseModalAcceso = () => setShowModalAcceso(false);
   return (
     <div className="home-page">
-      <Container style={{ maxWidth: '800px' }}>
+      <Container style={{ maxWidth: "800px" }}>
         <Carousel>
           <Carousel.Item>
             <img
@@ -14,7 +29,9 @@ function HomePage() {
             />
             <Carousel.Caption>
               <h3>Gestión de Créditos Simplificada</h3>
-              <p>Descubre una nueva forma de gestionar tus créditos financieros.</p>
+              <p>
+                Descubre una nueva forma de gestionar tus créditos financieros.
+              </p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
@@ -25,55 +42,84 @@ function HomePage() {
             />
             <Carousel.Caption>
               <h3>Soluciones Innovadoras</h3>
-              <p>Utiliza nuestra plataforma intuitiva para optimizar tus operaciones de crédito.</p>
+              <p>
+                Utiliza nuestra plataforma intuitiva para optimizar tus
+                operaciones de crédito.
+              </p>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
       </Container>
 
-    
       <Container className="my-5">
         <Row>
           <Col md={4}>
             <Card>
-              <Card.Img variant="top" src="https://via.placeholder.com/300x200" />
+              <Card.Img
+                variant="top"
+                src="https://via.placeholder.com/300x200"
+              />
               <Card.Body>
                 <Card.Title>Seguridad de Datos</Card.Title>
                 <Card.Text>
                   Protegemos tu información con la más alta seguridad.
                 </Card.Text>
-                <Button variant="primary">Saber más</Button>
+                <Button variant="primary" onClick={handleShowModalSeguridad}>
+                  Saber más
+                </Button>
               </Card.Body>
+              <ModalSeguridad
+                showModal={showModalSeguridad}
+                handleCloseModal={handleCloseModalSeguridad}
+              />
             </Card>
           </Col>
           <Col md={4}>
             <Card>
-              <Card.Img variant="top" src="https://via.placeholder.com/300x200" />
+              <Card.Img
+                variant="top"
+                src="https://via.placeholder.com/300x200"
+              />
               <Card.Body>
                 <Card.Title>Análisis Avanzado</Card.Title>
                 <Card.Text>
-                  Herramientas de análisis para tomar mejores decisiones de crédito.
+                  Herramientas de análisis para tomar mejores decisiones de
+                  crédito.
                 </Card.Text>
-                <Button variant="primary">Descubre</Button>
+                <Button variant="primary"  onClick={handleShowModalAnalisis}>Descubre</Button>
               </Card.Body>
+              <ModalAnalisis
+                showModal={showModalAnalisis}
+                handleCloseModal={handleCloseModalAnalisis}
+              />
             </Card>
           </Col>
           <Col md={4}>
             <Card>
-              <Card.Img variant="top" src="https://via.placeholder.com/300x200" />
+              <Card.Img
+                variant="top"
+                src="https://via.placeholder.com/300x200"
+              />
               <Card.Body>
                 <Card.Title>Acceso Fácil</Card.Title>
                 <Card.Text>
                   Accede a tus datos de crédito en cualquier momento y lugar.
                 </Card.Text>
-                <Button variant="primary">Explorar</Button>
+                <Button variant="primary" onClick={handleShowModalAcceso}>Explorar</Button>
               </Card.Body>
+              <ModalAcceso
+                showModal={showModalAcceso}
+                handleCloseModal={handleCloseModalAcceso}
+              />
             </Card>
           </Col>
         </Row>
       </Container>
       <footer className="text-center py-4">
-        <p>© 2023 Servicio de Gestión de Créditos en la Nube. Todos los derechos reservados.</p>
+        <p>
+          © 2023 Servicio de Gestión de Créditos en la Nube. Todos los derechos
+          reservados.
+        </p>
       </footer>
     </div>
   );

@@ -1,13 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function Login(props) {
 
+function Login(props) {
   const [formData, setFormData] = useState({
     usuario: '',
-    contrasena: ''    
+    contrasena: ''
   });
 
   const handleInputChange = (e) => {
@@ -26,54 +25,48 @@ function Login(props) {
     }
     
     try {
-      const response = await axios.post('http://localhost:5200/api/usuarios/login', formData);
+      const response = await axios.post('http://192.168.68.107:5200/api/usuarios/login', formData);
       const token = response.data.token;
       localStorage.setItem('token', token);
-  
       console.log('Token recibido:', token);
-
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
     }
   };
 
   return (
-    <div className="container-fluid vh-100">
-      <div className="row justify-content-center align-items-center h-100">
-        <div className="col-md-6 p-4 rounded">
-          <div className="card">
-            <div className="card-header">
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-12 col-sm-8 col-md-6 col-lg-4">
+          <div className="card my-5">
+            <div className="card-header bg-primary text-white text-center">
               Iniciar sesión
             </div>
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="usuario" className="form-label">
-                    Usuario
-                  </label>
+                  <label htmlFor="usuario" className="form-label">Usuario</label>
                   <input
-                    type="usuario"
+                    type="text"
                     className="form-control"
                     name="usuario"
                     value={formData.usuario}
                     onChange={handleInputChange}
+                    placeholder="Ingresa tu usuario"
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    Contraseña
-                  </label>
+                  <label htmlFor="password" className="form-label">Contraseña</label>
                   <input
                     type="password"
                     className="form-control"
                     name="contrasena"
                     value={formData.contrasena}
                     onChange={handleInputChange}
+                    placeholder="Ingresa tu contraseña"
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
-                  Iniciar sesión
-                </button>
+                <button type="submit" className="btn btn-primary w-100">Iniciar sesión</button>
               </form>
             </div>
           </div>

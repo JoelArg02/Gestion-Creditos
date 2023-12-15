@@ -4,15 +4,17 @@ const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const secretKey = 'joelxd';
 
-exports.getAllUsuarios = (req, res) => {
+exports.getUsuarios = (req, res) => {
   Usuario.getAllUsuarios((err, usuarios) => {
-    if (err) {
-      console.error('Error al obtener los usuarios:', err);
-      return res.status(500).json({ error: 'Error interno del servidor' });
-    }
-    res.json(usuarios);
+      if (err) {
+          console.error('Error al obtener los usuarios:', err);
+          res.status(500).json({ error: 'Error interno del servidor' });
+      } else {
+          res.json(usuarios);
+      }
   });
 };
+
 
 exports.getUsuarioById = (req, res) => {
   const { id } = req.params;
@@ -32,6 +34,9 @@ exports.register = async (req, res) => {
   try {
     const { usuario, contrasena, id_configuracion_negocio } = req.body;
     const user = await Usuario.registerUsuario(usuario, contrasena, id_configuracion_negocio);
+    if (!usuario || !contrasena || !id_configuracion_negocio) {
+      return res.status(400).json({ error: 'Datos faltantes o inválidos' });
+    }
     if (user) {
 
       res.status(201).json({ message: 'Usuario registrado exitosamente' });
@@ -43,20 +48,28 @@ exports.register = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
+
 exports.login = async (req, res) => {
   try {
     const { usuario, contrasena } = req.body;
-    console.log('Datos de inicio de sesión recibidos:');
-    console.log('Usuario:', usuario);
-    console.log('Contraseña:', contrasena);
+
+
+    // Validar que los datos necesarios estén presentes
+    if (!usuario || !contrasena) {
+      return res.status(400).json({ error: 'Datos faltantes o inválidos' });
+    }
+
     const user = await Usuario.findUsuarioByUsuario(usuario);
     if (!user) {
       return res.status(400).json({ error: 'Usuario no encontrado' });
     }
+
     const contrasenaValida = await bcrypt.compare(contrasena, user.contrasena);
     if (!contrasenaValida) {
       return res.status(400).json({ error: 'Credenciales inválidas' });
     }
+
     const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
     res.status(200).json({ message: 'Inicio de sesión exitoso', token });
 

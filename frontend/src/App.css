@@ -23,11 +23,16 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.col-md-4{
+  padding-bottom: 20px;
+}
 .App-link {
   color: #61dafb;
 }
 
+.home-page{
+  padding-top: 22px;  
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

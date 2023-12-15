@@ -3,17 +3,16 @@ const bcrypt = require('bcrypt');
 
 const Usuario = {};
 
-Usuario.getAllUsuarios = () => {
-  return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM usuarios', (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results);
-      }
-    });
+Usuario.getAllUsuarios = (callback) => {
+  db.query('SELECT * FROM usuarios', (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
   });
 };
+
 
 Usuario.getUsuarioById = (id) => {
   return new Promise((resolve, reject) => {
