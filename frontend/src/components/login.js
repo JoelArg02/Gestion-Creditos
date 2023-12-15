@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-// Login.js
-import React, { useState } from 'react';
 
-function Login() {
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function Login(props) {
+
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    usuario: '',
+    contrasena: ''    
   });
-  const [darkMode, setDarkMode] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,86 +18,60 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica de autenticación
-    console.log('Datos de inicio de sesión:', formData);
-  };
+    if (!formData.usuario || !formData.contrasena) {
+      console.error('Debes ingresar un usuario y una contraseña');
+      return;
+    }
+    
+    try {
+      const response = await axios.post('http://localhost:5200/api/usuarios/login', formData);
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+  
+      console.log('Token recibido:', token);
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
   };
 
   return (
-    <div
-      className={`container-fluid ${
-        darkMode ? 'bg-dark text-white' : ''
-      } vh-100`}
-    >
-      <button
-        className={`btn btn-sm btn-${darkMode ? 'light' : 'dark'} position-absolute top-0 end-0 m-2`}
-        onClick={toggleDarkMode}
-      >
-        {darkMode ? 'Modo Claro' : 'Modo Oscuro'}
-      </button>
-      <div
-        className={`row justify-content-center align-items-center h-100 ${
-          darkMode ? 'text-white' : ''
-        }`}
-      >
-        <div className={`col-md-6 ${darkMode ? 'bg-dark' : ''} p-4 rounded`}>
-          <div
-            className={`card ${darkMode ? 'bg-dark border border-white' : ''}`}
-          >
-            <div className={`card-header ${darkMode ? 'bg-secondary' : ''}`}>
+    <div className="container-fluid vh-100">
+      <div className="row justify-content-center align-items-center h-100">
+        <div className="col-md-6 p-4 rounded">
+          <div className="card">
+            <div className="card-header">
               Iniciar sesión
             </div>
-            <div className={`card-body ${darkMode ? 'bg-dark' : ''}`}>
+            <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label
-                    htmlFor="email"
-                    className={`form-label ${
-                      darkMode ? 'text-white' : ''
-                    }`}
-                  >
-                    Correo electrónico
+                  <label htmlFor="usuario" className="form-label">
+                    Usuario
                   </label>
                   <input
-                    type="email"
-                    className={`form-control ${
-                      darkMode ? 'text-white bg-dark' : ''
-                    }`}
-                    name="email"
-                    value={formData.email}
+                    type="usuario"
+                    className="form-control"
+                    name="usuario"
+                    value={formData.usuario}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className="mb-3">
-                  <label
-                    htmlFor="password"
-                    className={`form-label ${
-                      darkMode ? 'text-white' : ''
-                    }`}
-                  >
+                  <label htmlFor="password" className="form-label">
                     Contraseña
                   </label>
                   <input
                     type="password"
-                    className={`form-control ${
-                      darkMode ? 'text-white bg-dark' : ''
-                    }`}
-                    name="password"
-                    value={formData.password}
+                    className="form-control"
+                    name="contrasena"
+                    value={formData.contrasena}
                     onChange={handleInputChange}
                   />
                 </div>
-                <button
-                  type="submit"
-                  className={`btn btn-primary ${
-                    darkMode ? 'btn-secondary border border-white' : ''
-                  }`}
-                >
+                <button type="submit" className="btn btn-primary">
                   Iniciar sesión
                 </button>
               </form>

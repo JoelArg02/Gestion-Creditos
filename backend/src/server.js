@@ -18,7 +18,8 @@ app.get('/', (req, res) => {
 
 // Rutas de usuario
 app.use('/api/usuarios', usuarioRoutes);
-
+app.use('/api/usuarios/register', usuarioRoutes);
+app.use('/api/usuarios/login', usuarioRoutes);
 // Manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
