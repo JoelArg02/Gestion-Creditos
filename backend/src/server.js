@@ -6,7 +6,7 @@ const port = process.env.PORT || 5200;
 
 // Suponiendo que tienes estos archivos y rutas correctamente definidos
 const usuarioRoutes = require('./routes/usuarioRoutes');
-const creditosRoutes = require('./routes/creditoRoutes');
+const creditoRoutes = require('./routes/creditoRoutes');
 const referenciaRoutes = require('./routes/referenciaRoutes');
 
 // Configuración de CORS para permitir solicitudes de cualquier origen
@@ -31,7 +31,7 @@ app.use('/api/referencia', referenciaRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 
 // Rutas de créditos
-app.use('/api/creditos', creditosRoutes);
+app.use('/api/credit', creditoRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {

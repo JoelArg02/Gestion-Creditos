@@ -3,7 +3,7 @@ import apiConfig from "./apiConfig";
 
 const getCredits = async () => {
   try {
-    const response = await axios.get(`${apiConfig.baseURL}/creditos`);
+    const response = await axios.get(`${apiConfig.baseURL}/credit`);
     return response.data;
   } catch (error) {
     throw error;

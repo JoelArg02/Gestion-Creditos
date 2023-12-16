@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const creditosController = require('../controllers/creditosController');
-//Credit routes
+const creditoController = require('../controllers/creditoController');
 
-router.get('/credit', creditosController.getAllCreditos);
+router.get('/', creditoController.getCreditos);
 
 module.exports = router;

@@ -1,13 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { Table, Alert } from "react-bootstrap";
-import { getCredits } from "../api/api"; // Ajusta la ruta correcta a tu archivo de solicitud Axios
+import { Table, Alert, Button, Modal, Form } from "react-bootstrap";
+import { getCredits } from "../api/api";  
+import './Dashboard.css';
+
+
+function AddCreditModal({ show, handleClose, handleSubmit }) {
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Añadir Crédito</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          {/* Agrega campos de formulario según tu modelo de datos */}
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cerrar
+        </Button>
+        <Button variant="primary" type="submit">
+          Guardar Crédito
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function Dashboard() {
   const [credits, setCredits] = useState([]);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Obtener datos de créditos cuando el componente se monta
     getCredits()
       .then((data) => {
         setCredits(data);
@@ -17,18 +42,25 @@ function Dashboard() {
       });
   }, []);
 
+  const handleAddCredit = (event) => {
+    event.preventDefault();
+
+    setShowModal(false);
+  };
+
   return (
-    <div>
+
+    <div className="containerDashboard">
       <h1>Dashboard</h1>
-      <p>Hola</p>
+      <Button variant="primary" onClick={() => setShowModal(true)}>
+        Añadir Crédito
+      </Button>
+      <AddCreditModal show={showModal} handleClose={() => setShowModal(false)} handleSubmit={handleAddCredit} />
       {error ? (
-        // Mostrar mensaje de error si ocurrió un error en la solicitud
         <Alert variant="danger">Error en el servidor: {error.message}</Alert>
       ) : credits.length === 0 ? (
-        // Mostrar mensaje de "No hay información" si no hay datos de créditos
         <Alert variant="info">No hay información de créditos disponible.</Alert>
       ) : (
-        // Mostrar la tabla si se obtuvieron datos de créditos
         <Table striped bordered hover>
           <thead>
             <tr>

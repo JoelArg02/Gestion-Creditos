@@ -48,6 +48,12 @@ const servicios = [
         nombre: "Asistencia Legal y Normativa",
         descripcion: "Asesoría legal para garantizar que tus operaciones de crédito cumplan con las normativas vigentes.",
         icono: "icono-legal.png",
+      },
+      {
+        id: 9,
+        nombre: "Soporte Técnico",
+        descripcion: "Soporte técnico especializado para resolver cualquier inconveniente con la plataforma.",
+        icono: "icono-soporte.png",
       }
     ];  
   

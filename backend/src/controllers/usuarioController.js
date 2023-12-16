@@ -15,66 +15,77 @@ exports.getUsuarios = (req, res) => {
   });
 };
 
-
-exports.getUsuarioById = (req, res) => {
-  const { id } = req.params;
-  Usuario.getUsuarioById(id, (err, usuario) => {
-    if (err) {
-      console.error('Error al obtener el usuario:', err);
-      return res.status(500).json({ error: 'Error interno del servidor' });
-    }
-    if (!usuario || usuario.length === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
-    res.json(usuario[0]);
+exports.findUserByUser = (req, res) => {
+  const { usuario } = req.params;
+  Usuario.findUserByUser(usuario, (err, usuario) => {
+      if (err) {
+          console.error('Error al obtener el usuario:', err);
+          res.status(500).json({ error: 'Error interno del servidor' });
+      } else {
+          res.json(usuario);
+      }
   });
-};
+}
 
-exports.register = async (req, res) => {
-  try {
-    const { usuario, contrasena, id_configuracion_negocio } = req.body;
-    const user = await Usuario.registerUsuario(usuario, contrasena, id_configuracion_negocio);
-    if (!usuario || !contrasena || !id_configuracion_negocio) {
-      return res.status(400).json({ error: 'Datos faltantes o inválidos' });
+exports.register = (req, res) => {
+  const { usuario, contrasena, id_configuracion_negocio } = req.body;
+  if (!usuario || !contrasena || !id_configuracion_negocio) {
+    return res.status(400).json({ error: 'Datos faltantes o inválidos' });
+  }
+
+  Usuario.createUser(usuario, contrasena, id_configuracion_negocio, (error, user) => {
+    if (error) {
+
+      console.error('Error al registrar usuario:', error);
+      return res.status(500).json({ error: 'Error al registrar usuario' });
     }
     if (user) {
-
       res.status(201).json({ message: 'Usuario registrado exitosamente' });
     } else {
       res.status(500).json({ error: 'Error al registrar usuario' });
     }
-  } catch (error) {
-    console.error('Error al registrar usuario:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
+  });
 };
 
+exports.login = (req, res) => {
+  const { usuario, contrasena } = req.body;
 
-exports.login = async (req, res) => {
-  try {
-    const { usuario, contrasena } = req.body;
+  if (!usuario || !contrasena) {
+    return res.status(400).json({ error: 'Datos faltantes o inválidos' });
+  }
 
-
-    // Validar que los datos necesarios estén presentes
-    if (!usuario || !contrasena) {
-      return res.status(400).json({ error: 'Datos faltantes o inválidos' });
+  Usuario.findUserByUser(usuario, (errorUsuario, user) => {
+    if (errorUsuario) {
+      console.error('Error al buscar el usuario:', errorUsuario);
+      return res.status(500).json({ error: 'Error interno del servidor' });
     }
 
-    const user = await Usuario.findUsuarioByUsuario(usuario);
     if (!user) {
       return res.status(400).json({ error: 'Usuario no encontrado' });
     }
 
-    const contrasenaValida = await bcrypt.compare(contrasena, user.contrasena);
-    if (!contrasenaValida) {
-      return res.status(400).json({ error: 'Credenciales inválidas' });
-    }
+    bcrypt.compare(contrasena, user.contrasena, (errorBcrypt, contrasenaValida) => {
+      if (errorBcrypt) {
+        console.error('Error al verificar la contraseña:', errorBcrypt);
+        return res.status(500).json({ error: 'Error interno del servidor' });
+      }
 
-    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
-    res.status(200).json({ message: 'Inicio de sesión exitoso', token });
+      if (!contrasenaValida) {
+        return res.status(400).json({ error: 'Credenciales inválidas' });
+      }
 
-  } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
+      jwt.sign({ userId: user.id, userName: user.usuario }, secretKey, { expiresIn: '1h' }, (errorJwt, token) => {
+        if (errorJwt) {
+          console.error('Error al generar el token:', errorJwt);
+          return res.status(500).json({ error: 'Error interno del servidor' });
+        } else {
+          // Enviar el token al cliente
+          res.status(200).json({ message: 'Inicio de sesión exitoso', token });
+        }
+            
+
+        res.status(200).json({ message: 'Inicio de sesión exitoso', token });
+      });
+    });
+  });
 };
