@@ -1,25 +1,20 @@
 const Referencia = require('../models/Referencia');
+const bcrypt = require('bcrypt');
+const db = require('../config/db'); 
+const jwt = require('jsonwebtoken');
+const secretKey = 'joelxd';
 
-const referenciaController = {};
 
-referenciaController.createReferencia = async (req, res) => {
-  const { nombreTrabajo, telefonoTrabajo, telefonoTrabajoC } = req.body;
-  
-  try {
-    const mensaje = await Referencia.createReferencia(nombreTrabajo, telefonoTrabajo, telefonoTrabajoC);
-    res.status(201).json({ message: mensaje });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+
+
+exports.getReferencias = (req, res) => {
+    Referencia.getAllReferencias((err, referencias) => {
+        if (err) {
+            console.error('Error al obtener las referencias:', err);
+            res.status(500).json({ error: 'Error interno del servidor' });
+        } else {
+            res.json(referencias);
+        }
+    });
   }
-};
 
-referenciaController.getAllReferencias = async (req, res) => {
-  try {
-    const referencias = await Referencia.getAllReferencias();
-    res.status(200).json(referencias);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-module.exports = referenciaController;
