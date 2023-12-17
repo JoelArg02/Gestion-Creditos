@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  Modal,
   Navbar,
   Nav,
   NavDropdown,
@@ -11,7 +10,7 @@ import {
 } from "react-bootstrap";
 import ProfileModal from "../modal/ProfileModal";
 
-function Header({ isLoggedIn, userName, businessName }) {
+function Header({ isLoggedIn, userName, businessName, personName, personLastName, personEmail }) {
   const [showProfileModal, setShowProfileModal] = useState(false);
 
   const handleProfileClick = () => setShowProfileModal(true);
@@ -32,9 +31,8 @@ function Header({ isLoggedIn, userName, businessName }) {
   return (
     <Navbar bg="dark" expand="lg" className="shadow-sm navbar-dark">
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <Navbar.Brand as={Link} to={businessName ? "#" : "/"}>
           {businessName || "Inicio"}{" "}
-          {/* Display "Inicio" if businessName is empty */}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -67,7 +65,7 @@ function Header({ isLoggedIn, userName, businessName }) {
           </Nav>
           {isLoggedIn ? (
             <Nav>
-              <NavDropdown title={`Hola, ${userName}`} id="basic-nav-dropdown">
+              <NavDropdown title={`Hola, ${personName}`} id="basic-nav-dropdown">
                 <NavDropdown.Item onClick={handleProfileClick}>
                   Ver Perfil
                 </NavDropdown.Item>
@@ -89,8 +87,10 @@ function Header({ isLoggedIn, userName, businessName }) {
       <ProfileModal
         show={showProfileModal}
         handleClose={handleCloseProfileModal}
-        userName={userName}
-        // Aquí puedes pasar otros props necesarios al modal de perfil
+        personName={personName}
+        personLastName={personLastName}
+        personEmail={personEmail}
+        
       />
     </Navbar>
   );

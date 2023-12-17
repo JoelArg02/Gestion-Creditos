@@ -1,7 +1,11 @@
-drop database creditos;
-create database creditos;
-use creditos;
+-- Eliminar la base de datos si existe y crear una nueva
+DROP DATABASE IF EXISTS creditos;
+CREATE DATABASE creditos;
+USE creditos;
+SET FOREIGN_KEY_CHECKS = 0;
+
 SET GLOBAL time_zone = 'America/Guayaquil';
+
 CREATE TABLE configuracion_negocio (
     id_configuracion INT AUTO_INCREMENT PRIMARY KEY,
     negocio VARCHAR(255) NOT NULL,
@@ -15,56 +19,74 @@ CREATE TABLE configuracion_negocio (
     correo_publico VARCHAR(255)
 );
 
+CREATE TABLE roles (
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_rol VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE personas (
+    id_persona INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    apellido VARCHAR(255) NOT NULL,
+    telefono VARCHAR(255) NOT NULL,
+    telefono_2 VARCHAR(255),
+    pais VARCHAR(255) NOT NULL,
+    ciudad VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    direccion_2 VARCHAR(255),
+    correo VARCHAR(255) NOT NULL,
+    id_referencia_persona INT,
+    FOREIGN KEY (id_referencia_persona) REFERENCES referencia(id_referencias)
+);
+
+-- Tabla de Usuarios
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     usuario VARCHAR(255) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
-    estado boolean NOT NULL DEFAULT 1,
-    id_configuracion_usuario INT NOT NULL,
-    FOREIGN KEY (id_configuracion_usuario) REFERENCES configuracion_negocio(id_configuracion)
+    estado BOOLEAN NOT NULL DEFAULT 1,
+    id_persona INT,
+    id_rol int,
+    id_configuracion_negocio int,
+    FOREIGN KEY (id_configuracion_negocio) REFERENCES configuracion_negocio(id_configuracion),
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
+    FOREIGN KEY (id_persona) REFERENCES personas(id_persona)
 );
 
-create table referencia(
-    id_referencias int auto_increment primary key,
-    nombre_trabajo varchar(255) not null,
-    telefono_trabajo varchar(255) not null,
-    telefono_trabajo_c varchar(255) not null
+-- Tabla de Referencias
+CREATE TABLE referencia (
+    id_referencias INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_trabajo VARCHAR(255) NOT NULL,
+    telefono_trabajo VARCHAR(255) NOT NULL,
+    telefono_trabajo_c VARCHAR(255) NOT NULL
 );
-
-create table persona(
-    id_persona int auto_increment primary key,
-    nombre varchar(255) not null,
-    apellido varchar(255) not null,
-    telefono varchar(255) not null,
-    telefno_2 varchar(255) not null,
-    pais varchar(255) not null,
-    ciudad varchar(255) not null,
-    direccion varchar(255) not null,
-    direccion_2 varchar(255) not null,
-    referencia varchar(255) not null,
-    correo varchar(255) not null,
-    id_referencias_persona int not null,
-    id_usuarios_persona int not null,
-    foreign key (id_referencias_persona) references referencia(id_referencias),
-    foreign key (id_usuarios_persona) references usuarios(id_usuario)
-);
-
-
 
 CREATE TABLE creditos (
     id_credito INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario_credito_crea INT NOT NULL,
-    id_usuario_credito_revisa INT NOT NULL,
+    id_usuario_credito_usuario INT NOT NULL,
     monto DECIMAL(10, 2) NOT NULL,
     interes DECIMAL(5, 2),
     fecha_inicio DATE NOT NULL,
-    Fecha_vencimiento DATE NOT NULL,
-    Estado boolean NOT NULL,
+    fecha_vencimiento DATE NOT NULL,
+    estado BOOLEAN NOT NULL,
     FOREIGN KEY (id_usuario_credito_crea) REFERENCES usuarios(id_usuario),
-    foreign key (id_usuario_credito_revisa) references usuarios(id_usuario)
+    FOREIGN KEY (id_usuario_credito_usuario) REFERENCES usuarios(id_usuario)
 );
 
+-- Inserciones para la tabla 'configuracion_negocio'
+INSERT INTO configuracion_negocio (negocio, url_logo, url_favicon, lema, facebook, instagram, whatsapp, correo_admin, correo_publico) 
+VALUES 
+('Nexfon', 'https://nexfon-logo.com', 'https://nexfon-favicon.com', 'Conectando tu mundo', 'https://facebook.com/nexfon', 'https://instagram.com/nexfon', '+1234567890', 'admin@nexfon.com', 'contact@nexfon.com');
 
-insert into configuracion_negocio (negocio) values ('Nexfon');
 
-insert into usuarios (usuario, contrasena, estado, id_configuracion_usuario) values ('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 1, 1);
+INSERT INTO personas (nombre, apellido, telefono, pais, ciudad, direccion, correo) 
+VALUES 
+('Juan', 'Pérez', '0998765432', 'Ecuador', 'Quito', 'Calle Falsa 123', 'juan.perez@example.com');
+
+insert into roles (id_rol, nombre_rol) values (1, 'Administrador'), (2, 'Encargado Creditos'), (3, 'Vendedor'), (4, 'Cobros'), (5, 'Cliente');
+
+INSERT INTO usuarios (usuario, contrasena,id_configuracion_negocio, id_persona, id_rol) 
+VALUES 
+('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi',1, 1, 1);
+

@@ -1,14 +1,44 @@
-import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Modal, Button, Form, Alert } from "react-bootstrap";
 
-function ProfileModal({ show, handleClose, userName, userEmail }) {
-  const [newPassword, setNewPassword] = useState('');
+function ProfileModal({
+  show,
+  handleClose,
+  userName,
+  personName,
+  personLastName,
+  personPhone,
+  personPhone2,
+  personPais,
+  personCiudad,
+  personDireccion,
+  personEmail,
+}) {
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleEdit = () => {
-    console.log("Iniciar proceso de edición");
-    // Aquí debes agregar la lógica para enviar la nueva contraseña al backend
-    console.log("Nueva contraseña:", newPassword);
-    handleClose();
+  const handleEditPasswordClick = () => {
+    setShowChangePassword(!showChangePassword);
+    setPasswordError(""); // Resetear el mensaje de error
+  };
+
+  const handleSaveNewPassword = () => {
+    if (newPassword === confirmPassword) {
+      console.log("Contraseña actualizada:", newPassword);
+      setShowChangePassword(false);
+      setNewPassword("");
+      setConfirmPassword("");
+      setPasswordError("");
+    } else {
+      setPasswordError("Las contraseñas no coinciden");
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -17,26 +47,49 @@ function ProfileModal({ show, handleClose, userName, userEmail }) {
         <Modal.Title>Perfil del Usuario</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Nombre: {userName}</p>
-        <p>Email: {userEmail}</p>
-        <Form>
-          <Form.Group controlId="formNewPassword">
-            <Form.Label>Nueva Contraseña</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Ingresa nueva contraseña"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </Form.Group>
-        </Form>
+        <p>Nombre: {personName}</p>
+        <p>Apellido: {personLastName}</p>
+        <p>Email: {personEmail}</p>
+
+        <Button variant="primary" onClick={handleEditPasswordClick}>
+          Editar Contraseña
+        </Button>
+
+        {showChangePassword && (
+          <>
+            <Form>
+              <Form.Group controlId="formNewPassword">
+                <Form.Label>Nueva Contraseña</Form.Label>
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Ingresa nueva contraseña"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="formConfirmNewPassword">
+                <Form.Label>Confirmar Nueva Contraseña</Form.Label>
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirma tu nueva contraseña"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </Form.Group>
+              <Button variant="outline-secondary" onClick={togglePasswordVisibility}>
+                {showPassword ? "Ocultar" : "Mostrar"} Contraseñas
+              </Button>
+              <Button variant="success" onClick={handleSaveNewPassword}>
+                Guardar Nueva Contraseña
+              </Button>
+            </Form>
+            {passwordError && <Alert variant="danger">{passwordError}</Alert>}
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Cerrar
-        </Button>
-        <Button variant="primary" onClick={handleEdit}>
-          Editar
         </Button>
       </Modal.Footer>
     </Modal>

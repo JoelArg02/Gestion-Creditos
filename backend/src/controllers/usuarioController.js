@@ -54,10 +54,22 @@ exports.login = (req, res) => {
     return res.status(400).json({ error: 'Datos faltantes o inválidos' });
   }
 
+  // Consulta corregida para obtener el usuario, el nombre de la persona y el nombre del negocio
   const query = `
-    SELECT usuarios.*, configuracion_negocio.negocio 
+    SELECT 
+      usuarios.*, 
+      personas.nombre, 
+      personas.apellido, 
+      personas.telefono, 
+      personas.telefono_2 AS telefono2, 
+      personas.pais, 
+      personas.ciudad, 
+      personas.direccion, 
+      personas.correo, 
+      configuracion_negocio.negocio 
     FROM usuarios 
-    JOIN configuracion_negocio ON usuarios.id_configuracion_usuario = configuracion_negocio.id_configuracion 
+    JOIN personas ON usuarios.id_persona = personas.id_persona
+    JOIN configuracion_negocio ON usuarios.id_configuracion_negocio = configuracion_negocio.id_configuracion
     WHERE usuarios.usuario = ?
   `;
 
@@ -86,9 +98,17 @@ exports.login = (req, res) => {
       const payload = {
         userId: user.id_usuario,
         userName: user.usuario,
+        personName: user.nombre,
+        personLastName: user.apellido,
+        personPhone: user.telefono,
+        personPhone2: user.telefono2,
+        personPais: user.pais,
+        personCiudad: user.ciudad,
+        personDireccion: user.direccion,
+        personEmail: user.correo,
         businessName: user.negocio
       };
-
+      console.log(user)
       jwt.sign(payload, secretKey, { expiresIn: '1h' }, (errorJwt, token) => {
         if (errorJwt) {
           console.error('Error al generar el token:', errorJwt);
@@ -100,6 +120,8 @@ exports.login = (req, res) => {
     });
   });
 };
+
+
 
 exports.updatePassword = (req, res) => {
   const userId = req.params.id; 
