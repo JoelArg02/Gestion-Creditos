@@ -64,5 +64,8 @@ CREATE TABLE creditos (
     foreign key (id_usuario_credito_revisa) references usuarios(id_usuario)
 );
 
--- Creación de la tabla de Configuración de la Página
+
+insert into configuracion_negocio (negocio) values ('Credito Facil');
+
+insert into usuarios (usuario, contrasena, estado, id_configuracion_usuario) values ('admin', 'admin', 1, 1);
 
