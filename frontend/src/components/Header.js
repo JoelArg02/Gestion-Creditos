@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, Link } from "react-router-dom";
-import { Modal, Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
+import {
+  Modal,
+  Navbar,
+  Nav,
+  NavDropdown,
+  Button,
+  Container,
+} from "react-bootstrap";
 import ProfileModal from "../modal/ProfileModal";
 
 function Header({ isLoggedIn, userName, businessName }) {
@@ -23,10 +30,11 @@ function Header({ isLoggedIn, userName, businessName }) {
   };
 
   return (
-    <Navbar bg="light" expand="lg" className="shadow-sm">
+    <Navbar bg="dark" expand="lg" className="shadow-sm navbar-dark">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          {businessName}
+          {businessName || "Inicio"}{" "}
+          {/* Display "Inicio" if businessName is empty */}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -38,6 +46,9 @@ function Header({ isLoggedIn, userName, businessName }) {
                 </Nav.Link>
                 <Nav.Link as={Link} to="/admin">
                   Admin
+                </Nav.Link>
+                <Nav.Link as={Link} to="/add-credit">
+                  Añadir Crédito
                 </Nav.Link>
               </>
             ) : (
@@ -60,11 +71,11 @@ function Header({ isLoggedIn, userName, businessName }) {
                 <NavDropdown.Item onClick={handleProfileClick}>
                   Ver Perfil
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={handleLogoutClick}>
-                  Cerrar Sesión
-                </NavDropdown.Item>
                 <NavDropdown.Item onClick={handleSupportClick}>
                   Soporte o Ayuda
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogoutClick}>
+                  Cerrar Sesión
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>

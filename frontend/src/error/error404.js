@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import "./error404.css";
 function Error404() {
   return (
     <Container className="mt-5">

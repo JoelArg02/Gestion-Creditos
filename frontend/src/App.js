@@ -11,6 +11,7 @@ import Contact from './components/Contact';
 import Dashboard from './components/Dashboard';
 import Error404 from './error/error404';
 import Admin from './components/Admin';
+import Footer from './components/Footer';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -64,6 +65,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );

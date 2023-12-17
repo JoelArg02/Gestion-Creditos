@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Alert, Button, Modal, Form } from "react-bootstrap";
+import { Table, Alert, Button, Modal, Form, Container } from "react-bootstrap";
 import { getCredits } from "../api/api";
 import "./Dashboard.css"; // Import your external CSS file
 
@@ -46,26 +46,21 @@ function Dashboard() {
   };
 
   return (
-    <div className="dashboard-container text-center"> {/* Add "text-center" class */}
+    <Container className="mx-auto w-80 text-center">
       <h1>Dashboard</h1>
-      <Button variant="primary" onClick={() => setShowModal(true)}>
+      <Button className="boton-espacio" variant="primary" onClick={() => setShowModal(true)}>
         Añadir Crédito
       </Button>
-      <AddCreditModal
-        show={showModal}
-        handleClose={() => setShowModal(false)}
-        handleSubmit={handleAddCredit}
-      />
+      <AddCreditModal show={showModal} handleClose={() => setShowModal(false)} handleSubmit={handleAddCredit} />
       {error ? (
         <Alert variant="danger">Error en el servidor: {error.message}</Alert>
       ) : credits.length === 0 ? (
         <Alert variant="info">No hay información de créditos disponible.</Alert>
       ) : (
         <Table striped bordered hover>
-          {/* Table content here */}
         </Table>
       )}
-    </div>
+    </Container>
   );
 }
 

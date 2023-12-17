@@ -1,8 +1,2 @@
-    .containerDashboard{
-        display: flex;  
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 80%;
-        
-    }
+.boton-espacio{
+    margin: 10px;}

@@ -115,12 +115,7 @@ function HomePage() {
           </Col>
         </Row>
       </Container>
-      <footer className="text-center py-4">
-        <p>
-          © 2023 Servicio de Gestión de Créditos en la Nube. Todos los derechos
-          reservados.
-        </p>
-      </footer>
+      
     </div>
   );
 }

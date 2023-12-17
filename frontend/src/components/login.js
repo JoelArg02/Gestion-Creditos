@@ -72,7 +72,7 @@ function Login(props) {
                     placeholder="Ingresa tu contraseña"
                   />
                 </div>
-                <button type="submit" className="btn btn-primary w-100">Iniciar sesión</button>
+                <button type="submit" className="btn btn-primary w-100">Entrar</button>
               </form>
             </div>
           </div>
