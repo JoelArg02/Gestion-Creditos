@@ -1,13 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import React, { useState } from 'react';
-import axios from 'axios';
+import { login } from "../api/api";  
+
 
 
 function Login(props) {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     usuario: '',
     contrasena: ''
@@ -29,8 +29,8 @@ function Login(props) {
     }
     
     try {
-      const response = await axios.post('http://172.21.16.1:5200/api/usuarios/login', formData);
-      const token = response.data.token;
+      const data = await login(formData.usuario, formData.contrasena);
+      const token = data.token;
       localStorage.setItem('token', token);
       console.log('Token recibido:', token);
       navigate("/");

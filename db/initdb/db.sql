@@ -19,7 +19,7 @@ CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     usuario VARCHAR(255) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
-    estado boolean NOT NULL,
+    estado boolean NOT NULL DEFAULT 1,
     id_configuracion_usuario INT NOT NULL,
     FOREIGN KEY (id_configuracion_usuario) REFERENCES configuracion_negocio(id_configuracion)
 );
@@ -67,5 +67,4 @@ CREATE TABLE creditos (
 
 insert into configuracion_negocio (negocio) values ('Credito Facil');
 
-insert into usuarios (usuario, contrasena, estado, id_configuracion_usuario) values ('admin', 'admin', 1, 1);
-
+insert into usuarios (usuario, contrasena, estado, id_configuracion_usuario) values ('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 1, 1);

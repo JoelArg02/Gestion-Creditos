@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiConfig = {
-    baseURL: "http://172.21.16.1:5200/api", // Cambia la URL base según tu configuración
+    baseURL: "http://localhost:5200/api", // Cambia la URL base según tu configuración
   };
   
   export default apiConfig;
@@ -20,7 +20,7 @@ export { getCredits };
 
 const login = async (user) => {
   try {
-    const response = await axios.post(`${apiConfig.baseURL}/login`, user);
+    const response = await axios.post(`${apiConfig.baseURL}/usuarios/login`, user);
     return response.data;
   } catch (error) {
     throw error;

@@ -10,4 +10,17 @@ const getCredits = async () => {
   }
 };
 
+export const login = async (usuario, contrasena) => {
+  try {
+    const response = await axios.post(`${apiConfig.baseURL}/usuarios/login`, {
+      usuario,
+      contrasena,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export { getCredits };
