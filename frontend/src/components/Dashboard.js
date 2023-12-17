@@ -50,7 +50,7 @@ function Dashboard() {
 
   return (
 
-    <div className="containerDashboard">
+    <div>
       <h1>Dashboard</h1>
       <Button variant="primary" onClick={() => setShowModal(true)}>
         Añadir Crédito

@@ -54,15 +54,24 @@ exports.login = (req, res) => {
     return res.status(400).json({ error: 'Datos faltantes o inválidos' });
   }
 
-  Usuario.findUserByUser(usuario, (errorUsuario, user) => {
+  const query = `
+    SELECT usuarios.*, configuracion_negocio.negocio 
+    FROM usuarios 
+    JOIN configuracion_negocio ON usuarios.id_configuracion_usuario = configuracion_negocio.id_configuracion 
+    WHERE usuarios.usuario = ?
+  `;
+
+  db.query(query, [usuario], (errorUsuario, results) => {
     if (errorUsuario) {
       console.error('Error al buscar el usuario:', errorUsuario);
       return res.status(500).json({ error: 'Error interno del servidor' });
     }
 
-    if (!user) {
+    if (results.length === 0) {
       return res.status(400).json({ error: 'Usuario no encontrado' });
     }
+
+    const user = results[0];
 
     bcrypt.compare(contrasena, user.contrasena, (errorBcrypt, contrasenaValida) => {
       if (errorBcrypt) {
@@ -74,18 +83,32 @@ exports.login = (req, res) => {
         return res.status(400).json({ error: 'Credenciales inválidas' });
       }
 
-      jwt.sign({ userId: user.id, userName: user.usuario }, secretKey, { expiresIn: '1h' }, (errorJwt, token) => {
+      const payload = {
+        userId: user.id_usuario,
+        userName: user.usuario,
+        businessName: user.negocio
+      };
+
+      jwt.sign(payload, secretKey, { expiresIn: '1h' }, (errorJwt, token) => {
         if (errorJwt) {
           console.error('Error al generar el token:', errorJwt);
           return res.status(500).json({ error: 'Error interno del servidor' });
-        } else {
-          // Enviar el token al cliente
-          res.status(200).json({ message: 'Inicio de sesión exitoso', token });
         }
-            
 
         res.status(200).json({ message: 'Inicio de sesión exitoso', token });
       });
     });
+  });
+};
+
+exports.updatePassword = (req, res) => {
+  const userId = req.params.id; 
+  const { newPassword } = req.body;
+
+  Usuario.updatePassword(userId, newPassword, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+    res.status(200).json({ message: 'Contraseña actualizada con éxito' });
   });
 };

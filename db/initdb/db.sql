@@ -65,6 +65,6 @@ CREATE TABLE creditos (
 );
 
 
-insert into configuracion_negocio (negocio) values ('Credito Facil');
+insert into configuracion_negocio (negocio) values ('Nexfon');
 
 insert into usuarios (usuario, contrasena, estado, id_configuracion_usuario) values ('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 1, 1);

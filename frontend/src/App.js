@@ -15,6 +15,7 @@ import Admin from './components/Admin';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
+  const [businessName, setBusinessName] = useState('');
 
   const isTokenExpired = (token) => {
     try {
@@ -35,7 +36,8 @@ function App() {
         const decoded = jwtDecode(token); // Decodificar el token aquí
         if (!isTokenExpired(token)) {
           setIsAuthenticated(true);
-          setUserName(decoded.userName); // Establecer el nombre del usuario desde el token
+          setUserName(decoded.userName);
+          setBusinessName(decoded.businessName);
         } else {
           localStorage.removeItem('token');
           setIsAuthenticated(false);
@@ -51,7 +53,7 @@ function App() {
   return (
     <Router>
       <div>
-        <Header isLoggedIn={isAuthenticated} userName={userName} />
+        <Header businessName={businessName} isLoggedIn={isAuthenticated} userName={userName} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />

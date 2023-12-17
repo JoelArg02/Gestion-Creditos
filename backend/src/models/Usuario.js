@@ -34,7 +34,6 @@ Usuario.createUser = (usuario, contrasena, id_configuracion_usuario, callback) =
   });
 };
 
-
 Usuario.findUserByUser = (usuario, callback) => {
   db.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario], (err, results) => {
     if (err) {
@@ -46,6 +45,22 @@ Usuario.findUserByUser = (usuario, callback) => {
         callback(null, results[0]);
       }
     }
+  });
+};
+
+Usuario.updatePassword = (id_usuario, contrasena, callback) => {
+  bcrypt.hash(contrasena, 10, function(err, hash) {
+    if (err) {
+      return callback(err);
+    }
+
+    db.query('UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?', [hash, id_usuario], function(error, result) {
+      if (error) {
+        return callback(error);
+      }
+
+      callback(null, result);
+    });
   });
 };
 
