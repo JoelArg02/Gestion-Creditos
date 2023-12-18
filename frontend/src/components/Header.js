@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Button,
-  Container,
-} from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
 import ProfileModal from "../modal/ProfileModal";
 
-function Header({ isLoggedIn, userName, businessName, personName, personLastName, personEmail }) {
+function Header({
+  isLoggedIn,
+  userName,
+  businessName,
+  personName,
+  personLastName,
+  personEmail,
+}) {
   const [showProfileModal, setShowProfileModal] = useState(false);
 
   const handleProfileClick = () => setShowProfileModal(true);
@@ -65,7 +66,10 @@ function Header({ isLoggedIn, userName, businessName, personName, personLastName
           </Nav>
           {isLoggedIn ? (
             <Nav>
-              <NavDropdown title={`Hola, ${personName}`} id="basic-nav-dropdown">
+              <NavDropdown
+                title={`Hola, ${personName}`}
+                id="basic-nav-dropdown"
+              >
                 <NavDropdown.Item onClick={handleProfileClick}>
                   Ver Perfil
                 </NavDropdown.Item>
@@ -78,7 +82,11 @@ function Header({ isLoggedIn, userName, businessName, personName, personLastName
               </NavDropdown>
             </Nav>
           ) : (
-            <Button variant="primary" onClick={() => navigate("/login")}>
+            <Button
+              variant="primary"
+              onClick={() => navigate("/login")}
+              style={{ backgroundColor: "white", color: "black" }}
+            >
               Iniciar Sesión
             </Button>
           )}
@@ -90,7 +98,6 @@ function Header({ isLoggedIn, userName, businessName, personName, personLastName
         personName={personName}
         personLastName={personLastName}
         personEmail={personEmail}
-        
       />
     </Navbar>
   );

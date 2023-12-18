@@ -82,6 +82,10 @@ function App() {
           personName={personName}
           personLastName={personLastName}
           personPhone={personPhone}
+          personPhone2={personPhone2}
+          personPais={personPais}
+          personCiudad={personCiudad}
+          personDireccion={personDireccion}
           personEmail={personEmail}
         />
         <Routes>

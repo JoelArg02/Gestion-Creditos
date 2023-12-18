@@ -54,7 +54,6 @@ exports.login = (req, res) => {
     return res.status(400).json({ error: 'Datos faltantes o inválidos' });
   }
 
-  // Consulta corregida para obtener el usuario, el nombre de la persona y el nombre del negocio
   const query = `
     SELECT 
       usuarios.*, 

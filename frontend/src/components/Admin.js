@@ -26,9 +26,8 @@ function Admin() {
   return (
     <Container>
       <Row className="my-4">
-        <Col md={3}>
-          {/* Tarjeta de Usuarios */}
-          <Card style={{ width: "18rem" }}>
+        <Col md={4} className="mb-4"> {/* Cambio en el tamaño de la columna */}
+          <Card className="shadow" style={{ width: "18rem" }}>
             <Card.Body>
               <Card.Title>Usuarios</Card.Title>
               <Card.Text>Gestionar usuarios de la plataforma.</Card.Text>
@@ -36,11 +35,10 @@ function Admin() {
                 Administrar Usuarios
               </Button>
             </Card.Body>
-          </Card>{" "}
+          </Card>
         </Col>
-        <Col md={3}>
-          {/* Tarjeta de Negocios */}
-          <Card style={{ width: "18rem" }}>
+        <Col md={4} className="mb-4"> {/* Cambio en el tamaño de la columna */}
+          <Card className="shadow" style={{ width: "18rem" }}>
             <Card.Body>
               <Card.Title>Negocios</Card.Title>
               <Card.Text>Gestionar negocios.</Card.Text>
@@ -48,12 +46,9 @@ function Admin() {
                 Administrar Negocios
               </Button>
             </Card.Body>
-          </Card>{" "}
+          </Card>
         </Col>
-        {/* Agrega más tarjetas aquí */}
       </Row>
-
-      {/* Modales de Usuarios y Negocios */}
       <UserModal show={showUserModal} handleClose={handleCloseUserModal} />
       <BusinessModal show={showBusinessModal} handleClose={handleCloseBusinessModal} />
     </Container>
