@@ -33,7 +33,7 @@ function Login(props) {
       const token = data.token;
       localStorage.setItem('token', token);
       console.log('Token recibido:', token);
-      navigate("/");
+      navigate("/dashboard");
       window.location.reload();
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
