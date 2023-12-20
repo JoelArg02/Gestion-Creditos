@@ -49,7 +49,7 @@ function Header({
                 <Nav.Link as={Link} to="/add-credit">
                   Añadir Crédito
                 </Nav.Link>
-                <Nav.Link as={Link} to="/ver-credito">
+                   <Nav.Link as={Link} to="/ver-credito">
                   Ver Crédito
                 </Nav.Link>
               </>
