@@ -1,50 +1,55 @@
-const Usuario = require('../models/Usuario');
-const bcrypt = require('bcrypt');
-const db = require('../config/db'); 
-const jwt = require('jsonwebtoken');
-const secretKey = 'joelxd';
+require("dotenv").config();
+const Usuario = require("../models/Usuario");
+const bcrypt = require("bcrypt");
+const db = require("../config/db");
+const jwt = require("jsonwebtoken");
+secretKey = "secretKey";
 
 exports.getUsuarios = (req, res) => {
   Usuario.getAllUsuarios((err, usuarios) => {
-      if (err) {
-          console.error('Error al obtener los usuarios:', err);
-          res.status(500).json({ error: 'Error interno del servidor' });
-      } else {
-          res.json(usuarios);
-      }
+    if (err) {
+      console.error("Error al obtener los usuarios:", err);
+      res.status(500).json({ error: "Error interno del servidor" });
+    } else {
+      res.json(usuarios);
+    }
   });
 };
 
 exports.findUserByUser = (req, res) => {
   const { usuario } = req.params;
   Usuario.findUserByUser(usuario, (err, usuario) => {
-      if (err) {
-          console.error('Error al obtener el usuario:', err);
-          res.status(500).json({ error: 'Error interno del servidor' });
-      } else {
-          res.json(usuario);
-      }
+    if (err) {
+      console.error("Error al obtener el usuario:", err);
+      res.status(500).json({ error: "Error interno del servidor" });
+    } else {
+      res.json(usuario);
+    }
   });
-}
+};
 
 exports.register = (req, res) => {
   const { usuario, contrasena, id_configuracion_negocio } = req.body;
   if (!usuario || !contrasena || !id_configuracion_negocio) {
-    return res.status(400).json({ error: 'Datos faltantes o inválidos' });
+    return res.status(400).json({ error: "Datos faltantes o inválidos" });
   }
 
-  Usuario.createUser(usuario, contrasena, id_configuracion_negocio, (error, user) => {
-    if (error) {
-
-      console.error('Error al registrar usuario:', error);
-      return res.status(500).json({ error: 'Error al registrar usuario' });
+  Usuario.createUser(
+    usuario,
+    contrasena,
+    id_configuracion_negocio,
+    (error, user) => {
+      if (error) {
+        console.error("Error al registrar usuario:", error);
+        return res.status(500).json({ error: "Error al registrar usuario" });
+      }
+      if (user) {
+        res.status(201).json({ message: "Usuario registrado exitosamente" });
+      } else {
+        res.status(500).json({ error: "Error al registrar usuario" });
+      }
     }
-    if (user) {
-      res.status(201).json({ message: 'Usuario registrado exitosamente' });
-    } else {
-      res.status(500).json({ error: 'Error al registrar usuario' });
-    }
-  });
+  );
 };
 
 exports.login = (req, res) => {
@@ -54,7 +59,6 @@ exports.login = (req, res) => {
     return res.status(400).json({ error: 'Datos faltantes o inválidos' });
   }
 
-  // Consulta corregida para obtener el usuario, el nombre de la persona y el nombre del negocio
   const query = `
     SELECT 
       usuarios.*, 
@@ -122,15 +126,14 @@ exports.login = (req, res) => {
 };
 
 
-
 exports.updatePassword = (req, res) => {
-  const userId = req.params.id; 
+  const userId = req.params.id;
   const { newPassword } = req.body;
 
   Usuario.updatePassword(userId, newPassword, (err, result) => {
     if (err) {
-      return res.status(500).json({ error: 'Error interno del servidor' });
+      return res.status(500).json({ error: "Error interno del servidor" });
     }
-    res.status(200).json({ message: 'Contraseña actualizada con éxito' });
+    res.status(200).json({ message: "Contraseña actualizada con éxito" });
   });
 };

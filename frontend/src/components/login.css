@@ -1,0 +1,49 @@
+
+.card {
+  border-color: #CCCCCC;
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #FFFFFF;
+  color: #333333;
+}
+
+.card-body {
+  background-color: #FFFFFF;
+}
+
+.form-control {
+  background-color: #F8F8F8;
+  border-color: #CCCCCC;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #333333;
+  box-shadow: none;
+}
+
+.btn {
+  background-color: #333333;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #555555;
+}
+
+.alert-danger {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Estilos adicionales según sea necesario */
