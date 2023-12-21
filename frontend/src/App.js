@@ -36,6 +36,7 @@ function App() {
       const decoded = jwtDecode(token);
       const currentTime = Date.now() / 1000;
       const timeLeft = decoded.exp - currentTime;
+      console.log(token);
       console.log(`Tiempo restante del token: ${timeLeft} segundos`);
       return decoded.exp < currentTime;
     } catch (error) {
