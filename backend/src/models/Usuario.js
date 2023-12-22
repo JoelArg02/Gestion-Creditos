@@ -1,17 +1,18 @@
-const db = require('../config/db');
-const bcrypt = require('bcrypt');
+const poolc = require('../config/db'); // Asegúrate de que la ruta sea correcta
 
 const Usuario = {};
 
 Usuario.getAllUsuarios = (callback) => {
-  db.query('SELECT * FROM usuarios', (err, results) => {
+  poolc.query('SELECT * FROM usuarios', (err, results) => {
     if (err) {
       callback(err, null);
     } else {
-      callback(null, results);
+      callback(null, results.rows);
     }
   });
 };
+
+module.exports = Usuario;
 
 Usuario.createUser = (usuario, contrasena, id_configuracion_usuario, callback) => {
   if (typeof callback !== 'function') {
@@ -23,7 +24,7 @@ Usuario.createUser = (usuario, contrasena, id_configuracion_usuario, callback) =
       return callback(err);
     }
 
-    db.query('INSERT INTO usuarios (usuario, contrasena, id_configuracion_usuario) VALUES (?, ?, ?)', 
+    poolc.query('INSERT INTO usuarios (usuario, contrasena, id_configuracion_usuario) VALUES ($1, $2, $3)', 
     [usuario, hash, id_configuracion_usuario], function(error, result) {
       if (error) {
         return callback(error);
@@ -35,14 +36,14 @@ Usuario.createUser = (usuario, contrasena, id_configuracion_usuario, callback) =
 };
 
 Usuario.findUserByUser = (usuario, callback) => {
-  db.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario], (err, results) => {
+  poolc.query('SELECT * FROM usuarios WHERE usuario = $1', [usuario], (err, results) => {
     if (err) {
       callback(err, null);
     } else {
-      if (results.length === 0) {
+      if (results.rows.length === 0) {
         callback(new Error("Usuario no existe"), null);
       } else {
-        callback(null, results[0]);
+        callback(null, results.rows[0]);
       }
     }
   });
@@ -54,7 +55,7 @@ Usuario.updatePassword = (id_usuario, contrasena, callback) => {
       return callback(err);
     }
 
-    db.query('UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?', [hash, id_usuario], function(error, result) {
+    poolc.query('UPDATE usuarios SET contrasena = $1 WHERE id_usuario = $2', [hash, id_usuario], function(error, result) {
       if (error) {
         return callback(error);
       }
@@ -63,7 +64,5 @@ Usuario.updatePassword = (id_usuario, contrasena, callback) => {
     });
   });
 };
-
-
 
 module.exports = Usuario;

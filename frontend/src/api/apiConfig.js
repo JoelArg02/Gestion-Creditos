@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiConfig = {
-    baseURL: "http://10.40.18.162:5200/api", // Cambia la URL base según tu configuración
+    baseURL: "http://localhost:5200/api", // Cambia la URL base según tu configuración
   };
   
   export default apiConfig;

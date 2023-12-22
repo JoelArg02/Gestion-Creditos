@@ -27,7 +27,6 @@ function ProfileModal({
 
   const handleSaveNewPassword = () => {
     if (newPassword === confirmPassword) {
-      console.log("Contraseña actualizada:", newPassword);
       setShowChangePassword(false);
       setNewPassword("");
       setConfirmPassword("");

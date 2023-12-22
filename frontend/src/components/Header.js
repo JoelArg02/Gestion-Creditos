@@ -7,13 +7,13 @@ import ProfileModal from "../modal/ProfileModal";
 function Header({
   isLoggedIn,
   userName,
+  userRole,
   businessName,
   personName,
   personLastName,
   personEmail,
 }) {
   const [showProfileModal, setShowProfileModal] = useState(false);
-
   const handleProfileClick = () => setShowProfileModal(true);
   const handleCloseProfileModal = () => setShowProfileModal(false);
 
@@ -33,39 +33,62 @@ function Header({
     <Navbar bg="dark" expand="lg" className="shadow-sm navbar-dark">
       <Container>
         <Navbar.Brand as={Link} to={businessName ? "#" : "/"}>
-          {businessName || "Inicio"}{" "}
+          {businessName || "Inicio"}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {isLoggedIn ? (
               <>
-                <Nav.Link as={Link} to="/dashboard">
-                  Dashboard
-                </Nav.Link>
-                <Nav.Link as={Link} to="/admin">
-                  Admin
-                </Nav.Link>
-                <Nav.Link as={Link} to="/add-credit">
-                  Añadir Crédito
-                </Nav.Link>
-                   <Nav.Link as={Link} to="/ver-credito">
-                  Ver Crédito
-                </Nav.Link>
+                {userRole === 1 && ( // Administrador
+                  <>
+                    <Nav.Link as={Link} to="/dashboard">
+                      Dashboard
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/admin">
+                      Admin
+                    </Nav.Link>
+                  </>
+                )}
+                {userRole === 2 && ( // Encargado Creditos
+                  <>
+                    <Nav.Link as={Link} to="/add-credit">
+                      Añadir Crédito
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/ver-credito">
+                      Ver Crédito
+                    </Nav.Link>
+                  </>
+                )}
+                {userRole === 3 && ( // Vendedor
+                  <>
+                    <Nav.Link as={Link} to="/ventas">
+                      Ventas
+                    </Nav.Link>
+                  </>
+                )}
+                {userRole === 4 && ( // Cobros
+                  <>
+                    <Nav.Link as={Link} to="/cobros">
+                      Cobros
+                    </Nav.Link>
+                  </>
+                )}
+                {userRole === 5 && ( // Cliente
+                  <>
+                    <Nav.Link as={Link} to="/mi-cuenta">
+                      Mi Cuenta
+                    </Nav.Link>
+                  </>
+                )}
               </>
             ) : (
               <>
-                <Nav.Link as={Link} to="/ver-credito">
-                  Ver Crédito
-                </Nav.Link>
                 <Nav.Link as={Link} to="/services">
                   Servicios
                 </Nav.Link>
                 <Nav.Link as={Link} to="/products">
                   Productos
-                </Nav.Link>
-                <Nav.Link as={Link} to="/contact">
-                  Contactos
                 </Nav.Link>
               </>
             )}
@@ -88,6 +111,10 @@ function Header({
               </NavDropdown>
             </Nav>
           ) : (
+            <>
+            <Button variant="primary" margin-right="20px" onClick={() => navigate("")}>
+              Revisar
+              </Button>
             <Button
               variant="primary"
               style={{
@@ -99,6 +126,7 @@ function Header({
             >
               Iniciar Sesión
             </Button>
+            </>
           )}
         </Navbar.Collapse>
       </Container>
@@ -112,5 +140,4 @@ function Header({
     </Navbar>
   );
 }
-
 export default Header;

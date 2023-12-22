@@ -1,30 +1,31 @@
 require("dotenv").config();
+const poolc = require('../config/db'); // Asegúrate de que la ruta sea correcta
 const Usuario = require("../models/Usuario");
 const bcrypt = require("bcrypt");
-const db = require("../config/db");
 const jwt = require("jsonwebtoken");
-secretKey = "secretKey";
+const secretKey = process.env.SECRET_KEY || "secretKey";
 
 exports.getUsuarios = (req, res) => {
   Usuario.getAllUsuarios((err, usuarios) => {
     if (err) {
       console.error("Error al obtener los usuarios:", err);
-      res.status(500).json({ error: "Error interno del servidor" });
-    } else {
-      res.json(usuarios);
+      return res.status(500).json({ error: "Error interno del servidor" });
     }
+    res.json({ usuarios });
   });
 };
 
+
 exports.findUserByUser = (req, res) => {
   const { usuario } = req.params;
-  Usuario.findUserByUser(usuario, (err, usuario) => {
+  Usuario.findUserByUser(usuario, (err, usuarioEncontrado) => {
     if (err) {
       console.error("Error al obtener el usuario:", err);
-      res.status(500).json({ error: "Error interno del servidor" });
-    } else {
-      res.json(usuario);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    } else if (!usuarioEncontrado) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
+    res.json(usuarioEncontrado);
   });
 };
 
@@ -43,11 +44,7 @@ exports.register = (req, res) => {
         console.error("Error al registrar usuario:", error);
         return res.status(500).json({ error: "Error al registrar usuario" });
       }
-      if (user) {
-        res.status(201).json({ message: "Usuario registrado exitosamente" });
-      } else {
-        res.status(500).json({ error: "Error al registrar usuario" });
-      }
+      res.status(201).json({ message: "Usuario registrado exitosamente" });
     }
   );
 };
@@ -62,33 +59,29 @@ exports.login = (req, res) => {
   const query = `
     SELECT 
       usuarios.*, 
-      personas.nombre, 
-      personas.apellido, 
-      personas.telefono, 
-      personas.telefono_2 AS telefono2, 
-      personas.pais, 
-      personas.ciudad, 
-      personas.direccion, 
-      personas.correo, 
+      personas.*,
       configuracion_negocio.negocio 
     FROM usuarios 
     JOIN personas ON usuarios.id_persona = personas.id_persona
     JOIN configuracion_negocio ON usuarios.id_configuracion_negocio = configuracion_negocio.id_configuracion
-    WHERE usuarios.usuario = ?
+    WHERE usuarios.usuario = $1
   `;
 
-  db.query(query, [usuario], (errorUsuario, results) => {
+  poolc.query(query, [usuario], (errorUsuario, results) => {
     if (errorUsuario) {
       console.error('Error al buscar el usuario:', errorUsuario);
       return res.status(500).json({ error: 'Error interno del servidor' });
     }
 
-    if (results.length === 0) {
+    if (results.rows.length === 0) {
       return res.status(400).json({ error: 'Usuario no encontrado' });
     }
 
-    const user = results[0];
+    const user = results.rows[0];
 
+    if (!user.contrasena) {
+      return res.status(400).json({ error: 'Usuario no tiene contraseña asignada' });
+    }
     bcrypt.compare(contrasena, user.contrasena, (errorBcrypt, contrasenaValida) => {
       if (errorBcrypt) {
         console.error('Error al verificar la contraseña:', errorBcrypt);
@@ -102,6 +95,7 @@ exports.login = (req, res) => {
       const payload = {
         userId: user.id_usuario,
         userName: user.usuario,
+        userRole: user.id_rol,
         personName: user.nombre,
         personLastName: user.apellido,
         personPhone: user.telefono,
@@ -112,7 +106,8 @@ exports.login = (req, res) => {
         personEmail: user.correo,
         businessName: user.negocio
       };
-      console.log(user)
+      console.log(payload);
+
       jwt.sign(payload, secretKey, { expiresIn: '1h' }, (errorJwt, token) => {
         if (errorJwt) {
           console.error('Error al generar el token:', errorJwt);
@@ -127,10 +122,14 @@ exports.login = (req, res) => {
 
 
 exports.updatePassword = (req, res) => {
-  const userId = req.params.id;
-  const { newPassword } = req.body;
+  const { id_usuario } = req.params;
+  const { contrasena } = req.body;
 
-  Usuario.updatePassword(userId, newPassword, (err, result) => {
+  if (!contrasena) {
+    return res.status(400).json({ error: "Contraseña no proporcionada" });
+  }
+
+  Usuario.updatePassword(id_usuario, contrasena, (err, result) => {
     if (err) {
       return res.status(500).json({ error: "Error interno del servidor" });
     }

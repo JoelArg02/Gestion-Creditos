@@ -20,7 +20,8 @@
     "mysql": "^2.18.1",
     "mysql-promise": "^5.0.0",
     "mysql2": "^3.6.5",
-    "mysql2-promise": "^0.1.4"
+    "mysql2-promise": "^0.1.4",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "jest": "^29.7.0"

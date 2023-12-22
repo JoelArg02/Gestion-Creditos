@@ -1,12 +1,15 @@
-const mysql = require('mysql2');
-require('dotenv').config();
-
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+const { Pool } = require('pg');
+const pool = new Pool({
+    host: 'localhost',
+    user: 'postgres',
+    password: 'password',
+    database: 'creditos',
+    port: 5432
 });
 
-module.exports = db;
+pool.query('SELECT * FROM usuarios', (err, results) => {
+  // ...
+});
 
+
+module.exports = pool;

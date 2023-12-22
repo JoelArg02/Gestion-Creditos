@@ -1,13 +1,19 @@
 -- Eliminar la base de datos si existe y crear una nueva
-DROP DATABASE IF EXISTS creditos;
-CREATE DATABASE creditos;
-USE creditos;
-SET FOREIGN_KEY_CHECKS = 0;
+-- En PostgreSQL, no es común manejar la creación de bases de datos en scripts SQL,
+-- se asume que ya está creada y se utiliza directamente.
 
-SET GLOBAL time_zone = 'America/Guayaquil';
+-- Conectar a la base de datos 'creditos' (debe ser creada previamente en PostgreSQL)
+-- \c creditos
 
+-- Desactivar las verificaciones de clave foránea (no es común en PostgreSQL)
+-- SET foreign_key_checks = 0;
+
+-- Configurar zona horaria (se puede configurar a nivel de sesión o base de datos)
+SET TIMEZONE = 'America/Guayaquil';
+
+-- Creación de tablas
 CREATE TABLE configuracion_negocio (
-    id_configuracion INT AUTO_INCREMENT PRIMARY KEY,
+    id_configuracion SERIAL PRIMARY KEY,
     negocio VARCHAR(255) NOT NULL,
     url_logo VARCHAR(255),
     url_favicon VARCHAR(255),
@@ -20,12 +26,20 @@ CREATE TABLE configuracion_negocio (
 );
 
 CREATE TABLE roles (
-    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    id_rol SERIAL PRIMARY KEY,
     nombre_rol VARCHAR(255) NOT NULL UNIQUE
 );
 
+-- Nota: La tabla 'referencia' debe crearse antes de 'personas' para establecer la clave foránea
+CREATE TABLE referencia (
+    id_referencias SERIAL PRIMARY KEY,
+    nombre_trabajo VARCHAR(255) NOT NULL,
+    telefono_trabajo VARCHAR(255) NOT NULL,
+    telefono_trabajo_c VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE personas (
-    id_persona INT AUTO_INCREMENT PRIMARY KEY,
+    id_persona SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     apellido VARCHAR(255) NOT NULL,
     telefono VARCHAR(255) NOT NULL,
@@ -39,30 +53,21 @@ CREATE TABLE personas (
     FOREIGN KEY (id_referencia_persona) REFERENCES referencia(id_referencias)
 );
 
--- Tabla de Usuarios
 CREATE TABLE usuarios (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario SERIAL PRIMARY KEY,
     usuario VARCHAR(255) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
-    estado BOOLEAN NOT NULL DEFAULT 1,
+    estado BOOLEAN NOT NULL DEFAULT TRUE,
     id_persona INT,
-    id_rol int,
-    id_configuracion_negocio int,
+    id_rol INT,
+    id_configuracion_negocio INT,
     FOREIGN KEY (id_configuracion_negocio) REFERENCES configuracion_negocio(id_configuracion),
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
     FOREIGN KEY (id_persona) REFERENCES personas(id_persona)
 );
 
--- Tabla de Referencias
-CREATE TABLE referencia (
-    id_referencias INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_trabajo VARCHAR(255) NOT NULL,
-    telefono_trabajo VARCHAR(255) NOT NULL,
-    telefono_trabajo_c VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE creditos (
-    id_credito INT AUTO_INCREMENT PRIMARY KEY,
+    id_credito SERIAL PRIMARY KEY,
     id_usuario_credito_crea INT NOT NULL,
     id_usuario_credito_usuario INT NOT NULL,
     monto DECIMAL(10, 2) NOT NULL,
@@ -74,19 +79,17 @@ CREATE TABLE creditos (
     FOREIGN KEY (id_usuario_credito_usuario) REFERENCES usuarios(id_usuario)
 );
 
--- Inserciones para la tabla 'configuracion_negocio'
+-- Inserciones
 INSERT INTO configuracion_negocio (negocio, url_logo, url_favicon, lema, facebook, instagram, whatsapp, correo_admin, correo_publico) 
 VALUES 
 ('Nexfon', 'https://nexfon-logo.com', 'https://nexfon-favicon.com', 'Conectando tu mundo', 'https://facebook.com/nexfon', 'https://instagram.com/nexfon', '+1234567890', 'admin@nexfon.com', 'contact@nexfon.com');
-
 
 INSERT INTO personas (nombre, apellido, telefono, pais, ciudad, direccion, correo) 
 VALUES 
 ('Juan', 'Pérez', '0998765432', 'Ecuador', 'Quito', 'Calle Falsa 123', 'juan.perez@example.com');
 
-insert into roles (id_rol, nombre_rol) values (1, 'Administrador'), (2, 'Encargado Creditos'), (3, 'Vendedor'), (4, 'Cobros'), (5, 'Cliente');
+INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Encargado Creditos'), ('Vendedor'), ('Cobros'), ('Cliente');
 
-INSERT INTO usuarios (usuario, contrasena,id_configuracion_negocio, id_persona, id_rol) 
+INSERT INTO usuarios (usuario, contrasena, id_configuracion_negocio, id_persona, id_rol) 
 VALUES 
-('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi',1, 1, 1);
-
+('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 1, 1, 1);

@@ -21,6 +21,7 @@ import Footer from "./components/Footer";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userRole, setUserRole] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [personName, setPersonName] = useState("");
   const [personLastName, setPersonLastName] = useState("");
@@ -36,8 +37,6 @@ function App() {
       const decoded = jwtDecode(token);
       const currentTime = Date.now() / 1000;
       const timeLeft = decoded.exp - currentTime;
-      console.log(token);
-      console.log(`Tiempo restante del token: ${timeLeft} segundos`);
       return decoded.exp < currentTime;
     } catch (error) {
       return true;
@@ -51,6 +50,8 @@ function App() {
         const decoded = jwtDecode(token); // Decodificar el token aquí
         if (!isTokenExpired(token)) {
           setIsAuthenticated(true);
+          setUserRole(decoded.userRole);
+          console.log(userRole);
           setUserName(decoded.userName);
           setBusinessName(decoded.businessName);
           setPersonName(decoded.personName);
@@ -80,6 +81,7 @@ function App() {
           businessName={businessName}
           isLoggedIn={isAuthenticated}
           userName={userName}
+          userRole={userRole}
           personName={personName}
           personLastName={personLastName}
           personPhone={personPhone}

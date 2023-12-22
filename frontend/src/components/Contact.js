@@ -15,7 +15,6 @@ function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes manejar la lógica de envío del formulario, como enviar a una API.
-    console.log(formData);
     alert('Mensaje enviado con éxito!');
     // Limpia el formulario después del envío
     setFormData({
