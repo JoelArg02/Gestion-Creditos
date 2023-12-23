@@ -111,10 +111,6 @@ function Header({
               </NavDropdown>
             </Nav>
           ) : (
-            <>
-            <Button variant="primary" margin-right="20px" onClick={() => navigate("")}>
-              Revisar
-              </Button>
             <Button
               variant="primary"
               style={{
@@ -126,7 +122,6 @@ function Header({
             >
               Iniciar Sesión
             </Button>
-            </>
           )}
         </Navbar.Collapse>
       </Container>
