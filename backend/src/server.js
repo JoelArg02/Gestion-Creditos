@@ -8,7 +8,7 @@ const port = process.env.PORT || 5200;
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const creditoRoutes = require('./routes/creditoRoutes');
 const referenciaRoutes = require('./routes/referenciaRoutes');
-
+const businessRoutes = require('./routes/businessRoutes');
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
   origin: '*', // Permite todas las fuentes
@@ -23,6 +23,10 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
   res.send('¡Bienvenido a la aplicación de gestión de créditos!');
 });
+
+// Ruta de Negocios
+
+app.use('/api/business', businessRoutes);
 
 // Rutas de referencia
 app.use('/api/referencia', referenciaRoutes);

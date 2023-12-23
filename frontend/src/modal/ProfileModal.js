@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  Form,
-  Alert,
-  InputGroup,
-  FormControl,
-} from "react-bootstrap";
-import { EyeSlash, Eye } from "react-bootstrap-icons"; // Asegúrate de haber instalado react-bootstrap-icons
+import { Modal, Button, Form, Alert, FormControl } from "react-bootstrap";
 
 function ProfileModal({
   show,

@@ -59,4 +59,24 @@ const addCredit = async (creditoData) => {
   }
 };
 
-export { getUsers, getCredits, login, getCredit, addCredit };
+const getBusiness = async () => {
+  try {
+    const response = await axios.get(`${apiConfig.baseURL}/business`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateBusiness = async (id, businessData) => {
+  try {
+    const response = await axios.put(
+      `${apiConfig.baseURL}/business/update/${id}`,
+      businessData
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+export { getUsers, getCredits, login, getCredit, addCredit, getBusiness, updateBusiness };

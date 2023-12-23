@@ -72,7 +72,7 @@ function AddCredito({ userId }) {
                 ))}
               </Form.Control>
             </Form.Group>
-            {/* Monto */}
+
             <Form.Group className="mb-3">
               <Form.Label>Monto</Form.Label>
               <Form.Control
@@ -83,7 +83,7 @@ function AddCredito({ userId }) {
                 required
               />
             </Form.Group>
-            {/* Interés */}
+
             <Form.Group className="mb-3">
               <Form.Label>Interés (%)</Form.Label>
               <Form.Control
@@ -95,7 +95,7 @@ function AddCredito({ userId }) {
                 required
               />
             </Form.Group>
-            {/* Fecha de Inicio */}
+
             <Form.Group className="mb-3">
               <Form.Label>Fecha de Inicio</Form.Label>
               <Form.Control
@@ -106,7 +106,7 @@ function AddCredito({ userId }) {
                 required
               />
             </Form.Group>
-            {/* Fecha de Vencimiento */}
+
             <Form.Group className="mb-3">
               <Form.Label>Fecha de Vencimiento</Form.Label>
               <Form.Control
@@ -117,7 +117,7 @@ function AddCredito({ userId }) {
                 required
               />
             </Form.Group>
-            {/* Duración */}
+
             <Form.Group className="mb-3">
               <Form.Label>Duración (meses)</Form.Label>
               <Form.Control
@@ -128,7 +128,11 @@ function AddCredito({ userId }) {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button
+              variant="primary"
+              style={{ borderColor: "white" }}
+              type="submit"
+            >
               Crear Crédito
             </Button>
           </Form>

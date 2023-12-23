@@ -16,7 +16,11 @@ function AddCreditModal({ show, handleClose, handleSubmit }) {
         <Button variant="secondary" onClick={handleClose}>
           Cerrar
         </Button>
-        <Button variant="primary" type="submit">
+        <Button
+          variant="primary"
+          style={{ borderColor: "white" }}
+          type="submit"
+        >
           Guardar Crédito
         </Button>
       </Modal.Footer>
@@ -48,17 +52,26 @@ function Dashboard() {
   return (
     <Container className="mx-auto w-80 text-center">
       <h1>Dashboard</h1>
-      <Button className="boton-espacio" variant="primary" onClick={() => setShowModal(true)}>
+      <Button
+        className="boton-espacio"
+        variant="primary"
+        style={{ borderColor: "white" }}
+
+        onClick={() => setShowModal(true)}
+      >
         Añadir Crédito
       </Button>
-      <AddCreditModal show={showModal} handleClose={() => setShowModal(false)} handleSubmit={handleAddCredit} />
+      <AddCreditModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        handleSubmit={handleAddCredit}
+      />
       {error ? (
         <Alert variant="danger">Error en el servidor: {error.message}</Alert>
       ) : credits.length === 0 ? (
         <Alert variant="info">No hay información de créditos disponible.</Alert>
       ) : (
-        <Table striped bordered hover>
-        </Table>
+        <Table striped bordered hover></Table>
       )}
     </Container>
   );

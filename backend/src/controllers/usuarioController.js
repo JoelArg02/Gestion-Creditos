@@ -107,11 +107,9 @@ exports.login = (req, res) => {
         personEmail: user.correo,
         businessName: user.negocio
       };
-      console.log(payload);
 
       jwt.sign(payload, secretKey, { expiresIn: '1h' }, (errorJwt, token) => {
         if (errorJwt) {
-          console.error('Error al generar el token:', errorJwt);
           return res.status(500).json({ error: 'Error interno del servidor' });
         }
 
