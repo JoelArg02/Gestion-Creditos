@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Modal, Button, Form, Alert } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Form,
+  Alert,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
+import { EyeSlash, Eye } from "react-bootstrap-icons"; // Asegúrate de haber instalado react-bootstrap-icons
 
 function ProfileModal({
   show,
@@ -56,10 +64,10 @@ function ProfileModal({
 
         {showChangePassword && (
           <>
-            <Form>
+            <Form className="mt-3">
               <Form.Group controlId="formNewPassword">
                 <Form.Label>Nueva Contraseña</Form.Label>
-                <Form.Control
+                <FormControl
                   type={showPassword ? "text" : "password"}
                   placeholder="Ingresa nueva contraseña"
                   value={newPassword}
@@ -68,16 +76,13 @@ function ProfileModal({
               </Form.Group>
               <Form.Group controlId="formConfirmNewPassword">
                 <Form.Label>Confirmar Nueva Contraseña</Form.Label>
-                <Form.Control
+                <FormControl
                   type={showPassword ? "text" : "password"}
                   placeholder="Confirma tu nueva contraseña"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </Form.Group>
-              <Button variant="outline-secondary" onClick={togglePasswordVisibility}>
-                {showPassword ? "Ocultar" : "Mostrar"} Contraseñas
-              </Button>
               <Button variant="success" onClick={handleSaveNewPassword}>
                 Guardar Nueva Contraseña
               </Button>

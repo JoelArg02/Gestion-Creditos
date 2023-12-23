@@ -7,9 +7,4 @@ const pool = new Pool({
     port: 5432
 });
 
-pool.query('SELECT * FROM usuarios', (err, results) => {
-  // ...
-});
-
-
 module.exports = pool;

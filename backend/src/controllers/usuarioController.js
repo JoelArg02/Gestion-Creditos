@@ -99,6 +99,7 @@ exports.login = (req, res) => {
         personName: user.nombre,
         personLastName: user.apellido,
         personPhone: user.telefono,
+        personDni: user.cedula,
         personPhone2: user.telefono2,
         personPais: user.pais,
         personCiudad: user.ciudad,

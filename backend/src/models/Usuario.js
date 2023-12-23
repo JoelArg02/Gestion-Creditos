@@ -12,7 +12,6 @@ Usuario.getAllUsuarios = (callback) => {
   });
 };
 
-module.exports = Usuario;
 
 Usuario.createUser = (usuario, contrasena, id_configuracion_usuario, callback) => {
   if (typeof callback !== 'function') {

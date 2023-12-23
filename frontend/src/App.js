@@ -17,9 +17,12 @@ import Dashboard from "./components/Dashboard";
 import Error404 from "./error/error404";
 import Admin from "./components/Admin";
 import Footer from "./components/Footer";
+import CreditUser from "./components/CreditUser";
+import AddCredit from "./components/AddCredit";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState(""); // Ajustar según sea necesario
   const [userName, setUserName] = useState("");
   const [userRole, setUserRole] = useState("");
   const [businessName, setBusinessName] = useState("");
@@ -31,6 +34,7 @@ function App() {
   const [personCiudad, setPersonCiudad] = useState("");
   const [personDireccion, setPersonDireccion] = useState("");
   const [personEmail, setPersonEmail] = useState("");
+  const [personDni, setPersonDni] = useState("");
 
   const isTokenExpired = (token) => {
     try {
@@ -50,8 +54,8 @@ function App() {
         const decoded = jwtDecode(token); // Decodificar el token aquí
         if (!isTokenExpired(token)) {
           setIsAuthenticated(true);
+          setUserId(decoded.userId);
           setUserRole(decoded.userRole);
-          console.log(userRole);
           setUserName(decoded.userName);
           setBusinessName(decoded.businessName);
           setPersonName(decoded.personName);
@@ -62,6 +66,7 @@ function App() {
           setPersonCiudad(decoded.personCiudad);
           setPersonDireccion(decoded.personDireccion);
           setPersonEmail(decoded.personEmail);
+          setPersonDni(decoded.personDni);
         } else {
           localStorage.removeItem("token");
           setIsAuthenticated(false);
@@ -90,6 +95,7 @@ function App() {
           personCiudad={personCiudad}
           personDireccion={personDireccion}
           personEmail={personEmail}
+          personDni={personDni}
         />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -105,6 +111,8 @@ function App() {
             element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
           />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/AddCredit" element={<AddCredit userId = {userId} />} />
+          <Route path="/CreditUser" element={<CreditUser personDni={personDni} />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
         <Footer />

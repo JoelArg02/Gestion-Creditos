@@ -1,35 +1,45 @@
-const db = require('../config/db');
+const poolc = require('../config/db'); // Asegúrate de que la ruta sea correcta
 
 const Credito = {};
 
 Credito.getAllCreditos = (callback) => {
-  db.query('SELECT * FROM creditos', (err, results) => {
+  poolc.query('SELECT * FROM creditos', (err, results) => {
     if (err) {
       callback(err, null);
     } else {
-      callback(null, results);
+      callback(null, results.rows);
     }
   });
 };
 
-Credito.createCredit = (newCredit, callback) => {
-  db.query('INSERT INTO creditos (id_usuario_credito_crea, id_usuario_credito_revisa, monto, interes, fecha_inicio, Fecha_vencimiento, Estado) VALUES (?, ?, ?, ?, ?, ?, ?)', newCredit, (err, results) => {
+Credito.getCreditByDni = (id, callback) => {
+  poolc.query(`
+    SELECT c.*, p.*
+    FROM creditos c
+    JOIN usuarios u ON c.id_usuario_credito_usuario = u.id_usuario
+    JOIN personas p ON u.id_persona = p.id_persona
+    WHERE p.cedula = $1
+  `, [id], (err, results) => {
     if (err) {
       callback(err, null);
     } else {
-      callback(null, results);
+      if (results.rows.length === 0) {
+        callback(new Error("Crédito no encontrado"), null);
+      } else {
+        callback(null, results.rows);
+      }
     }
   });
 };
 
-Credito.deleteCredit = (id, callback) => {
-  db.query('UPDATE creditos SET Estado = 0 WHERE id_credito = ?', id, (err, results) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, results);
-    }
-  });
+Credito.createCredit = (creditoData, callback) => {
+  const query = `
+    INSERT INTO creditos (id_usuario_credito_crea, id_usuario_credito_usuario, monto, interes, fecha_inicio, fecha_vencimiento, duracion, estado)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    RETURNING *;
+  `;
+  const { idUsuarioCreditoCrea, idUsuarioCreditoUsuario, monto, interes, fechaInicio, fechaVencimiento, duracion, estado } = creditoData;
+  poolc.query(query, [idUsuarioCreditoCrea, idUsuarioCreditoUsuario, monto, interes, fechaInicio, fechaVencimiento, duracion, estado], callback);
 };
 
 module.exports = Credito;

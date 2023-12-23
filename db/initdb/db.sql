@@ -43,6 +43,7 @@ CREATE TABLE personas (
     nombre VARCHAR(255) NOT NULL,
     apellido VARCHAR(255) NOT NULL,
     telefono VARCHAR(255) NOT NULL,
+    cedula INTEGER NOT NULL,
     telefono_2 VARCHAR(255),
     pais VARCHAR(255) NOT NULL,
     ciudad VARCHAR(255) NOT NULL,
@@ -72,6 +73,7 @@ CREATE TABLE creditos (
     id_usuario_credito_usuario INT NOT NULL,
     monto DECIMAL(10, 2) NOT NULL,
     interes DECIMAL(5, 2),
+    duracion INTEGER NOT NULL,
     fecha_inicio DATE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     estado BOOLEAN NOT NULL,
@@ -84,12 +86,29 @@ INSERT INTO configuracion_negocio (negocio, url_logo, url_favicon, lema, faceboo
 VALUES 
 ('Nexfon', 'https://nexfon-logo.com', 'https://nexfon-favicon.com', 'Conectando tu mundo', 'https://facebook.com/nexfon', 'https://instagram.com/nexfon', '+1234567890', 'admin@nexfon.com', 'contact@nexfon.com');
 
-INSERT INTO personas (nombre, apellido, telefono, pais, ciudad, direccion, correo) 
+INSERT INTO personas (nombre, apellido, telefono, cedula, pais, ciudad, direccion, correo) 
 VALUES 
-('Juan', 'Pérez', '0998765432', 'Ecuador', 'Quito', 'Calle Falsa 123', 'juan.perez@example.com');
+('Juan', 'Pérez', '0998765432','1710202449', 'Ecuador', 'Quito', 'Calle Falsa 123', 'juan.perez@example.com');
 
 INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Encargado Creditos'), ('Vendedor'), ('Cobros'), ('Cliente');
 
 INSERT INTO usuarios (usuario, contrasena, id_configuracion_negocio, id_persona, id_rol) 
 VALUES 
 ('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 1, 1, 1);
+
+INSERT INTO creditos (    id_usuario_credito_crea, 
+    id_usuario_credito_usuario, 
+    monto, 
+    interes, 
+    fecha_inicio, 
+    fecha_vencimiento, 
+    estado
+) VALUES (
+    1,    -- Suponiendo que el ID del usuario que crea el crédito es 1
+    2,    -- Suponiendo que el ID del usuario del crédito es 2
+    10000.00, -- Monto del crédito
+    5.00,  -- Tasa de interés
+    '2023-01-01', -- Fecha de inicio del crédito
+    '2023-12-31', -- Fecha de vencimiento del crédito
+    TRUE   -- Estado del crédito (activo/inactivo)
+);

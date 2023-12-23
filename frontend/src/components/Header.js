@@ -50,37 +50,31 @@ function Header({
                     </Nav.Link>
                   </>
                 )}
-                {userRole === 2 && ( // Encargado Creditos
+                {(userRole === 2 || userRole === 1) && ( // Cobros para los roles 4 y 1
                   <>
-                    <Nav.Link as={Link} to="/add-credit">
+                    <Nav.Link as={Link} to="/AddCredit">
                       Añadir Crédito
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/ver-credito">
+                    <Nav.Link as={Link} to="/CreditUser">
                       Ver Crédito
                     </Nav.Link>
                   </>
                 )}
-                {userRole === 3 && ( // Vendedor
+                {(userRole === 3 || userRole ===1) && (
                   <>
                     <Nav.Link as={Link} to="/ventas">
                       Ventas
                     </Nav.Link>
                   </>
                 )}
-                {userRole === 4 && ( // Cobros
+                {(userRole === 4 || userRole === 1) && ( // Cobros para los roles 4 y 1
                   <>
                     <Nav.Link as={Link} to="/cobros">
                       Cobros
                     </Nav.Link>
                   </>
                 )}
-                {userRole === 5 && ( // Cliente
-                  <>
-                    <Nav.Link as={Link} to="/mi-cuenta">
-                      Mi Cuenta
-                    </Nav.Link>
-                  </>
-                )}
+                
               </>
             ) : (
               <>
@@ -111,17 +105,32 @@ function Header({
               </NavDropdown>
             </Nav>
           ) : (
-            <Button
-              variant="primary"
-              style={{
-                backgroundColor: "#333",
-                color: "white",
-                border: "none",
-              }}
-              onClick={() => navigate("/login")}
-            >
-              Iniciar Sesión
-            </Button>
+            <>
+              <Button
+                variant="primary"
+                style={{
+                  backgroundColor: "#333",
+                  color: "white",
+                  border: "none",
+                  marginRight: "10px",
+                }}
+                onClick={() => navigate("/CreditUser")}
+              >
+                Ver Credito
+              </Button>
+
+              <Button
+                variant="primary"
+                style={{
+                  backgroundColor: "#333",
+                  color: "white",
+                  border: "none",
+                }}
+                onClick={() => navigate("/login")}
+              >
+                Iniciar Sesión
+              </Button>
+            </>
           )}
         </Navbar.Collapse>
       </Container>
