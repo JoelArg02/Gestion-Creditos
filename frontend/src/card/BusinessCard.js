@@ -126,25 +126,6 @@ function BusinessModal({ show, handleClose }) {
               </Form.Group>
 
               <Form.Group>
-                <Form.Label>Usuario Responsable</Form.Label>
-                <CreatableSelect
-                  isClearable
-                  onChange={(selectedOption) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      id_usuario: selectedOption ? selectedOption.value : "",
-                    })
-                  }
-                  onInputChange={handleInputChange}
-                  onCreateOption={handleCreate}
-                  options={usuarioOptions}
-                  value={usuarioOptions.find(
-                    (option) => option.value === selectedBusiness.id_usuario
-                  )}
-                />
-              </Form.Group>
-
-              <Form.Group>
                 <Form.Label>Lema</Form.Label>
                 <Form.Control
                   type="text"
@@ -231,6 +212,25 @@ function BusinessModal({ show, handleClose }) {
                       correo_publico: e.target.value,
                     })
                   }
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Usuario Responsable</Form.Label>
+                <CreatableSelect
+                  isClearable
+                  onChange={(selectedOption) =>
+                    setSelectedBusiness({
+                      ...selectedBusiness,
+                      id_usuario: selectedOption ? selectedOption.value : "",
+                    })
+                  }
+                  onInputChange={handleInputChange}
+                  onCreateOption={handleCreate}
+                  options={usuarioOptions}
+                  value={usuarioOptions.find(
+                    (option) => option.value === selectedBusiness.id_usuario
+                  )}
                 />
               </Form.Group>
             </>

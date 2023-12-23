@@ -40,7 +40,6 @@ function App() {
     try {
       const decoded = jwtDecode(token);
       const currentTime = Date.now() / 1000;
-      const timeLeft = decoded.exp - currentTime;
       return decoded.exp < currentTime;
     } catch (error) {
       return true;
@@ -113,7 +112,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/AddCredit" element={<AddCredit userId = {userId} />} />
           <Route path="/CreditUser" element={<CreditUser personDni={personDni} />} />
-          <Route path="*" element={<Error404 />} />
+          <Route path="*" element={<Error404 isAuthenticated />} />
         </Routes>
         <Footer />
       </div>

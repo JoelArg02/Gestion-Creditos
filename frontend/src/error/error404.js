@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./error404.css";
 
-function Error404() {
+function Error404(isAuthenticated) {
   return (
     <Container className="error404-container mt-5">
       <Row className="justify-content-center">
@@ -14,14 +14,25 @@ function Error404() {
             Lo sentimos, pero la página que estás buscando no se encuentra en
             este sitio.
           </p>
-          <Button
-            variant="primary"
-            className="custom-button hover-effect"
-            as={Link}
-            to="/"
-          >
-            Ir a la página de inicio
-          </Button>
+          {isAuthenticated ? (
+            <Button
+              variant="primary"
+              className="custom-button hover-effect"
+              as={Link}
+              to="/"
+            >
+              Ir a la página de inicio
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              className="custom-button hover-effect"
+              as={Link}
+              to="/login"
+            >
+              Iniciar sesión
+            </Button>
+          )}
         </Col>
       </Row>
     </Container>
