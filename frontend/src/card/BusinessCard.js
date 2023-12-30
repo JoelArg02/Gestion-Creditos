@@ -38,7 +38,6 @@ function BusinessModal({ show, handleClose }) {
   const handleInputChange = (inputValue) => {};
 
   const handleCreate = (inputValue) => {
-    console.log("Crear nuevo usuario:", inputValue);
   };
   const usuarioOptions = usuarios.map((usuario) => ({
     value: usuario.id_usuario,
@@ -81,7 +80,6 @@ function BusinessModal({ show, handleClose }) {
       `¿Desea crear el negocio "${inputValue}"?`
     );
     if (confirmCreate) {
-      console.log("Creando negocio:", inputValue);
     }
   };
 

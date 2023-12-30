@@ -24,6 +24,14 @@ app.get('/', (req, res) => {
   res.send('¡Bienvenido a la aplicación de gestión de créditos!');
 });
 
+app.post('/', (req, res) => {
+  res.send('¡Bienvenido a la aplicación de gestión de créditos!');
+});
+
+app.put('/', (req, res) => {
+  res.send('¡Bienvenido a la aplicación de gestión de créditos!');
+});
+
 // Ruta de Negocios
 
 app.use('/api/business', businessRoutes);

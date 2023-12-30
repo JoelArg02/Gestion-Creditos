@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, Container, Col } from 'react-bootstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import './Products.css'; // Asegúrate de crear este archivo CSS
+import './Products.css';
 
 const planes = [
   {

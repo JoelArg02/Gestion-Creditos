@@ -14,7 +14,6 @@ function ModalClientAdd(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Aquí añadir lógica para enviar datos al backend
-    console.log(clienteData);
     props.onHide(); // Cierra el modal
   };
 

@@ -54,11 +54,15 @@ CREATE TABLE personas (
     FOREIGN KEY (id_referencia_persona) REFERENCES referencia(id_referencias)
 );
 
+
 CREATE TABLE usuarios (
     id_usuario SERIAL PRIMARY KEY,
     usuario VARCHAR(255) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
     estado BOOLEAN NOT NULL DEFAULT TRUE,
+    codigo_recuperacion VARCHAR(255),
+    codigo_recuperacion_expira TIMESTAMP,
+    email VARCHAR(255) NOT NULL,
     id_persona INT,
     id_rol INT,
     id_configuracion_negocio INT,
@@ -104,11 +108,13 @@ INSERT INTO creditos (    id_usuario_credito_crea,
     fecha_vencimiento, 
     estado
 ) VALUES (
-    1,    -- Suponiendo que el ID del usuario que crea el crédito es 1
-    2,    -- Suponiendo que el ID del usuario del crédito es 2
-    10000.00, -- Monto del crédito
-    5.00,  -- Tasa de interés
-    '2023-01-01', -- Fecha de inicio del crédito
-    '2023-12-31', -- Fecha de vencimiento del crédito
-    TRUE   -- Estado del crédito (activo/inactivo)
+    1,   
+    2,   
+    10000.00,
+    5.00, 
+    '2023-01-01',
+    '2023-12-31',
+    TRUE  
 );
+
+

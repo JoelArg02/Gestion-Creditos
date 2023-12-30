@@ -24,7 +24,6 @@ function AddCredito({ userId }) {
       try {
         const data = await getUsers();
         setClientes(data);
-        console.log(data);
       } catch (error) {
         console.error("Error al obtener clientes", error);
       }
@@ -41,7 +40,6 @@ function AddCredito({ userId }) {
     e.preventDefault();
     try {
       const response = await addCredit(creditoData);
-      console.log(response);
       alert("Crédito creado con éxito");
     } catch (error) {
       console.error("Error al crear crédito", error);

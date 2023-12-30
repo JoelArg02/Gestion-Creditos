@@ -3,14 +3,24 @@ import { useNavigate } from "react-router-dom";
 import "./login.css";
 import React, { useState } from "react";
 import { login } from "../api/api";
+import ModalPasswordHelp from "../modal/ModalPasswordHelp";
 
 function Login(props) {
   const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     usuario: "",
     contrasena: "",
   });
   const [error, setError] = useState("");
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,6 +103,7 @@ function Login(props) {
                   <a
                     href="#"
                     style={{ color: "#555555", textDecoration: "none" }}
+                    onClick={handleOpenModal}
                   >
                     ¿Olvidaste tu contraseña?
                   </a>
@@ -109,6 +120,7 @@ function Login(props) {
           </div>
         </div>
       </div>
+      {isModalOpen && <ModalPasswordHelp onClose={handleModalClose} />}
     </div>
   );
 }

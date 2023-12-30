@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
-import ProfileModal from "../modal/ProfileModal";
+import ProfileModal from "../modal/ModalProfile";
 
 function Header({
   isLoggedIn,
