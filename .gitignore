@@ -2,10 +2,10 @@
 ./backend/node_modules
 node_modules
 ./frontend/node_modules
+./frontend/src/api/apiConfig.js
+./frontend/src/api/
 /.pnp
 .pnp.js
 .env
 /db/data
-/frontend/build
-/frontend/src/api/apiConfig.js
-/frontend/src/api 
+./db
