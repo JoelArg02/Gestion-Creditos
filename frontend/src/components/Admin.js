@@ -46,7 +46,6 @@ function Admin() {
         </Col>
         <Col md={4} className="mb-4">
           {" "}
-          {/* Cambio en el tamaño de la columna */}
           <Card className="shadow" style={{ width: "18rem" }}>
             <Card.Body>
               <Card.Title>Negocios</Card.Title>

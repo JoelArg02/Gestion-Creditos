@@ -15,7 +15,6 @@ Usuario.getAllUsuarios = (callback) => {
 };
 
 Usuario.getUserById = (id, callback) => {
-  console.log(id);
   poolc.query("SELECT * FROM usuarios where id_usuario = $1", [id], (err, results) => {
     if (err) {
       callback(err, null);
@@ -159,6 +158,19 @@ Usuario.checkUserExists = (email, callback) => {
         return callback(err, null);
       }
       callback(null, results.rows.length > 0);
+    }
+  );
+};
+
+Usuario.updateBusinnessConfig = (id_usuario, id_configuracion, callback) => {
+  poolc.query(
+    "UPDATE usuarios SET id_configuracion_usuario = $1 WHERE id_usuario = $2",
+    [id_configuracion, id_usuario],
+    (err, results) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, results);
     }
   );
 };

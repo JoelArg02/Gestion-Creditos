@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
-import { getUsers, getBusiness, updateBusiness } from "../api/api";
+import { getUsers, getBusiness, updateUser } from "../api/api";
 import CreatableAsyncSelect from "react-select/async-creatable";
 import CreatableSelect from "react-select/creatable";
 
@@ -10,17 +10,7 @@ function BusinessModal({ show, handleClose }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [selectedBusinessOption, setSelectedBusinessOption] = useState(null);
-  const [selectedBusiness, setSelectedBusiness] = useState({
-    id_configuracion: "",
-    negocio: "",
-    id_usuario: "",
-    lema: "",
-    facebook: "",
-    instagram: "",
-    whatsapp: "",
-    correo_admin: "",
-    correo_publico: "",
-  });
+  const [selectedUserOption, setSelectedUserOption] = useState(null);
 
   const loadBusinessOptions = async (inputValue) => {
     try {
@@ -35,14 +25,13 @@ function BusinessModal({ show, handleClose }) {
     }
   };
 
-  const handleInputChange = (inputValue) => {};
-
-  const handleCreate = (inputValue) => {
+  const handleSelectBusiness = (selectedOption) => {
+    setSelectedBusinessOption(selectedOption);
   };
-  const usuarioOptions = usuarios.map((usuario) => ({
-    value: usuario.id_usuario,
-    label: usuario.usuario,
-  }));
+
+  const handleSelectUser = (selectedOption) => {
+    setSelectedUserOption(selectedOption);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -58,30 +47,27 @@ function BusinessModal({ show, handleClose }) {
     }
     fetchData();
   }, []);
-  const handleSelectBusiness = (id) => {
-    const selected = business.find(
-      (b) => b?.id_configuracion.toString() === id.toString()
-    );
-    setSelectedBusiness(selected || {});
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await updateBusiness(selectedBusiness.id_configuracion, selectedBusiness);
-      setSuccess("Business updated successfully");
-    } catch (error) {
-      setError("Failed to update business");
+    if (selectedUserOption && selectedBusinessOption) {
+      try {
+        await updateUser(selectedUserOption.value, {
+          id_configuracion_negocio: selectedBusinessOption.value,
+        });
+        setSuccess("Usuario actualizado con éxito");
+      } catch (error) {
+        setError("Error al actualizar el usuario");
+      }
+    } else {
+      setError("Seleccione un usuario y un negocio");
     }
   };
 
-  const handleCreateBusiness = (inputValue) => {
-    const confirmCreate = window.confirm(
-      `¿Desea crear el negocio "${inputValue}"?`
-    );
-    if (confirmCreate) {
-    }
-  };
+  const usuarioOptions = usuarios.map((usuario) => ({
+    value: usuario.id_usuario,
+    label: usuario.usuario,
+  }));
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -92,159 +78,35 @@ function BusinessModal({ show, handleClose }) {
         {error && <Alert variant="danger">{error}</Alert>}
         {success && <Alert variant="success">{success}</Alert>}
         <Form onSubmit={handleSubmit}>
-          <CreatableAsyncSelect
-            cacheOptions
-            defaultOptions
-            loadOptions={loadBusinessOptions}
-            onChange={(selectedOption) => {
-              setSelectedBusinessOption(selectedOption);
-              handleSelectBusiness(selectedOption.value);
-            }}
-            onCreateOption={handleCreateBusiness}
-            value={selectedBusinessOption}
-            placeholder="Busque el negocio"
-            formatCreateLabel={(inputValue) => `Crear "${inputValue}"`}
-          />
+          <Form.Group>
+            <Form.Label>Negocio</Form.Label>
+            <CreatableAsyncSelect
+              cacheOptions
+              defaultOptions
+              loadOptions={loadBusinessOptions}
+              onChange={handleSelectBusiness}
+              value={selectedBusinessOption}
+              placeholder="Seleccione o cree un negocio"
+            />
+          </Form.Group>
 
-          {selectedBusinessOption && (
-            <>
-              <Form.Group>
-                <Form.Label>Nombre del negocio</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Nombre"
-                  value={selectedBusiness.negocio || ""}
-                  onChange={(e) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      negocio: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
+          <Form.Group>
+            <Form.Label>Usuario</Form.Label>
+            <CreatableSelect
+              isClearable
+              onChange={handleSelectUser}
+              options={usuarioOptions}
+              value={selectedUserOption}
+              placeholder="Seleccione un usuario"
+            />
+          </Form.Group>
 
-              <Form.Group>
-                <Form.Label>Lema</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Lema"
-                  value={selectedBusiness.lema || ""}
-                  onChange={(e) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      lema: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Facebook</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Facebook"
-                  value={selectedBusiness.facebook || ""}
-                  onChange={(e) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      facebook: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Instagram</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Instagram"
-                  value={selectedBusiness.instagram || ""}
-                  onChange={(e) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      instagram: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Whatsapp</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Whatsapp"
-                  value={selectedBusiness.whatsapp || ""}
-                  onChange={(e) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      whatsapp: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Correo administrador</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Correo"
-                  value={selectedBusiness.correo_admin || ""}
-                  onChange={(e) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      correo_admin: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Correo Publico</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Correo"
-                  value={selectedBusiness.correo_publico || ""}
-                  onChange={(e) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      correo_publico: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Usuario Responsable</Form.Label>
-                <CreatableSelect
-                  isClearable
-                  onChange={(selectedOption) =>
-                    setSelectedBusiness({
-                      ...selectedBusiness,
-                      id_usuario: selectedOption ? selectedOption.value : "",
-                    })
-                  }
-                  onInputChange={handleInputChange}
-                  onCreateOption={handleCreate}
-                  options={usuarioOptions}
-                  value={usuarioOptions.find(
-                    (option) => option.value === selectedBusiness.id_usuario
-                  )}
-                />
-              </Form.Group>
-            </>
-          )}
+          <Button type="submit" variant="primary" className="mt-3">
+            Asignar Negocio a Usuario
+          </Button>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          type="submit"
-          variant="primary"
-          style={{ borderColor: "white" }}
-          onClick={handleSubmit}
-        >
-          Actualizar
-        </Button>
-
         <Button variant="secondary" onClick={handleClose}>
           Cerrar
         </Button>

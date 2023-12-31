@@ -18,7 +18,6 @@ exports.getUsuarios = (req, res) => {
 
 exports.getUserById = async (req, res) => {
   const { id_usuario } = req.params;
-  console.log(id_usuario);
   Usuario.getUserById(id_usuario, (err, usuario) => {
     if (err) {
       console.error("Error al obtener el usuario:", err);
@@ -187,8 +186,7 @@ exports.verifyRecoveryCode = async (req, res) => {
 exports.updatePassword = (req, res) => {
   const { id_usuario } = req.params;
   const { contrasena } = req.body;
-  console.log(id_usuario)
-  console.log(contrasena)
+
   if (!contrasena) {
     return res.status(400).json({ error: "Contraseña no proporcionada" });
   }
@@ -197,7 +195,6 @@ exports.updatePassword = (req, res) => {
     if (err) {
       return res.status(500).json({ error: "Error interno del servidor" });
     }
-    console.log(contrasena);
     res.status(200).json({ message: "oktxtps" });
   });
 };

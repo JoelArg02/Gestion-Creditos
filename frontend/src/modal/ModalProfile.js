@@ -19,6 +19,7 @@ function ProfileModal({
   personEmail,
 }) {
   const [showChangePassword, setShowChangePassword] = useState(false);
+  const [passwordSuccess, setPasswordSuccess] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -31,6 +32,7 @@ function ProfileModal({
 
   const handleEditPasswordClick = () => {
     setShowChangePassword(!showChangePassword);
+    setPasswordSuccess("");
     setPasswordError("");
   };
 
@@ -39,19 +41,21 @@ function ProfileModal({
     if (newPassword === confirmPassword) {
       try {
         const response = await updatePassword(id_usuario, newPassword);
-        if (
-          response &&
-          response.message === "Contraseña actualizada con éxito"
-        ) {
+        if (response && response.message === "oktxtps") {
           setShowChangePassword(false);
           setNewPassword("");
           setConfirmPassword("");
           setPasswordError("");
+          setPasswordSuccess("Contraseña actualizada correctamente");
         } else {
-          console.log("Algo salio mal");
+          setPasswordError(
+            "Error al actualizar la contraseña, contacte al administrador"
+          );
         }
       } catch (error) {
-        console.error("Error al actualizar la contraseña:", error);
+        setPasswordError(
+          "Error al actualizar la contraseña contacte al administrador"
+        );
       }
     } else {
       setPasswordError("Las contraseñas no coinciden");
@@ -126,7 +130,13 @@ function ProfileModal({
             )}
           </>
         )}
+        {passwordSuccess && (
+          <Alert variant="success" className="mt-3">
+            {passwordSuccess}
+          </Alert>
+        )}
       </Modal.Body>
+
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Cerrar

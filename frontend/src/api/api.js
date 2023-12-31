@@ -26,6 +26,19 @@ const getUserById = async (id) => {
   }
 };
 
+const updateUser = async (id, userData) => {
+  try {
+    const response = await axios.put(
+      `${apiConfig.baseURL}/usuarios/update/${id}`,
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 const getCredits = async () => {
   try {
     const response = await axios.get(`${apiConfig.baseURL}/credit`);
@@ -135,7 +148,6 @@ const changePassword = async (email, newPassword) => {
 
 const updatePassword = async (id_usuario, newPassword) => {
   try {
-    console.log(id_usuario, newPassword);
     const response = await axios.post(
       `${apiConfig.baseURL}/usuarios/update-password/${id_usuario}`,
       {
@@ -159,5 +171,6 @@ export {
   sendRecoveryCode,
   verifyRecoveryCode,
   changePassword,
-  updatePassword
+  updatePassword,
+  updateUser
 };
