@@ -22,7 +22,7 @@ import AddCredit from "./components/AddCredit";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userId, setUserId] = useState(""); // Ajustar según sea necesario
+  const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
   const [userRole, setUserRole] = useState("");
   const [businessName, setBusinessName] = useState("");
@@ -73,8 +73,9 @@ function App() {
       }
     };
 
+
     checkToken();
-    const interval = setInterval(checkToken, 5 * 60 * 1000); // Verifica cada 5 minutos
+    const interval = setInterval(checkToken, 5 * 60 * 1000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -84,6 +85,7 @@ function App() {
         <Header
           businessName={businessName}
           isLoggedIn={isAuthenticated}
+          userId={userId}
           userName={userName}
           userRole={userRole}
           personName={personName}
@@ -111,6 +113,7 @@ function App() {
           />
           <Route path="/contact" element={<Contact />} />
           <Route path="/AddCredit" element={<AddCredit userId = {userId} />} />
+          
           <Route path="/CreditUser" element={<CreditUser personDni={personDni} />} />
           <Route path="*" element={<Error404 isAuthenticated />} />
         </Routes>

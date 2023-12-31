@@ -14,6 +14,17 @@ Usuario.getAllUsuarios = (callback) => {
   });
 };
 
+Usuario.getUserById = (id, callback) => {
+  console.log(id);
+  poolc.query("SELECT * FROM usuarios where id_usuario = $1", [id], (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results.rows[0]);
+    }
+  });
+};
+
 Usuario.createUser = (
   usuario,
   contrasena,
@@ -66,7 +77,7 @@ Usuario.updatePassword = (id_usuario, contrasena, callback) => {
     if (err) {
       return callback(err);
     }
-
+    console.log(id_usuario, contrasena, hash);
     poolc.query(
       "UPDATE usuarios SET contrasena = $1 WHERE id_usuario = $2",
       [hash, id_usuario],

@@ -1,4 +1,13 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  Card,
+  Form,
+  Button,
+  Modal,
+  Container,
+  Row,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import React, { useState } from "react";
@@ -8,6 +17,8 @@ import ModalPasswordHelp from "../modal/ModalPasswordHelp";
 function Login(props) {
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setFormData] = useState({
     usuario: "",
     contrasena: "",
@@ -20,6 +31,10 @@ function Login(props) {
 
   const handleModalClose = () => {
     setModalOpen(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleInputChange = (e) => {
@@ -52,76 +67,62 @@ function Login(props) {
   };
 
   return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-8 col-lg-6">
-          <div className="card my-5" style={{ borderColor: "#CCCCCC" }}>
-            <div
-              className="card-header text-center"
-              style={{ backgroundColor: "#FFFFFF", color: "#333333" }}
-            >
-              Iniciar sesión
-            </div>
-            <div className="card-body" style={{ backgroundColor: "#FFFFFF" }}>
+    <Container>
+      <Row className="justify-content-center">
+        <Col xs={12} md={8} lg={6}>
+          <Card className="my-5">
+            <Card.Header className="text-center">Iniciar sesión</Card.Header>
+            <Card.Body>
               {error && <div className="alert alert-danger">{error}</div>}
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="usuario" className="form-label">
-                    Usuario
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="usuario"
-                    value={formData.usuario}
-                    onChange={handleInputChange}
-                    placeholder="Ingresa tu usuario"
-                    style={{
-                      backgroundColor: "#F8F8F8",
-                      borderColor: "#CCCCCC",
-                    }}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    Contraseña
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    name="contrasena"
-                    value={formData.contrasena}
-                    onChange={handleInputChange}
-                    placeholder="Ingresa tu contraseña"
-                    style={{
-                      backgroundColor: "#F8F8F8",
-                      borderColor: "#CCCCCC",
-                    }}
-                  />
-                </div>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Usuario</Form.Label>
+                  <InputGroup>
+                    <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                    <Form.Control
+                      type="text"
+                      name="usuario"
+                      value={formData.usuario}
+                      onChange={handleInputChange}
+                      placeholder="Ingresa tu usuario"
+                      aria-label="Usuario"
+                      aria-describedby="basic-addon1"
+                    />
+                  </InputGroup>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Contraseña</Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      name="contrasena"
+                      value={formData.contrasena}
+                      onChange={handleInputChange}
+                      placeholder="Ingresa tu contraseña"
+                    />
+                    <Button
+                      variant="outline-secondary"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? "Ocultar" : "Mostrar"}
+                    </Button>
+                  </InputGroup>
+                </Form.Group>
                 <div className="mb-3 text-center">
-                  <a
-                    href="#"
-                    style={{ color: "#555555", textDecoration: "none" }}
-                    onClick={handleOpenModal}
-                  >
+                  <a href="#" onClick={handleOpenModal}>
                     ¿Olvidaste tu contraseña?
                   </a>
                 </div>
-                <button
-                  type="submit"
-                  className="btn w-100"
-                  style={{ backgroundColor: "#333333", color: "white" }}
-                >
+                <Button variant="dark" type="submit" className="w-100">
                   Entrar
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>{" "}
       {isModalOpen && <ModalPasswordHelp onClose={handleModalClose} />}
-    </div>
+    </Container>
   );
 }
 

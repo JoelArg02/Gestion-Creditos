@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Card, Spinner } from "react-bootstrap";
-import "./CreditUser.css"; // Importa tu CSS personalizado
-import { getCredit } from "../api/api"; // Asegúrate de que la ruta de importación sea correcta
+import "./CreditUser.css"; 
+import { getCredit } from "../api/api"; 
 
 function formatFecha(fechaISO) {
   const fecha = new Date(fechaISO);
@@ -15,7 +15,6 @@ function CreditUser({ personDni }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Si se pasa una cédula como prop, se obtienen los datos del crédito al cargar el componente
     if (personDni) {
       fetchCreditData(personDni);
     }
@@ -82,7 +81,11 @@ function CreditUser({ personDni }) {
                     />
                   </div>
                   <div className="d-grid">
-                    <button type="submit" className="btn btn-primary btn-block">
+                    <button
+                      type="submit"
+                      style={{ borderColor: "white" }}
+                      className="btn btn-primary btn-block"
+                    >
                       Revisar
                     </button>
                   </div>
@@ -137,8 +140,6 @@ function CreditUser({ personDni }) {
       </Container>
     );
   }
-
-  // Retornar un mensaje o componente en caso de que no se cumplan las condiciones anteriores
   return <div>No se encontraron datos para mostrar.</div>;
 }
 

@@ -7,3 +7,5 @@ node_modules
 .env
 /db/data
 /frontend/build
+/frontend/src/api/apiConfig.js
+/frontend/src/api 

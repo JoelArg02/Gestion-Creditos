@@ -17,6 +17,15 @@ const getUsers = async () => {
   }
 };
 
+const getUserById = async (id) => {
+  try {
+    const response = await axios.get(`${apiConfig.baseURL}/usuarios/id/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCredits = async () => {
   try {
     const response = await axios.get(`${apiConfig.baseURL}/credit`);
@@ -124,6 +133,21 @@ const changePassword = async (email, newPassword) => {
   }
 };
 
+const updatePassword = async (id_usuario, newPassword) => {
+  try {
+    console.log(id_usuario, newPassword);
+    const response = await axios.post(
+      `${apiConfig.baseURL}/usuarios/update-password/${id_usuario}`,
+      {
+        contrasena: newPassword,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getUsers,
   getCredits,
@@ -134,5 +158,6 @@ export {
   updateBusiness,
   sendRecoveryCode,
   verifyRecoveryCode,
-  changePassword
+  changePassword,
+  updatePassword
 };

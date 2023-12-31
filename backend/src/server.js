@@ -9,6 +9,8 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const creditoRoutes = require('./routes/creditoRoutes');
 const referenciaRoutes = require('./routes/referenciaRoutes');
 const businessRoutes = require('./routes/businessRoutes');
+const rolRoutes = require('./routes/rolRoutes');
+const personRoutes = require('./routes/personRoutes');
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
   origin: '*', // Permite todas las fuentes
@@ -44,6 +46,12 @@ app.use('/api/usuarios', usuarioRoutes);
 
 // Rutas de créditos
 app.use('/api/credit', creditoRoutes);
+
+// Rutas de roles 
+app.use('/api/rols', rolRoutes);
+
+// Rutas de personas
+app.use('/api/persons', personRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {

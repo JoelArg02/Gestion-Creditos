@@ -16,6 +16,21 @@ exports.getUsuarios = (req, res) => {
   });
 };
 
+exports.getUserById = async (req, res) => {
+  const { id_usuario } = req.params;
+  console.log(id_usuario);
+  Usuario.getUserById(id_usuario, (err, usuario) => {
+    if (err) {
+      console.error("Error al obtener el usuario:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    } else if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+    res.json(usuario);
+  });
+};
+
+
 exports.findUserByUser = (req, res) => {
   const { usuario } = req.params;
   Usuario.findUserByUser(usuario, (err, usuarioEncontrado) => {
@@ -168,10 +183,12 @@ exports.verifyRecoveryCode = async (req, res) => {
   }
 };
 
+
 exports.updatePassword = (req, res) => {
   const { id_usuario } = req.params;
   const { contrasena } = req.body;
-
+  console.log(id_usuario)
+  console.log(contrasena)
   if (!contrasena) {
     return res.status(400).json({ error: "Contraseña no proporcionada" });
   }
@@ -180,7 +197,8 @@ exports.updatePassword = (req, res) => {
     if (err) {
       return res.status(500).json({ error: "Error interno del servidor" });
     }
-    res.status(200).json({ message: "Contraseña actualizada con éxito" });
+    console.log(contrasena);
+    res.status(200).json({ message: "oktxtps" });
   });
 };
 

@@ -59,10 +59,10 @@ CREATE TABLE usuarios (
     id_usuario SERIAL PRIMARY KEY,
     usuario VARCHAR(255) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    email VARCHAR(255) NOT NULL,
     codigo_recuperacion VARCHAR(255),
     codigo_recuperacion_expira TIMESTAMP,
-    email VARCHAR(255) NOT NULL,
+    estado BOOLEAN NOT NULL DEFAULT TRUE,
     id_persona INT,
     id_rol INT,
     id_configuracion_negocio INT,
@@ -76,8 +76,7 @@ CREATE TABLE creditos (
     id_usuario_credito_crea INT NOT NULL,
     id_usuario_credito_usuario INT NOT NULL,
     monto DECIMAL(10, 2) NOT NULL,
-    interes DECIMAL(5, 2),
-    duracion INTEGER NOT NULL,
+    interes DECIMAL(5, 2) NOT NULL,
     fecha_inicio DATE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     estado BOOLEAN NOT NULL,
@@ -96,9 +95,10 @@ VALUES
 
 INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Encargado Creditos'), ('Vendedor'), ('Cobros'), ('Cliente');
 
-INSERT INTO usuarios (usuario, contrasena, id_configuracion_negocio, id_persona, id_rol) 
+INSERT INTO usuarios (usuario, contrasena, email, id_configuracion_negocio, id_persona, id_rol) 
 VALUES 
-('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 1, 1, 1);
+('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 'joel.darguello@gmail.com', 1, 1, 1);
+
 
 INSERT INTO creditos (    id_usuario_credito_crea, 
     id_usuario_credito_usuario, 
@@ -109,7 +109,7 @@ INSERT INTO creditos (    id_usuario_credito_crea,
     estado
 ) VALUES (
     1,   
-    2,   
+    1,   
     10000.00,
     5.00, 
     '2023-01-01',

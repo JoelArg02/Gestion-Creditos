@@ -1,11 +1,4 @@
 const Referencia = require('../models/Referencia');
-const bcrypt = require('bcrypt');
-const db = require('../config/db'); 
-const jwt = require('jsonwebtoken');
-const secretKey = 'joelxd';
-
-
-
 
 exports.getReferencias = (req, res) => {
     Referencia.getAllReferencias((err, referencias) => {

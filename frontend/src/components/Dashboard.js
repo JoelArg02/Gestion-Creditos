@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Table, Alert, Button, Modal, Form, Container } from "react-bootstrap";
+import { Table, Alert, Button, Modal, Form, Container, Pagination } from "react-bootstrap";
 import { getCredits } from "../api/api";
 import "./Dashboard.css"; // Import your external CSS file
 
 function AddCreditModal({ show, handleClose, handleSubmit }) {
+
+  let active = 2;
+  let items = [];
+
+  for (let number = 1; number <= 5; number++) {
+    items.push(
+      <Pagination.Item key={number} active={number === active}>
+        {number}
+      </Pagination.Item>,
+    );
+  }
+  
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>

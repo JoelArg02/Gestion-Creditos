@@ -52,7 +52,9 @@ function Productos() {
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer>
-                    <Button variant="primary">Contratar</Button>
+                    <Button variant="primary"
+                    style={{borderColor: "white"}}
+                    >Contratar</Button>
                   </Card.Footer>
                 </Card>
               </Col>

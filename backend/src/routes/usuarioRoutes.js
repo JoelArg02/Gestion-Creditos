@@ -7,7 +7,9 @@ router.post("/register", usuarioController.register);
 router.post("/login", usuarioController.login);
 router.get("/", usuarioController.getUsuarios);
 router.get("/:usuario", usuarioController.findUserByUser);
-router.put("/user/:id/password", usuarioController.updatePassword);
+router.post("/update-password/:id_usuario", usuarioController.updatePassword);
+
+router.get("/id/:id_usuario", usuarioController.getUserById);
 
 
 // Verificar token recuperar contraseña

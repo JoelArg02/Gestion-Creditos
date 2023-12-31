@@ -64,7 +64,9 @@ function HomePage() {
                 <Card.Text>
                   Protegemos tu información con la más alta seguridad.
                 </Card.Text>
-                <Button variant="primary" onClick={handleShowModalSeguridad}>
+                <Button variant="primary" 
+                style={{borderColor: "white"}}
+                onClick={handleShowModalSeguridad}>
                   Saber más
                 </Button>
               </Card.Body>
@@ -86,7 +88,9 @@ function HomePage() {
                   Herramientas de análisis para tomar mejores decisiones de
                   crédito.
                 </Card.Text>
-                <Button variant="primary"  onClick={handleShowModalAnalisis}>Descubre</Button>
+                <Button variant="primary"  
+                style={{borderColor: "white"}}
+                onClick={handleShowModalAnalisis}>Descubre</Button>
               </Card.Body>
               <ModalAnalisis
                 showModal={showModalAnalisis}
@@ -105,7 +109,9 @@ function HomePage() {
                 <Card.Text>
                   Accede a tus datos de crédito en cualquier momento y lugar.
                 </Card.Text>
-                <Button variant="primary" onClick={handleShowModalAcceso}>Explorar</Button>
+                <Button variant="primary" 
+                style={{borderColor: "white"}}
+                onClick={handleShowModalAcceso}>Explorar</Button>
               </Card.Body>
               <ModalAcceso
                 showModal={showModalAcceso}

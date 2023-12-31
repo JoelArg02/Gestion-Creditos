@@ -6,6 +6,7 @@ import ProfileModal from "../modal/ModalProfile";
 
 function Header({
   isLoggedIn,
+  userId,
   userName,
   userRole,
   businessName,
@@ -137,6 +138,7 @@ function Header({
       <ProfileModal
         show={showProfileModal}
         handleClose={handleCloseProfileModal}
+        userId={userId}
         personName={personName}
         personLastName={personLastName}
         personEmail={personEmail}
