@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row, Col, Card, Spinner } from "react-bootstrap";
-import "./CreditUser.css"; 
-import { getCredit } from "../api/api"; 
+import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import "./CreditUser.css";
+import { getCredit } from "../api/api";
 
 function formatFecha(fechaISO) {
   const fecha = new Date(fechaISO);
@@ -13,6 +13,7 @@ function CreditUser({ personDni }) {
   const [cedula, setCedula] = useState(personDni || "");
   const [creditData, setCreditData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [errorSearch, setErrorSearch] = useState("");
 
   useEffect(() => {
     if (personDni) {
@@ -25,15 +26,21 @@ function CreditUser({ personDni }) {
     try {
       const data = await getCredit(cedula);
       setCreditData(data);
+      setErrorSearch("");
     } catch (error) {
-      console.error("Error al obtener datos del crédito:", error);
+      setErrorSearch("Error al obtener datos del credito");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleReturn = (e) => {
+    setCedula("");
+    setCreditData("");
+  };
+
   const handleCedulaChange = (e) => {
-    const newCedula = e.target.value;
+    const newCedula = e.target.value; 
     setCedula(newCedula);
   };
 
@@ -89,6 +96,11 @@ function CreditUser({ personDni }) {
                       Revisar
                     </button>
                   </div>
+                  {errorSearch && (
+                    <Alert variant="danger" className="mt-3">
+                      {errorSearch}
+                    </Alert>
+                  )}
                 </form>
               </Card.Body>
             </Card>
@@ -136,6 +148,14 @@ function CreditUser({ personDni }) {
               </tbody>
             </table>
           </Col>
+          <button
+            type="submit"
+            style={{ borderColor: "white" }}
+            onClick={handleReturn}
+            className="btn btn-primary btn-block"
+          >
+            Regresar
+          </button>
         </Row>
       </Container>
     );

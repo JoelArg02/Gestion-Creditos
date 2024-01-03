@@ -16,7 +16,6 @@ exports.getCreditByDni = (req, res) => {
   const { id } = req.params;
   Credito.getCreditByDni(id, (err, creditos) => {
     if (err) {
-      console.error("Error al obtener el credito:", err);
       res.status(500).json({ error: "Error interno del servidor" });
     } else if (!creditos) {
       res.status(404).json({ error: "Credito no encontrado" });
@@ -30,7 +29,6 @@ exports.getCreditByDni = (req, res) => {
 exports.deleteCredit = (req, res) => {
   Credito.deleteCredit(req.params.id, (err, creditos) => {
     if (err) {
-      console.error("Error al eliminar el desactivar:", err);
       res.status(500).json({ error: "Error interno del servidor" });
     } else {
       res.json(creditos);

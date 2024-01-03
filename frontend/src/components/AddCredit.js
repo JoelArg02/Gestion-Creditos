@@ -19,6 +19,36 @@ function AddCredito({ userId }) {
     estado: true,
   });
 
+  function calcularDuracion(fechaInicio, fechaVencimiento) {
+    const inicio = new Date(fechaInicio);
+    const vencimiento = new Date(fechaVencimiento);
+    const diferenciaEnMeses =
+      (vencimiento.getFullYear() - inicio.getFullYear()) * 12 +
+      vencimiento.getMonth() -
+      inicio.getMonth();
+    return diferenciaEnMeses > 0 ? diferenciaEnMeses : 0;
+  }
+
+  
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setCreditoData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    if (name === "fechaInicio" || name === "fechaVencimiento") {
+      const duracion = calcularDuracion(
+        creditoData.fechaInicio,
+        creditoData.fechaVencimiento
+      );
+      setCreditoData((prevState) => ({
+        ...prevState,
+        duracion,
+      }));
+    }
+  }
+
   useEffect(() => {
     const fetchClientes = async () => {
       try {
@@ -32,9 +62,6 @@ function AddCredito({ userId }) {
     fetchClientes();
   }, []);
 
-  const handleChange = (e) => {
-    setCreditoData({ ...creditoData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,8 +149,7 @@ function AddCredito({ userId }) {
                 type="number"
                 name="duracion"
                 value={creditoData.duracion}
-                onChange={handleChange}
-                required
+                disabled
               />
             </Form.Group>
             <Button
