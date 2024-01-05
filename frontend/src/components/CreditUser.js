@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import { Container, Table, Row, Col, Card, Alert } from "react-bootstrap";
 import "./CreditUser.css";
 import { getCredit } from "../api/api";
+import Loading from "../general/loading";
 
 function formatFecha(fechaISO) {
   const fecha = new Date(fechaISO);
@@ -14,19 +15,30 @@ function CreditUser({ personDni }) {
   const [creditData, setCreditData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorSearch, setErrorSearch] = useState("");
-
-  useEffect(() => {
-    if (personDni) {
-      fetchCreditData(personDni);
-    }
-  }, [personDni]);
+  const [cashPrice, setCashPrice] = useState();
+  const [entryPercentage, setEntryPercentage] = useState(30);
+  const [term, setTerm] = useState(1);
+  const [interest, setInterest] = useState();
+  const [monthlyQuota, setMonthlyQuota] = useState(0);
+  const [amortizationSchedule, setAmortizationSchedule] = useState([]);
+  const [amountFinanced, setAmountFinanced] = useState(0);
+  const [entryQuota, setEntryQuota] = useState(0);
 
   const fetchCreditData = async (cedula) => {
     setLoading(true);
     try {
       const data = await getCredit(cedula);
       setCreditData(data);
+      console.log(data);
       setErrorSearch("");
+      if (data && data.length > 0) {
+        const credito = data[0];
+        setCashPrice(Number(credito.monto));
+        setEntryPercentage(Number(credito.entrada));
+        setTerm(Number(credito.plazo));
+        setInterest(Number(credito.interes));
+      }
+      
     } catch (error) {
       setErrorSearch("Error al obtener datos del credito");
     } finally {
@@ -34,13 +46,59 @@ function CreditUser({ personDni }) {
     }
   };
 
+  useEffect(() => {
+    
+    const amountFinance = (interest * cashPrice) / 100 + cashPrice;
+    console.log(interest, cashPrice, amountFinance);
+    setAmountFinanced(amountFinance);
+    const entryQuotaCal = (entryPercentage * amountFinance) / 100;
+    setEntryQuota(entryQuotaCal);
+
+    const monthlyQuotaCal = (amountFinance - entryQuota) / term;
+    setMonthlyQuota(monthlyQuotaCal);
+  });
+
+  useEffect(() => {
+    const calculateAmortization = () => {
+      let schedule = [];
+      let remainingBalance = amountFinanced - entryQuota;
+
+      schedule.push({
+        month: "Entrada ",
+        payment: entryQuota.toFixed(2),
+        balance: remainingBalance.toFixed(2),
+      });
+      for (let month = 1; month <= term; month++) {
+        let interestPayment = (interest * remainingBalance) / 100;
+        let principalPayment = monthlyQuota;
+        remainingBalance = remainingBalance - principalPayment;
+
+        schedule.push({
+          month: month,
+          payment: monthlyQuota.toFixed(2),
+          balance: remainingBalance.toFixed(2),
+        });
+      }
+
+      setAmortizationSchedule(schedule);
+    };
+
+    calculateAmortization();
+  }, [amountFinanced, entryQuota, monthlyQuota, term, interest]);
+
+  useEffect(() => {
+    if (personDni) {
+      fetchCreditData(personDni);
+    }
+  }, [personDni]);
+
   const handleReturn = (e) => {
     setCedula("");
     setCreditData("");
   };
 
   const handleCedulaChange = (e) => {
-    const newCedula = e.target.value; 
+    const newCedula = e.target.value;
     setCedula(newCedula);
   };
 
@@ -52,17 +110,7 @@ function CreditUser({ personDni }) {
   };
 
   if (loading) {
-    return (
-      <Container className="justify-content-center align-items-center container-2">
-        <Row className="justify-content-center">
-          <Col md={12} className="text-center">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Cargando...</span>
-            </Spinner>
-          </Col>
-        </Row>
-      </Container>
-    );
+    return <Loading />;
   }
 
   if (!personDni && !creditData) {
@@ -111,52 +159,81 @@ function CreditUser({ personDni }) {
   }
 
   if (creditData && creditData.length > 0) {
+    const cardStyle = {
+      backgroundColor: "#f8f9fa",
+      border: "1px solid #ddd",
+      borderRadius: "10px",
+      padding: "20px",
+      marginTop: "20px",
+    };
+
+    const headerStyle = {
+      textAlign: "center",
+      marginBottom: "20px",
+      color: "#007bff",
+    };
+    const tableStyles = {
+      marginTop: "30px",
+      boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+      transition: "0.3s",
+    };
+
+    const headerStyles = {
+      backgroundColor: "#007bff",
+      color: "white", // Color del texto del encabezado
+      textAlign: "center",
+      padding: "10px 0",
+    };
+
+    const rowHoverStyle = {
+      "&:hover": {
+        backgroundColor: "#f2f2f2", // Color de fondo al pasar el mouse
+        cursor: "pointer",
+      },
+    };
+
+    const cellStyle = {
+      textAlign: "center", // Alineación del texto en las celdas
+      padding: "10px 5px", // Espaciado dentro de las celdas
+    };
+
+    const tableCellStyle = {
+      textAlign: "left",
+      padding: "10px",
+      border: "1px solid #ddd",
+    };
+
+    // Estilos para los controles de entrada
+    const inputGroupStyle = {
+      marginBottom: "10px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+    };
     return (
-      <Container className="justify-content-center align-items-center container-2">
-        <Row className="justify-content-center">
-          <Col md={12}>
-            <h2>Datos del Crédito</h2>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Solicitante</th> {/* Agregar encabezado para el nombre */}
-                  <th>Monto</th>
-                  <th>Interés</th>
-                  <th>Duracion</th>
-                  <th>Faltante</th>
-                  <th>Fecha Inicio</th>
-                  <th>Fecha Vencimiento</th>
-                  <th>Estado</th>
+      <Container className="container my-4">
+        <div style={tableStyles}>
+          <h3 style={headerStyle}>Tabla de Pagos</h3>
+          <Table responsive striped bordered hover size="sm">
+            <thead style={headerStyles}>
+              <tr>
+                <th>Mes</th>
+                <th>Pago</th>
+                <th>Faltante</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {amortizationSchedule.map((row, index) => (
+                <tr key={index} style={rowHoverStyle}>
+                  <td style={cellStyle}>{row.month}</td>
+                  <td style={cellStyle}>${row.payment}</td>
+                  <td style={cellStyle}>${row.balance}</td>
+                  <td style={cellStyle}>Estado</td>
                 </tr>
-              </thead>
-              <tbody>
-                {creditData.map((credito) => (
-                  <tr key={credito.id_credito}>
-                    <td>
-                      {credito.nombre} {credito.apellido}
-                    </td>{" "}
-                    {/* Mostrar nombre y apellido */}
-                    <td>{credito.monto}</td>
-                    <td>{credito.interes}</td>
-                    <td>Sapo</td>
-                    <td>Sapo2</td>
-                    <td>{formatFecha(credito.fecha_inicio)}</td>
-                    <td>{formatFecha(credito.fecha_vencimiento)}</td>
-                    <td>{credito.estado ? "Activo" : "Inactivo"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Col>
-          <button
-            type="submit"
-            style={{ borderColor: "white" }}
-            onClick={handleReturn}
-            className="btn btn-primary btn-block"
-          >
-            Regresar
-          </button>
-        </Row>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </Container>
     );
   }

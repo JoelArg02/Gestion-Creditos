@@ -107,6 +107,19 @@ function Header({
             </Nav>
           ) : (
             <>
+            <Button
+                variant="primary"
+                style={{
+                  backgroundColor: "#333",
+                  color: "white",
+                  border: "none",
+                  marginRight: "10px",
+                }}
+                onClick={() => navigate("/CreditCalculator")}
+              >
+                Calcular Credito
+              </Button>
+
               <Button
                 variant="primary"
                 style={{

@@ -19,6 +19,7 @@ import Admin from "./components/Admin";
 import Footer from "./components/Footer";
 import CreditUser from "./components/CreditUser";
 import AddCredit from "./components/AddCredit";
+import CreditCalculator from "./components/CreditCalculator";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -113,7 +114,7 @@ function App() {
           />
           <Route path="/contact" element={<Contact />} />
           <Route path="/AddCredit" element={<AddCredit userId = {userId} />} />
-          
+          <Route path="/CreditCalculator" element={<CreditCalculator />} />
           <Route path="/CreditUser" element={<CreditUser personDni={personDni} />} />
           <Route path="*" element={<Error404 isAuthenticated />} />
         </Routes>
