@@ -2,7 +2,6 @@ import {
   Card,
   Form,
   Button,
-  Modal,
   Container,
   Row,
   Col,
@@ -109,9 +108,7 @@ function Login(props) {
                   </InputGroup>
                 </Form.Group>
                 <div className="mb-3 text-center">
-                  <a href="#" onClick={handleOpenModal}>
-                    ¿Olvidaste tu contraseña?
-                  </a>
+                  <a onClick={handleOpenModal}>¿Olvidaste tu contraseña?</a>
                 </div>
                 <Button variant="dark" type="submit" className="w-100">
                   Entrar

@@ -76,12 +76,22 @@ CREATE TABLE creditos (
     id_usuario_credito_crea INT NOT NULL,
     id_usuario_credito_usuario INT NOT NULL,
     monto DECIMAL(10, 2) NOT NULL,
+    plazo INT NOT NULL,
     interes DECIMAL(5, 2) NOT NULL,
+    entrada DECIMAL(10, 2) NOT NULL,
     fecha_inicio DATE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     estado BOOLEAN NOT NULL,
     FOREIGN KEY (id_usuario_credito_crea) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_usuario_credito_usuario) REFERENCES usuarios(id_usuario)
+);
+
+CREATE TABLE pagos (
+    id_pago SERIAL PRIMARY KEY,
+    id_credito INT NOT NULL,
+    monto DECIMAL(10, 2) NOT NULL,
+    fecha_pago DATE NOT NULL,
+    FOREIGN KEY (id_credito) REFERENCES creditos(id_credito)
 );
 
 -- Inserciones
@@ -99,22 +109,4 @@ INSERT INTO usuarios (usuario, contrasena, email, id_configuracion_negocio, id_p
 VALUES 
 ('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 'joel.darguello@gmail.com', 1, 1, 1);
 
-
-INSERT INTO creditos (    id_usuario_credito_crea, 
-    id_usuario_credito_usuario, 
-    monto, 
-    interes, 
-    fecha_inicio, 
-    fecha_vencimiento, 
-    estado
-) VALUES (
-    1,   
-    1,   
-    10000.00,
-    5.00, 
-    '2023-01-01',
-    '2023-12-31',
-    TRUE  
-);
-
-
+insert into creditos (id_usuario_credito_crea, id_usuario_credito_usuario, monto, plazo, interes, entrada, fecha_inicio, fecha_vencimiento, estado) values (1, 1, 10000.00, 12, 30.00, 30.00, '2023-01-01', '2023-12-31', true);
