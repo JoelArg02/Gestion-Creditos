@@ -11,6 +11,7 @@ function CreditCalculator() {
   const [monthlyQuota, setMonthlyQuota] = useState(0);
   const [amortizationSchedule, setAmortizationSchedule] = useState([]);
   const [amountFinanced, setAmountFinanced] = useState(0);
+  const [amountFinance, setAmountFinance] = useState(0);
   const [entryQuota, setEntryQuota] = useState(0);
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -33,18 +34,26 @@ function CreditCalculator() {
   }, [startDate, term]);
 
   useEffect(() => {
-    const amountFinance = (interest * cashPrice) / 100 + cashPrice;
-    setAmountFinanced(amountFinance);
-    const entryQuotaCal = (entryPercentage * amountFinance) / 100;
+    const entryQuotaCal = (cashPrice * entryPercentage) / 100;
     setEntryQuota(entryQuotaCal);
-    const monthlyQuotaCal = (amountFinance - entryQuotaCal) / term;
-    setMonthlyQuota(monthlyQuotaCal);
+    const amountFinance = (cashPrice - entryQuota);
+    console.log("valor financiado: ",amountFinance);
+    setAmountFinance(amountFinance);
+    
+    const interes = (100 - interest) / 100
+    console.log("interes:", interes)
+    console.log("amount finance: ", amountFinance)
+    const amountFinanced = amountFinance / (interes);
+    setAmountFinanced(amountFinanced)
+    const quotaMonthly = amountFinanced / term;
+    setMonthlyQuota(quotaMonthly)
+    console.log("Valor financiado con la suma: ", amountFinanced)
   }, [cashPrice, entryPercentage, term, interest]);
 
   useEffect(() => {
     const calculateAmortization = () => {
       let schedule = [];
-      let remainingBalance = amountFinanced - entryQuota;
+      let remainingBalance = amountFinanced;
       let date = new Date(startDate);
 
       for (let month = 0; month <= term; month++) {
@@ -182,7 +191,7 @@ function CreditCalculator() {
                         setEntryPercentage(parseFloat(e.target.value))
                       }
                     >
-                      {[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(
+                      {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
                         (percentage) => (
                           <option key={percentage} value={percentage}>
                             {percentage}
@@ -226,7 +235,7 @@ function CreditCalculator() {
                     <InputGroup.Text>$</InputGroup.Text>
                     <Form.Control
                       type="number"
-                      value={amountFinanced}
+                      value={amountFinanced.toFixed(2)}
                       disabled
                     />
                   </InputGroup>

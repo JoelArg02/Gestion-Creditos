@@ -6,3 +6,4 @@ node_modules
 .pnp.js
 .env
 /db/data
+sudo cp -r /root/Gestion-Creditos/frontend/build/* /var/www/myapp/
