@@ -30,25 +30,25 @@ function CreditCalculator() {
   }, [term]);
 
   useEffect(() => {
-    calculateEndDate();
-  }, [startDate, term]);
-
-  useEffect(() => {
     const entryQuotaCal = (cashPrice * entryPercentage) / 100;
     setEntryQuota(entryQuotaCal);
-    const amountFinance = (cashPrice - entryQuota);
-    console.log("valor financiado: ",amountFinance);
+    const amountFinance = cashPrice - entryQuota;
     setAmountFinance(amountFinance);
-    
-    const interes = (100 - interest) / 100
-    console.log("interes:", interes)
-    console.log("amount finance: ", amountFinance)
-    const amountFinanced = amountFinance / (interes);
-    setAmountFinanced(amountFinanced)
+    const interes = (100 - interest) / 100;
+    const amountFinanced = amountFinance / interes;
+    setAmountFinanced(amountFinanced);
     const quotaMonthly = amountFinanced / term;
-    setMonthlyQuota(quotaMonthly)
-    console.log("Valor financiado con la suma: ", amountFinanced)
-  }, [cashPrice, entryPercentage, term, interest]);
+    setMonthlyQuota(quotaMonthly);
+  }, [
+    cashPrice,
+    entryPercentage,
+    term,
+    interest,
+    amountFinanced,
+    amountFinance,
+    entryQuota,
+    monthlyQuota,
+  ]);
 
   useEffect(() => {
     const calculateAmortization = () => {
@@ -90,10 +90,10 @@ function CreditCalculator() {
     date.setMonth(date.getMonth() + term);
     setEndDate(formatDate(date));
   };
-
   useEffect(() => {
     calculateEndDate();
-  }, [startDate, term]);
+  }, [startDate, term, endDate]);
+
 
   const cardStyle = {
     backgroundColor: "#f8f9fa",
@@ -255,7 +255,6 @@ function CreditCalculator() {
               <th>Pago</th>
               <th>Faltante</th>
               <th>Fecha</th>
-              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
@@ -265,7 +264,7 @@ function CreditCalculator() {
                 <td style={cellStyle}>${row.payment}</td>
                 <td style={cellStyle}>${row.balance}</td>
                 <td style={cellStyle}>{row.date}</td>
-                <td style={cellStyle}>Pendiente</td>
+                
               </tr>
             ))}
           </tbody>

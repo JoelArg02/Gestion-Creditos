@@ -172,5 +172,5 @@ export {
   changePassword,
   updatePassword,
   updateUser,
-  getUserById
+  getUserById,
 };

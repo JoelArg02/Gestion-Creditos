@@ -93,7 +93,6 @@ CREATE TABLE pagos (
     fecha_pago DATE NOT NULL,
     FOREIGN KEY (id_credito) REFERENCES creditos(id_credito)
 );
-
 -- Inserciones
 INSERT INTO configuracion_negocio (negocio, url_logo, url_favicon, lema, facebook, instagram, whatsapp, correo_admin, correo_publico) 
 VALUES 
@@ -110,3 +109,11 @@ VALUES
 ('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 'joel.darguello@gmail.com', 1, 1, 1);
 
 insert into creditos (id_usuario_credito_crea, id_usuario_credito_usuario, monto, plazo, interes, entrada, fecha_inicio, fecha_vencimiento, estado) values (1, 1, 10000.00, 12, 30.00, 30.00, '2023-01-01', '2023-12-31', true);
+
+INSERT INTO pagos (id_credito, monto, fecha_pago)
+VALUES 
+  (1, 100.00, CURRENT_DATE),
+  (2, 150.00, CURRENT_DATE),
+  (3, 200.00, CURRENT_DATE),
+  (4, 50.00, CURRENT_DATE),
+  (5, 75.00, CURRENT_DATE);
