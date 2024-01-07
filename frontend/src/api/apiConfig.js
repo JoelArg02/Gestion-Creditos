@@ -4,3 +4,6 @@ const apiConfig = {
 };
 
 export default apiConfig;
+
+
+// sudo cp -r /root/Gestion-Creditos/frontend/build/* /var/www/myapp/
