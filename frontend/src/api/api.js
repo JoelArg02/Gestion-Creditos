@@ -38,7 +38,6 @@ const updateUser = async (id, userData) => {
   }
 };
 
-
 const getCredits = async () => {
   try {
     const response = await axios.get(`${apiConfig.baseURL}/credit`);
@@ -172,5 +171,6 @@ export {
   verifyRecoveryCode,
   changePassword,
   updatePassword,
-  updateUser
+  updateUser,
+  getUserById,
 };

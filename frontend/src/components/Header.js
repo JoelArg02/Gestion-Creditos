@@ -49,6 +49,18 @@ function Header({
                     <Nav.Link as={Link} to="/admin">
                       Admin
                     </Nav.Link>
+                    <Button
+                      variant="primary"
+                      style={{
+                        backgroundColor: "#333",
+                        color: "white",
+                        border: "none",
+                        marginRight: "10px",
+                      }}
+                      onClick={() => navigate("/CreditCalculator")}
+                    >
+                      Calcular Credito
+                    </Button>
                   </>
                 )}
                 {(userRole === 2 || userRole === 1) && ( // Cobros para los roles 4 y 1
@@ -61,7 +73,7 @@ function Header({
                     </Nav.Link>
                   </>
                 )}
-                {(userRole === 3 || userRole ===1) && (
+                {(userRole === 3 || userRole === 1) && (
                   <>
                     <Nav.Link as={Link} to="/ventas">
                       Ventas
@@ -75,7 +87,6 @@ function Header({
                     </Nav.Link>
                   </>
                 )}
-                
               </>
             ) : (
               <>
@@ -107,19 +118,6 @@ function Header({
             </Nav>
           ) : (
             <>
-            <Button
-                variant="primary"
-                style={{
-                  backgroundColor: "#333",
-                  color: "white",
-                  border: "none",
-                  marginRight: "10px",
-                }}
-                onClick={() => navigate("/CreditCalculator")}
-              >
-                Calcular Credito
-              </Button>
-
               <Button
                 variant="primary"
                 style={{
