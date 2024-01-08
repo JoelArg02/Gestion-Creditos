@@ -1,0 +1,11 @@
+.home-page .carousel-item:first-child img {
+    width: 800px;
+    height: 400px;
+    object-fit: cover; /* Ajusta la imagen para cubrir el contenedor manteniendo las proporciones */
+  }
+
+  .home-page .carousel-item:nth-child(2) img {
+    width: 800px;
+    height: 400px;
+    object-fit: cover;
+  }

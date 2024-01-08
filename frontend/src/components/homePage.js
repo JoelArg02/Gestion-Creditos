@@ -3,6 +3,7 @@ import { Carousel, Card, Button, Container, Row, Col } from "react-bootstrap";
 import ModalSeguridad from "../modal/ModalSeguridad";
 import ModalAnalisis from "../modal/ModalAnalisis";
 import ModalAcceso from "../modal/ModalAcceso";
+import "./homePage.css";
 
 function HomePage() {
   const [showModalSeguridad, setShowModalSeguridad] = useState(false);
@@ -24,7 +25,7 @@ function HomePage() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://via.placeholder.com/800x400"
+              src="https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt="First slide"
             />
             <Carousel.Caption>
@@ -37,7 +38,7 @@ function HomePage() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://via.placeholder.com/800x400"
+              src="https://images.pexels.com/photos/3758105/pexels-photo-3758105.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt="Second slide"
             />
             <Carousel.Caption>
@@ -57,7 +58,7 @@ function HomePage() {
             <Card>
               <Card.Img
                 variant="top"
-                src="https://via.placeholder.com/300x200"
+                src="https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               />
               <Card.Body>
                 <Card.Title>Seguridad de Datos</Card.Title>
@@ -80,7 +81,7 @@ function HomePage() {
             <Card>
               <Card.Img
                 variant="top"
-                src="https://via.placeholder.com/300x200"
+                src="https://images.pexels.com/photos/7567483/pexels-photo-7567483.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               />
               <Card.Body>
                 <Card.Title>Análisis Avanzado</Card.Title>
@@ -102,7 +103,7 @@ function HomePage() {
             <Card>
               <Card.Img
                 variant="top"
-                src="https://via.placeholder.com/300x200"
+                src="https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               />
               <Card.Body>
                 <Card.Title>Acceso Fácil</Card.Title>
