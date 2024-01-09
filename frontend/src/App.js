@@ -105,13 +105,19 @@ function App() {
             element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />}
           />
           <Route path="/products" element={<Products />} />
-          <Route 
-            path="/admin" 
+          <Route
+            path="/admin"
             element={
-              
-                isAuthenticated ? (<Admin /> ): <Navigate to="/dashboard" />) :
-                <Navigate to="/login" />
-            } 
+              isAuthenticated && userRole === 1 ? (
+                <Admin />
+              ) : (
+                isAuthenticated ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              )
+            }
           />
           <Route path="/services" element={<Servicios />} />
           <Route
@@ -123,7 +129,7 @@ function App() {
             path="/AddCredit"
             element={isAuthenticated  ? (<AddCredit userId={userId} />) : (<Navigate to="/login" />)}/>
 
-          <Route path="/CreditCalculator" element={<CreditCalculator />} />
+          <Route path="/CreditCalculator" element={<CreditCalculator userRole={userRole} />} />
           <Route
             path="/CreditUser"
             element={<CreditUser personDni={personDni} />}

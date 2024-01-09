@@ -3,7 +3,8 @@ import { Container, Card, Table, InputGroup, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CreditCalculator.css";
 
-function CreditCalculator() {
+function CreditCalculator(props) {
+  const userRole = props.userRole;
   const [cashPrice, setCashPrice] = useState(10);
   const [entryPercentage, setEntryPercentage] = useState(30);
   const [term, setTerm] = useState(1);
@@ -17,7 +18,6 @@ function CreditCalculator() {
     new Date().toISOString().split("T")[0]
   );
   const [endDate, setEndDate] = useState("");
-
   useEffect(() => {
     let newInterest;
     if (term === 1) newInterest = 15;
@@ -80,7 +80,7 @@ function CreditCalculator() {
   const formatDate = (date) => {
     const d = new Date(date);
     const day = d.getDate().toString().padStart(2, "0");
-    const month = (d.getMonth() + 1).toString().padStart(2, "0"); // +1 porque getMonth() devuelve un índice de 0-11
+    const month = (d.getMonth() + 1).toString().padStart(2, "0"); 
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
   };
@@ -93,7 +93,6 @@ function CreditCalculator() {
   useEffect(() => {
     calculateEndDate();
   }, [startDate, term, endDate]);
-
 
   const cardStyle = {
     backgroundColor: "#f8f9fa",
@@ -151,19 +150,22 @@ function CreditCalculator() {
                     />
                   </InputGroup>
                 </td>
-
-                <td>Fecha de Inicio</td>
-                <td>
-                  <Form.Control
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                  />
-                </td>
-                <td>Fecha Final</td>
-                <td>
-                  <Form.Control type="text" value={endDate} readOnly />
-                </td>
+                {userRole === 1 && (
+                  <>
+                    <td>Fecha de Inicio</td>
+                    <td>
+                      <Form.Control
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
+                    </td>
+                    <td>Fecha Final</td>
+                    <td>
+                      <Form.Control type="text" value={endDate} readOnly />
+                    </td>
+                  </>
+                )}
               </tr>
               <tr style={tableCellStyle}>
                 <td>Plazo (meses)</td>
@@ -180,34 +182,38 @@ function CreditCalculator() {
                     ))}
                   </Form.Control>
                 </td>
-                <td>Entrada</td>
-                <td>
-                  <InputGroup style={inputGroupStyle}>
-                    <InputGroup.Text>%</InputGroup.Text>
-                    <Form.Control
-                      as="select"
-                      value={entryPercentage}
-                      onChange={(e) =>
-                        setEntryPercentage(parseFloat(e.target.value))
-                      }
-                    >
-                      {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
-                        (percentage) => (
-                          <option key={percentage} value={percentage}>
-                            {percentage}
-                          </option>
-                        )
-                      )}
-                    </Form.Control>
-                  </InputGroup>
-                </td>
-                <td>Entrada</td>
-                <td>
-                  <InputGroup style={inputGroupStyle}>
-                    <InputGroup.Text>$</InputGroup.Text>
-                    <Form.Control type="number" value={entryQuota} disabled />
-                  </InputGroup>
-                </td>
+                {userRole === 1 && (
+                  <>
+                    <td>Entrada</td>
+                    <td>
+                      <InputGroup style={inputGroupStyle}>
+                        <InputGroup.Text>%</InputGroup.Text>
+                        <Form.Control
+                          as="select"
+                          value={entryPercentage}
+                          onChange={(e) =>
+                            setEntryPercentage(parseFloat(e.target.value))
+                          }
+                        >
+                          {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
+                            (percentage) => (
+                              <option key={percentage} value={percentage}>
+                                {percentage}
+                              </option>
+                            )
+                          )}
+                        </Form.Control>
+                      </InputGroup>
+                    </td>
+                    <td>Entrada</td>
+                    <td>
+                      <InputGroup style={inputGroupStyle}>
+                        <InputGroup.Text>$</InputGroup.Text>
+                        <Form.Control type="number" value={entryQuota} disabled />
+                      </InputGroup>
+                    </td>
+                  </>
+                )}
               </tr>
               <tr style={tableCellStyle}>
                 <td>Interés</td>
@@ -217,59 +223,63 @@ function CreditCalculator() {
                     <Form.Control type="number" value={interest} disabled />
                   </InputGroup>
                 </td>
-
-                <td>Cuota</td>
-                <td>
-                  <InputGroup style={inputGroupStyle}>
-                    <InputGroup.Text>$</InputGroup.Text>
-                    <Form.Control
-                      disabled
-                      type="number"
-                      value={monthlyQuota.toFixed(2)}
-                    />
-                  </InputGroup>
-                </td>
-                <td>Financiado</td>
-                <td>
-                  <InputGroup style={inputGroupStyle}>
-                    <InputGroup.Text>$</InputGroup.Text>
-                    <Form.Control
-                      type="number"
-                      value={amountFinanced.toFixed(2)}
-                      disabled
-                    />
-                  </InputGroup>
-                </td>
+                {userRole === 2 || userRole === 5 (
+                  <>
+                    <td>Cuota</td>
+                    <td>
+                      <InputGroup style={inputGroupStyle}>
+                        <InputGroup.Text>$</InputGroup.Text>
+                        <Form.Control
+                          disabled
+                          type="number"
+                          value={monthlyQuota.toFixed(2)}
+                        />
+                      </InputGroup>
+                    </td>
+                    <td>Financiado</td>
+                    <td>
+                      <InputGroup style={inputGroupStyle}>
+                        <InputGroup.Text>$</InputGroup.Text>
+                        <Form.Control
+                          type="number"
+                          value={amountFinanced.toFixed(2)}
+                          disabled
+                        />
+                      </InputGroup>
+                    </td>
+                  </>
+                )}
               </tr>
             </tbody>
           </Table>
         </Card.Body>
       </Card>
 
-      <div style={tableStyles}>
-        <h3 style={headerStyle}>Tabla de Pagos</h3>
-        <Table responsive striped bordered hover size="sm">
-          <thead style={headerStyles}>
-            <tr>
-              <th>Mes</th>
-              <th>Pago</th>
-              <th>Faltante</th>
-              <th>Fecha</th>
-            </tr>
-          </thead>
-          <tbody>
-            {amortizationSchedule.map((row, index) => (
-              <tr key={index}>
-                <td style={cellStyle}>{row.month}</td>
-                <td style={cellStyle}>${row.payment}</td>
-                <td style={cellStyle}>${row.balance}</td>
-                <td style={cellStyle}>{row.date}</td>
-                
+      {userRole === 1 && (
+        <div style={tableStyles}>
+          <h3 style={headerStyle}>Tabla de Pagos</h3>
+          <Table responsive striped bordered hover size="sm">
+            <thead style={headerStyles}>
+              <tr>
+                <th>Mes</th>
+                <th>Pago</th>
+                <th>Faltante</th>
+                <th>Fecha</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+            </thead>
+            <tbody>
+              {amortizationSchedule.map((row, index) => (
+                <tr key={index}>
+                  <td style={cellStyle}>{row.month}</td>
+                  <td style={cellStyle}>${row.payment}</td>
+                  <td style={cellStyle}>${row.balance}</td>
+                  <td style={cellStyle}>{row.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      )}
     </Container>
   );
 }
