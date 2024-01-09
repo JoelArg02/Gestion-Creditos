@@ -20,6 +20,7 @@ import Footer from "./components/Footer";
 import CreditUser from "./components/CreditUser";
 import AddCredit from "./components/AddCredit";
 import CreditCalculator from "./components/CreditCalculator";
+import Payments from "./components/Payments";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -148,6 +149,18 @@ function App() {
           <Route
             path="/CreditUser"
             element={<CreditUser personDni={personDni} />}
+          />
+          <Route 
+            path="/payments"
+            element={
+              isAuthenticated || userRole === 1 || userRole === 4 ? (
+                <Payments />
+              ) : isAuthenticated ? (
+                <Navigate to="/dashboard" />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route path="*" element={<Error404/>} />
         </Routes>

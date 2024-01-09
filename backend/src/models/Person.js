@@ -1,15 +1,29 @@
-const poolc = require('../config/db'); // Asegúrate de que la ruta sea correcta
+const poolc = require("../config/db"); // Asegúrate de que la ruta sea correcta
 
 const Person = {};
 
-Person.getAllPersons = (callback) => {
-    poolc.query('SELECT * FROM persons', (err, results) => {
-        if (err) {
+Person.getPersons = (callback) => {
+  poolc.query("SELECT * FROM persons", (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results.rows);
+    }
+  });
+};
+
+Person.getPersonById = (id, callback) => {
+  poolc.query(
+    "SELECT * FROM personas where id_persona = $1",
+    [id],
+    (err, results) => {
+      if (err) {
         callback(err, null);
-        } else {
-        callback(null, results.rows);
-        }
-    });
-    };
+      } else {
+        callback(null, results.rows[0]);
+      }
+    }
+  );
+};
 
 module.exports = Person;

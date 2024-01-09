@@ -1,0 +1,49 @@
+/* Estilo personalizado para el campo de selección */
+.custom-select {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-color: #fff;
+    width: 100%; /* Hace que el campo de selección sea 100% de ancho */
+    max-width: 100%; /* Asegura que sea responsivo y no se desborde en dispositivos pequeños */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  /* Estilo para el hover del campo de selección */
+  .custom-select:hover {
+    border-color: #b2b8bd;
+  }
+  
+  /* Estilo para el campo de selección cuando está enfocado */
+  .custom-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+  }
+  
+  /* Estilo para las opciones del campo de selección */
+  .custom-select option {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  /* Estilo para el botón de desplegar del campo de selección */
+  .custom-select::-ms-expand {
+    background-color: transparent;
+    border: none;
+  }
+  
+  /* Estilo para el ícono de desplegar en algunos navegadores */
+  .custom-select::after {
+    content: "\f107"; /* Usar el ícono de Bootstrap u otro ícono de tu elección */
+    font-family: "Font Awesome 5 Free"; /* Cambiar a la fuente de íconos que estés utilizando */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  
+  /* Añadir cualquier otro estilo personalizado según tus preferencias */
+  

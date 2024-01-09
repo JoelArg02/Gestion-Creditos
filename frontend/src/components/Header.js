@@ -59,19 +59,16 @@ function Header({
                     <Nav.Link as={Link} to="/AddCredit">
                       Añadir Crédito
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/CreditUser">
-                      Ver Crédito
-                    </Nav.Link>
                   </>
                 )}
                 {(userRole === 3 || userRole === 1) && (
                   <>
-                    <Nav.Link as={Link} to="/cobros">
+                    <Nav.Link as={Link} to="/payments">
                       Cobros
                     </Nav.Link>
                   </>
                 )}
-                {(userRole === 4 ) && ( // Cobros para los roles 4 y 1
+                {userRole === 4 && ( // Cobros para los roles 4 y 1
                   <>
                     <Nav.Link as={Link} to="/ventas">
                       Ventas
@@ -79,6 +76,13 @@ function Header({
 
                     <Nav.Link as={Link} to="/CreditCalculator">
                       Calcular Credito
+                    </Nav.Link>
+                  </>
+                )}
+                {userRole === 5 && (
+                  <>
+                    <Nav.Link as={Link} to="/CreditUser">
+                      Ver Crédito
                     </Nav.Link>
                   </>
                 )}

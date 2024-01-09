@@ -150,6 +150,31 @@ function CreditCalculator(props) {
                     />
                   </InputGroup>
                 </td>
+                {userRole === "" && (
+                  <>
+                    <td>Entrada</td>
+                    <td>
+                      <InputGroup style={inputGroupStyle}>
+                        <InputGroup.Text>%</InputGroup.Text>
+                        <Form.Control
+                          as="select"
+                          value={entryPercentage}
+                          onChange={(e) =>
+                            setEntryPercentage(parseFloat(e.target.value))
+                          }
+                        >
+                          {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
+                            (percentage) => (
+                              <option key={percentage} value={percentage}>
+                                {percentage}
+                              </option>
+                            )
+                          )}
+                        </Form.Control>
+                      </InputGroup>
+                    </td>
+                  </>
+                )}
                 {userRole === 1 && (
                   <>
                     <td>Fecha de Inicio</td>
@@ -182,27 +207,31 @@ function CreditCalculator(props) {
                     ))}
                   </Form.Control>
                 </td>
-                <td>Entrada</td>
-                <td>
-                  <InputGroup style={inputGroupStyle}>
-                    <InputGroup.Text>%</InputGroup.Text>
-                    <Form.Control
-                      as="select"
-                      value={entryPercentage}
-                      onChange={(e) =>
-                        setEntryPercentage(parseFloat(e.target.value))
-                      }
-                    >
-                      {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
-                        (percentage) => (
-                          <option key={percentage} value={percentage}>
-                            {percentage}
-                          </option>
-                        )
-                      )}
-                    </Form.Control>
-                  </InputGroup>
-                </td>
+                {(userRole === 1 || userRole === 2) && (
+                    <>
+                      <td>Entrada</td>
+                      <td>
+                        <InputGroup style={inputGroupStyle}>
+                          <InputGroup.Text>%</InputGroup.Text>
+                          <Form.Control
+                            as="select"
+                            value={entryPercentage}
+                            onChange={(e) =>
+                              setEntryPercentage(parseFloat(e.target.value))
+                            }
+                          >
+                            {[
+                              5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60,
+                            ].map((percentage) => (
+                              <option key={percentage} value={percentage}>
+                                {percentage}
+                              </option>
+                            ))}
+                          </Form.Control>
+                        </InputGroup>
+                      </td>
+                    </>
+                  )}
                 <td>Entrada</td>
                 <td>
                   <InputGroup style={inputGroupStyle}>
@@ -261,7 +290,7 @@ function CreditCalculator(props) {
               <th>Mes</th>
               <th>Pago</th>
               <th>Faltante</th>
-              <th>Fecha</th>
+              {(userRole === 1 || userRole === 2) && <th>Fecha</th>}
             </tr>
           </thead>
           <tbody>
@@ -270,7 +299,9 @@ function CreditCalculator(props) {
                 <td style={cellStyle}>{row.month}</td>
                 <td style={cellStyle}>${row.payment}</td>
                 <td style={cellStyle}>${row.balance}</td>
-                <td style={cellStyle}>{row.date}</td>
+                {(userRole === 1 || userRole === 2) && (
+                  <td style={cellStyle}>{row.date}</td>
+                )}
               </tr>
             ))}
           </tbody>
