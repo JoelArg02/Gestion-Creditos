@@ -80,7 +80,7 @@ function CreditCalculator(props) {
   const formatDate = (date) => {
     const d = new Date(date);
     const day = d.getDate().toString().padStart(2, "0");
-    const month = (d.getMonth() + 1).toString().padStart(2, "0"); 
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
   };
@@ -182,49 +182,46 @@ function CreditCalculator(props) {
                     ))}
                   </Form.Control>
                 </td>
-                {userRole === 1 && (
-                  <>
-                    <td>Entrada</td>
-                    <td>
-                      <InputGroup style={inputGroupStyle}>
-                        <InputGroup.Text>%</InputGroup.Text>
-                        <Form.Control
-                          as="select"
-                          value={entryPercentage}
-                          onChange={(e) =>
-                            setEntryPercentage(parseFloat(e.target.value))
-                          }
-                        >
-                          {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
-                            (percentage) => (
-                              <option key={percentage} value={percentage}>
-                                {percentage}
-                              </option>
-                            )
-                          )}
-                        </Form.Control>
-                      </InputGroup>
-                    </td>
-                    <td>Entrada</td>
-                    <td>
-                      <InputGroup style={inputGroupStyle}>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control type="number" value={entryQuota} disabled />
-                      </InputGroup>
-                    </td>
-                  </>
-                )}
-              </tr>
-              <tr style={tableCellStyle}>
-                <td>Interés</td>
+                <td>Entrada</td>
                 <td>
                   <InputGroup style={inputGroupStyle}>
                     <InputGroup.Text>%</InputGroup.Text>
-                    <Form.Control type="number" value={interest} disabled />
+                    <Form.Control
+                      as="select"
+                      value={entryPercentage}
+                      onChange={(e) =>
+                        setEntryPercentage(parseFloat(e.target.value))
+                      }
+                    >
+                      {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
+                        (percentage) => (
+                          <option key={percentage} value={percentage}>
+                            {percentage}
+                          </option>
+                        )
+                      )}
+                    </Form.Control>
                   </InputGroup>
                 </td>
-                {userRole === 2 || userRole === 5 (
-                  <>
+                <td>Entrada</td>
+                <td>
+                  <InputGroup style={inputGroupStyle}>
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <Form.Control type="number" value={entryQuota} disabled />
+                  </InputGroup>
+                </td>
+              </tr>
+              {(userRole === 1 || userRole === 2) && (
+                <>
+                  <tr style={tableCellStyle}>
+                    <td>Interés</td>
+                    <td>
+                      <InputGroup style={inputGroupStyle}>
+                        <InputGroup.Text>%</InputGroup.Text>
+                        <Form.Control type="number" value={interest} disabled />
+                      </InputGroup>
+                    </td>
+
                     <td>Cuota</td>
                     <td>
                       <InputGroup style={inputGroupStyle}>
@@ -236,6 +233,7 @@ function CreditCalculator(props) {
                         />
                       </InputGroup>
                     </td>
+
                     <td>Financiado</td>
                     <td>
                       <InputGroup style={inputGroupStyle}>
@@ -247,39 +245,37 @@ function CreditCalculator(props) {
                         />
                       </InputGroup>
                     </td>
-                  </>
-                )}
-              </tr>
+                  </tr>
+                </>
+              )}
             </tbody>
           </Table>
         </Card.Body>
       </Card>
 
-      {userRole === 1 && (
-        <div style={tableStyles}>
-          <h3 style={headerStyle}>Tabla de Pagos</h3>
-          <Table responsive striped bordered hover size="sm">
-            <thead style={headerStyles}>
-              <tr>
-                <th>Mes</th>
-                <th>Pago</th>
-                <th>Faltante</th>
-                <th>Fecha</th>
+      <div style={tableStyles}>
+        <h3 style={headerStyle}>Tabla de Pagos</h3>
+        <Table responsive striped bordered hover size="sm">
+          <thead style={headerStyles}>
+            <tr>
+              <th>Mes</th>
+              <th>Pago</th>
+              <th>Faltante</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            {amortizationSchedule.map((row, index) => (
+              <tr key={index}>
+                <td style={cellStyle}>{row.month}</td>
+                <td style={cellStyle}>${row.payment}</td>
+                <td style={cellStyle}>${row.balance}</td>
+                <td style={cellStyle}>{row.date}</td>
               </tr>
-            </thead>
-            <tbody>
-              {amortizationSchedule.map((row, index) => (
-                <tr key={index}>
-                  <td style={cellStyle}>{row.month}</td>
-                  <td style={cellStyle}>${row.payment}</td>
-                  <td style={cellStyle}>${row.balance}</td>
-                  <td style={cellStyle}>{row.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-      )}
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </Container>
   );
 }
