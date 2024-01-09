@@ -115,6 +115,7 @@ exports.login = (req, res) => {
           userId: user.id_usuario,
           userName: user.usuario,
           userRole: user.id_rol,
+          
           userMail: user.email,
           personName: user.nombre,
           personLastName: user.apellido,
@@ -127,7 +128,6 @@ exports.login = (req, res) => {
           personEmail: user.correo,
           businessName: user.negocio,
         };
-
         jwt.sign(payload, secretKey, { expiresIn: "1h" }, (errorJwt, token) => {
           if (errorJwt) {
             return res

@@ -113,7 +113,7 @@ insert into creditos (id_usuario_credito_crea, id_usuario_credito_usuario, monto
 INSERT INTO pagos (id_credito, monto, fecha_pago)
 VALUES 
   (1, 100.00, CURRENT_DATE),
-  (2, 150.00, CURRENT_DATE),
-  (3, 200.00, CURRENT_DATE),
-  (4, 50.00, CURRENT_DATE),
-  (5, 75.00, CURRENT_DATE);
+  (1, 150.00, CURRENT_DATE),
+  (1, 200.00, CURRENT_DATE),
+  (1, 50.00, CURRENT_DATE),
+  (1, 75.00, CURRENT_DATE);

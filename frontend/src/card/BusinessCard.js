@@ -17,8 +17,9 @@ function BusinessModal({ show, handleClose }) {
       const response = await getBusiness(inputValue);
       return response.map((business) => ({
         value: business.id_configuracion,
-        label: business.negocio,
+        label: business.negocio,  
       }));
+      
     } catch (error) {
       console.error("Error fetching business options:", error);
       return [];

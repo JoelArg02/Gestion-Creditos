@@ -49,18 +49,9 @@ function Header({
                     <Nav.Link as={Link} to="/admin">
                       Admin
                     </Nav.Link>
-                    <Button
-                      variant="primary"
-                      style={{
-                        backgroundColor: "#333",
-                        color: "white",
-                        border: "none",
-                        marginRight: "10px",
-                      }}
-                      onClick={() => navigate("/CreditCalculator")}
-                    >
+                    <Nav.Link as={Link} to="/CreditCalculator">
                       Calcular Credito
-                    </Button>
+                    </Nav.Link>
                   </>
                 )}
                 {(userRole === 2 || userRole === 1) && ( // Cobros para los roles 4 y 1
@@ -75,15 +66,19 @@ function Header({
                 )}
                 {(userRole === 3 || userRole === 1) && (
                   <>
-                    <Nav.Link as={Link} to="/ventas">
-                      Ventas
+                    <Nav.Link as={Link} to="/cobros">
+                      Cobros
                     </Nav.Link>
                   </>
                 )}
-                {(userRole === 4 || userRole === 1) && ( // Cobros para los roles 4 y 1
+                {(userRole === 4 ) && ( // Cobros para los roles 4 y 1
                   <>
-                    <Nav.Link as={Link} to="/cobros">
-                      Cobros
+                    <Nav.Link as={Link} to="/ventas">
+                      Ventas
+                    </Nav.Link>
+
+                    <Nav.Link as={Link} to="/CreditCalculator">
+                      Calcular Credito
                     </Nav.Link>
                   </>
                 )}
@@ -95,6 +90,9 @@ function Header({
                 </Nav.Link>
                 <Nav.Link as={Link} to="/products">
                   Productos
+                </Nav.Link>
+                <Nav.Link as={Link} to="/CreditCalculator">
+                  Calcular Credito
                 </Nav.Link>
               </>
             )}

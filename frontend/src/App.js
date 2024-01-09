@@ -36,7 +36,7 @@ function App() {
   const [personDireccion, setPersonDireccion] = useState("");
   const [personEmail, setPersonEmail] = useState("");
   const [personDni, setPersonDni] = useState("");
-
+  console.log(userRole)
   const isTokenExpired = (token) => {
     try {
       const decoded = jwtDecode(token);
@@ -55,7 +55,7 @@ function App() {
         if (!isTokenExpired(token)) {
           setIsAuthenticated(true);
           setUserId(decoded.userId);
-          setUserRole(decoded.userRole);
+          setUserRole(parseInt(decoded.userRole));
           setUserName(decoded.userName);
           setBusinessName(decoded.businessName);
           setPersonName(decoded.personName);
@@ -74,9 +74,8 @@ function App() {
       }
     };
 
-
     checkToken();
-    const interval = setInterval(checkToken, 5 * 60 * 1000); 
+    const interval = setInterval(checkToken, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -106,16 +105,29 @@ function App() {
             element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />}
           />
           <Route path="/products" element={<Products />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route 
+            path="/admin" 
+            element={
+              
+                isAuthenticated ? (<Admin /> ): <Navigate to="/dashboard" />) :
+                <Navigate to="/login" />
+            } 
+          />
           <Route path="/services" element={<Servicios />} />
           <Route
             path="/dashboard"
             element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
           />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/AddCredit" element={<AddCredit userId = {userId} />} />
+          <Route
+            path="/AddCredit"
+            element={isAuthenticated  ? (<AddCredit userId={userId} />) : (<Navigate to="/login" />)}/>
+
           <Route path="/CreditCalculator" element={<CreditCalculator />} />
-          <Route path="/CreditUser" element={<CreditUser personDni={personDni} />} />
+          <Route
+            path="/CreditUser"
+            element={<CreditUser personDni={personDni} />}
+          />
           <Route path="*" element={<Error404 isAuthenticated />} />
         </Routes>
         <Footer />
