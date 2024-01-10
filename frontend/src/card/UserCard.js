@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form, Alert } from "react-bootstrap";
+import { Modal, Button, Form, Alert, Row, Col, Image } from "react-bootstrap";
 import CreatableSelect from "react-select/creatable";
 import { getUsers, updateUser } from "../api/api";
+import { getPersonById } from "../api/person";
+import { getReferenceById } from "../api/reference";
 import "./UserCard.css";
 
 function UserCard({ show, handleClose }) {
@@ -9,9 +11,23 @@ function UserCard({ show, handleClose }) {
   const [selectedUserOption, setSelectedUserOption] = useState(null);
   const [showUserSearch, setShowUserSearch] = useState(false);
   const [showUserRegistration, setShowUserRegistration] = useState(false);
+  const [showReferenceForm, setShowReferenceForm] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [personDetails, setPersonDetails] = useState({
+    nombre: "",
+    apellido: "",
+    correo: "",
+  });
+
+  const [referenciaDetails, setReferenciaDetails] = useState({
+    nombreTrabajo: "",
+    telefonoTrabajo: "",
+    telefonoTrabajoC: "",
+    imagen_hogar: "",
+  });
+
   const roles = [
     { id: 1, name: "Administrador" },
     { id: 2, name: "Contador" },
@@ -26,13 +42,65 @@ function UserCard({ show, handleClose }) {
     roleId: "",
   });
 
+  const fetchFormDetails = async () => {
+    try {
+      const referenceData = await getReferenceById(selectedUserOption.value); // Asegúrate de pasar el ID correcto
+      if (referenceData) {
+        setReferenciaDetails({
+          nombreTrabajo: referenceData.nombre_trabajo,
+          telefonoTrabajo: referenceData.telefono_trabajo,
+          telefonoTrabajoC: referenceData.telefono_trabajo_c,
+          imagen_hogar: referenceData.imagen_hogar,
+        });
+      }
+      console.log(referenceData);
+    } catch (error) {
+      setError("Error al obtener detalles de la referencia");
+    }
+  };
+
+  const fetchPersonDetails = async (userId) => {
+    try {
+      const personData = await getPersonById(userId);
+      setPersonDetails({
+        nombre: personData.nombre,
+        apellido: personData.apellido,
+        correo: personData.correo,
+        direccion: personData.direccion,
+        telefono: personData.telefono,
+        telefono_2: personData.telefono_2,
+        provincia: personData.provincia,
+        ciudad: personData.ciudad,
+        referencias: personData.id_referencia_persona,
+      });
+      console.log(personData);
+      console.log(personData.id_referencia_persona);
+    } catch (error) {
+      setError("Error al obtener detalles de la persona");
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+
+    if (["nombre", "apellido", "correo"].includes(name)) {
+      setPersonDetails((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
+
+  useEffect(() => {
+    if (selectedUserOption) {
+      fetchPersonDetails(selectedUserOption.value);
+    }
+  }, [selectedUserOption]);
 
   useEffect(() => {
     if (selectedUserOption) {
@@ -81,6 +149,13 @@ function UserCard({ show, handleClose }) {
     setShowButtons(false);
   };
 
+  const handleReference = () => {
+    fetchFormDetails();
+    setShowReferenceForm(!showReferenceForm); // Cambiar el estado para mostrar u ocultar el formulario
+    renderReferenceForm(true);
+    setShowButtons(false);
+  };
+
   const renderUserRegistrationForm = () => (
     <Form.Group>
       <Form.Label>Usuario</Form.Label>
@@ -103,6 +178,57 @@ function UserCard({ show, handleClose }) {
     </>
   );
 
+  const renderReferenceForm = () => (
+    <>
+      <Form.Group className="mb-3" controlId="referencias">
+        <Row>
+          <Form.Group>
+            <Form.Label>Nombre Trabajo</Form.Label>
+            <Form.Control
+              name="referencias"
+              type="text"
+              value={referenciaDetails.nombreTrabajo}
+            />
+          </Form.Group>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Group>
+              <Form.Label>Telefono Trabajo</Form.Label>
+              <Form.Control
+                name="referencias"
+                type="text"
+                value={referenciaDetails.telefonoTrabajo}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label>Telefono Referencia 2</Form.Label>
+              <Form.Control
+                name="referencias"
+                type="text"
+                value={referenciaDetails.telefonoTrabajoC}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Label>Imagen Hogar</Form.Label>
+            <Col>
+              <Image
+                src={`../../data-img${referenciaDetails.imagen_hogar}`}
+                style={{ width: "100px", height: "100px" }}
+                fluid
+              />
+            </Col>
+          </Col>
+        </Row>
+      </Form.Group>
+    </>
+  );
+  console.log(referenciaDetails.imagen_hogar);
   const renderSelectedUserDetails = () => {
     if (!selectedUserOption) return null;
     const selectedUser = usuarios.find(
@@ -112,73 +238,121 @@ function UserCard({ show, handleClose }) {
     if (!selectedUser) {
       return <p>No existe el usuario</p>;
     }
-    console.log(selectedUser);
 
     return (
       <>
         <Form>
           <h4>Detalles del usuario:</h4>
-          <Form.Group className="mb-3" controlId="userId">
-            <Form.Label>ID de Usuario:</Form.Label>
-            <Form.Control
-              name="userId"
-              type="text"
-              value={formData.userId}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="username">
-            <Form.Label>Usuario:</Form.Label>
-            <Form.Control
-              name="username"
-              type="text"
-              value={formData.username}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-
           <Form.Group className="mb-3" controlId="names">
-            <Form.label>Nombre: </Form.label>
-            <Form.Control
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <Form.label>Apellido: </Form.label>
-            <Form.Control
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-          
-          <Form.Group className="mb-3" controlId="email">
-            <Form.Label>Email:</Form.Label>
-            <Form.Control
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="role">
-            <Form.Label>Rol:</Form.Label>
-            <Form.Select
-              name="roleId"
-              value={formData.roleId}
-              onChange={handleInputChange}
-              className="custom-select"
-            >
-              {roles.map((role) => (
-                <option key={role.id} value={role.id}>
-                  {role.name}
-                </option>
-              ))}
-            </Form.Select>
+            <Row>
+              <Col>
+                <Form.Label>Nombre</Form.Label>
+                <Form.Control
+                  name="nombre"
+                  type="text"
+                  value={personDetails.nombre}
+                  onChange={handleInputChange}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Apellido</Form.Label>
+                <Form.Control
+                  name="apellido"
+                  type="text"
+                  value={personDetails.apellido}
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                name="correo"
+                type="text"
+                value={personDetails.correo}
+                onChange={handleInputChange}
+              />
+            </Row>
+            <h4>Direccion</h4>
+            <Row>
+              <Col>
+                <Form.Label>Direccion</Form.Label>
+                <Form.Control
+                  name="calle"
+                  type="text"
+                  value={personDetails.direccion}
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Label>Telefono</Form.Label>
+                <Form.Control
+                  name="telefono"
+                  type="text"
+                  value={personDetails.telefono}
+                  onChange={handleInputChange}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Convencional</Form.Label>
+                <Form.Control
+                  name="telefono_2"
+                  type="text"
+                  value={personDetails.telefono_2}
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Label>Provincia</Form.Label>
+                <Form.Control
+                  name="provincia"
+                  type="text"
+                  value={personDetails.provincia}
+                  onChange={handleInputChange}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Ciudad</Form.Label>
+                <Form.Control
+                  name="ciudad"
+                  type="text"
+                  value={personDetails.ciudad}
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
+            {/* {selectedUser.id_referencia_persona === "" && (
+              <> */}
+            <h4>Referencias</h4>
+            <Row>
+              <Col>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  block
+                  style={{
+                    maxWidth: "100%",
+                    width: "100%",
+                    marginTop: "10px",
+                    borderColor: "white",
+                  }}
+                  onClick={handleReference}
+                >
+                  {showReferenceForm
+                    ? "Cerrar Referencias"
+                    : "Mostrar Referencias"}{" "}
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col>{showReferenceForm && renderReferenceForm()}</Col>
+            </Row>
+            {/* </>
+            )} */}
           </Form.Group>
         </Form>
       </>
@@ -215,6 +389,7 @@ function UserCard({ show, handleClose }) {
     setShowUserRegistration(false);
     setSelectedUserOption(null);
     setShowButtons(true);
+    setError("");
   };
 
   return (

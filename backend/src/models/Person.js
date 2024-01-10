@@ -3,7 +3,7 @@ const poolc = require("../config/db"); // Asegúrate de que la ruta sea correcta
 const Person = {};
 
 Person.getPersons = (callback) => {
-  poolc.query("SELECT * FROM persons", (err, results) => {
+  poolc.query("SELECT * FROM personas", (err, results) => {
     if (err) {
       callback(err, null);
     } else {
