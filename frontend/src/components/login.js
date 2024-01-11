@@ -12,11 +12,13 @@ import "./login.css";
 import React, { useState } from "react";
 import { login } from "../api/api";
 import ModalPasswordHelp from "../modal/ModalPasswordHelp";
+import Loading from "../general/loading";
 
 function Login(props) {
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     usuario: "",
@@ -51,6 +53,7 @@ function Login(props) {
       setError("Debes ingresar un usuario y una contraseña");
       return;
     }
+    setLoading(true);
 
     try {
       const data = await login(formData.usuario, formData.contrasena);
@@ -62,8 +65,13 @@ function Login(props) {
       setError(
         "Error al iniciar sesión: usuario inexistente o contraseña incorrecta"
       );
+    } finally {
+      setLoading(false);
     }
   };
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Container>
@@ -108,7 +116,17 @@ function Login(props) {
                   </InputGroup>
                 </Form.Group>
                 <div className="mb-3 text-center">
-                  <a onClick={handleOpenModal}>¿Olvidaste tu contraseña?</a>
+                  <Button
+                    style={{
+                      color: "inherit",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      textDecoration: "underline",
+                    }}
+                    onClick={handleOpenModal}
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </Button>
                 </div>
                 <Button variant="dark" type="submit" className="w-100">
                   Entrar

@@ -4,8 +4,8 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: creditos
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
@@ -13,6 +13,13 @@ services:
       - ./initdb:/docker-entrypoint-initdb.d
     mem_limit: 400m
     cpus: 1.0
+    restart: unless-stopped
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
 
 volumes:
   data:

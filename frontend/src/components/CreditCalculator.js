@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Card, Table, InputGroup, Form } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CreditCalculator.css";
 
@@ -75,7 +77,7 @@ function CreditCalculator(props) {
     };
 
     calculateAmortization();
-  }, [amountFinanced, entryQuota, monthlyQuota, term, startDate]);
+  }, [amountFinanced, entryQuota, monthlyQuota, term, startDate, endDate]);
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -100,6 +102,7 @@ function CreditCalculator(props) {
     borderRadius: "10px",
     padding: "20px",
     marginTop: "20px",
+    textAlign: "center",
   };
   const headerStyle = {
     textAlign: "center",
@@ -108,7 +111,7 @@ function CreditCalculator(props) {
   };
   const tableStyles = {
     marginTop: "30px",
-    boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+    boxShadow: "0 0 4px 0.2px rgba(0, 0, 0, 0.2)",
     transition: "0.3s",
   };
   const headerStyles = {
@@ -121,165 +124,160 @@ function CreditCalculator(props) {
     textAlign: "center",
     padding: "10px 5px",
   };
-  const tableCellStyle = {
-    textAlign: "left",
-    padding: "10px",
-    border: "1px solid #ddd",
-  };
-  const inputGroupStyle = {
-    marginBottom: "10px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  };
 
   return (
-    <Container className="container my-4">
+    <Container className="card-custom">
       <Card style={cardStyle}>
         <Card.Body>
-          <h4>Prueba</h4>
-          <Table responsive striped bordered hover size="sm">
-            <tbody>
-              <tr style={tableCellStyle}>
-                <td>Valor</td>
-                <td>
-                  <InputGroup style={inputGroupStyle}>
-                    <InputGroup.Text>$</InputGroup.Text>
-                    <Form.Control
-                      type="number"
-                      value={cashPrice}
-                      onChange={(e) => setCashPrice(parseFloat(e.target.value))}
-                    />
-                  </InputGroup>
-                </td>
-                {userRole === "" && (
-                  <>
-                    <td>Entrada</td>
-                    <td>
-                      <InputGroup style={inputGroupStyle}>
-                        <InputGroup.Text>%</InputGroup.Text>
-                        <Form.Control
-                          as="select"
-                          value={entryPercentage}
-                          onChange={(e) =>
-                            setEntryPercentage(parseFloat(e.target.value))
-                          }
-                        >
-                          {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
-                            (percentage) => (
-                              <option key={percentage} value={percentage}>
-                                {percentage}
-                              </option>
-                            )
-                          )}
-                        </Form.Control>
-                      </InputGroup>
-                    </td>
-                  </>
-                )}
-                {userRole === 1 && (
-                  <>
-                    <td>Fecha de Inicio</td>
-                    <td>
-                      <Form.Control
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                      />
-                    </td>
-                    <td>Fecha Final</td>
-                    <td>
-                      <Form.Control type="text" value={endDate} readOnly />
-                    </td>
-                  </>
-                )}
-              </tr>
-              <tr style={tableCellStyle}>
-                <td>Plazo (meses)</td>
-                <td>
+          <h4>Credito Calculador</h4>
+
+          {/* Primera Fila */}
+          <div className="row-custom">
+            <div className="col-custom">
+              <span className="label-custom">Valor</span>
+              <div className="form-field-container">
+                <InputGroup className="input-group-custom">
+                  <InputGroup.Text>$</InputGroup.Text>
                   <Form.Control
-                    as="select"
-                    value={term}
-                    onChange={(e) => setTerm(parseInt(e.target.value))}
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
-                      <option key={month} value={month}>
-                        {month}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </td>
-                {(userRole === 1 || userRole === 2) && (
-                    <>
-                      <td>Entrada</td>
-                      <td>
-                        <InputGroup style={inputGroupStyle}>
-                          <InputGroup.Text>%</InputGroup.Text>
-                          <Form.Control
-                            as="select"
-                            value={entryPercentage}
-                            onChange={(e) =>
-                              setEntryPercentage(parseFloat(e.target.value))
-                            }
-                          >
-                            {[
-                              5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60,
-                            ].map((percentage) => (
-                              <option key={percentage} value={percentage}>
-                                {percentage}
-                              </option>
-                            ))}
-                          </Form.Control>
-                        </InputGroup>
-                      </td>
-                    </>
-                  )}
-                <td>Entrada</td>
-                <td>
-                  <InputGroup style={inputGroupStyle}>
-                    <InputGroup.Text>$</InputGroup.Text>
-                    <Form.Control type="number" value={entryQuota} disabled />
-                  </InputGroup>
-                </td>
-              </tr>
-              {(userRole === 1 || userRole === 2) && (
+                    className="input-custom"
+                    type="number"
+                    value={cashPrice}
+                    onChange={(e) => setCashPrice(parseFloat(e.target.value))}
+                  />
+                </InputGroup>
+              </div>
+            </div>
+
+            <div className="col-custom">
+              <span className="label-custom">Plazo (en meses)</span>
+              <div className="select-wrapper">
+                <Form.Control
+                  className="select-custom"
+                  as="select"
+                  value={term}
+                  onChange={(e) => setTerm(parseInt(e.target.value))}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
+                  ))}
+                </Form.Control>
+                <FontAwesomeIcon icon={faChevronDown} className="select-icon" />
+              </div>
+            </div>
+          </div>
+
+          {/* Segunda Fila */}
+          <div className="row-custom">
+            <div className="col-custom">
+              {userRole === 1 && (
                 <>
-                  <tr style={tableCellStyle}>
-                    <td>Interés</td>
-                    <td>
-                      <InputGroup style={inputGroupStyle}>
-                        <InputGroup.Text>%</InputGroup.Text>
-                        <Form.Control type="number" value={interest} disabled />
-                      </InputGroup>
-                    </td>
-
-                    <td>Cuota</td>
-                    <td>
-                      <InputGroup style={inputGroupStyle}>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-                          disabled
-                          type="number"
-                          value={monthlyQuota.toFixed(2)}
-                        />
-                      </InputGroup>
-                    </td>
-
-                    <td>Financiado</td>
-                    <td>
-                      <InputGroup style={inputGroupStyle}>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-                          type="number"
-                          value={amountFinanced.toFixed(2)}
-                          disabled
-                        />
-                      </InputGroup>
-                    </td>
-                  </tr>
+                  <span className="label-custom">Fecha de Inicio</span>
+                  <div className="form-field-container">
+                    <Form.Control
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                    />
+                  </div>
                 </>
               )}
-            </tbody>
-          </Table>
+
+              {userRole === "" && (
+                <>
+                  <span className="label-custom">Cuota</span>
+                  <div className="form-field-container">
+                    <InputGroup className="input-group-custom">
+                      <InputGroup.Text>$</InputGroup.Text>
+                      <Form.Control
+                        disabled
+                        type="number"
+                        value={monthlyQuota.toFixed(2)}
+                      />
+                    </InputGroup>
+                  </div>
+                </>
+              )}
+
+              {(userRole === 1 || userRole === 2) && (
+                <>
+                  <span className="label-custom">Interés</span>
+                  <div className="form-field-container">
+                    <InputGroup className="input-group-custom">
+                      <InputGroup.Text>%</InputGroup.Text>
+                      <Form.Control type="number" value={interest} disabled />
+                    </InputGroup>
+                  </div>
+                </>
+              )}
+              {userRole === 1 && (
+                <>
+                  <span className="label-custom">Entrada</span>
+                  <div className="form-field-container">
+                    <InputGroup className="input-group-custom">
+                      <InputGroup.Text>$</InputGroup.Text>
+                      <Form.Control type="number" value={entryQuota} disabled />
+                    </InputGroup>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="col-custom">
+              {userRole === 1 && (
+                <>
+                  <span className="label-custom">Fecha Final</span>
+                  <div className="form-field-container">
+                    <Form.Control type="text" value={endDate} disabled />
+                  </div>
+                </>
+              )}
+              <span className="label-custom">Entrada</span>
+              <div className="form-field-container">
+                <InputGroup className="input-group-custom">
+                  <InputGroup.Text>%</InputGroup.Text>
+                  <div className="select-wrapper">
+                    <Form.Control
+                      className="select-custom"
+                      as="select"
+                      value={entryPercentage}
+                      onChange={(e) =>
+                        setEntryPercentage(parseFloat(e.target.value))
+                      }
+                    >
+                      {[5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60].map(
+                        (percentage) => (
+                          <option key={percentage} value={percentage}>
+                            {percentage}
+                          </option>
+                        )
+                      )}
+                    </Form.Control>
+                    <FontAwesomeIcon
+                      icon={faChevronDown}
+                      className="select-icon"
+                    />
+                  </div>
+                </InputGroup>
+              </div>
+              {(userRole === 1 || userRole === 2) && (
+                <>
+                  <span className="label-custom">Total Financiado</span>
+                  <div className="form-field-container">
+                    <InputGroup className="input-group-custom">
+                      <InputGroup.Text>$</InputGroup.Text>
+                      <Form.Control
+                        type="number"
+                        value={amountFinanced.toFixed(2)}
+                        disabled
+                      />
+                    </InputGroup>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </Card.Body>
       </Card>
 

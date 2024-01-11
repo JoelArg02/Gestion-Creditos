@@ -3,10 +3,7 @@ import {
   Table,
   Alert,
   Button,
-  Modal,
-  Form,
   Container,
-  Pagination,
   Card,
   Row,
   Col,
@@ -82,8 +79,7 @@ const creditos = [
     estado: "Negado",
     detalle: "Crédito de $5000",
     name: "Juan Arguello",
-    
-  }
+  },
 ];
 
 function getColorForStatus(status) {
@@ -99,46 +95,9 @@ function getColorForStatus(status) {
   }
 }
 
-function AddCreditModal({ show, handleClose, handleSubmit }) {
-  let active = 2;
-  let items = [];
-
-  for (let number = 1; number <= 5; number++) {
-    items.push(
-      <Pagination.Item key={number} active={number === active}>
-        {number}
-      </Pagination.Item>
-    );
-  }
-
-  return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Añadir Crédito</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>{/* Add form fields here */}</Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Cerrar
-        </Button>
-        <Button
-          variant="primary"
-          style={{ borderColor: "white" }}
-          type="submit"
-        >
-          Guardar Crédito
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-
 function Dashboard() {
   const [credits, setCredits] = useState([]);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getCredits()
@@ -150,29 +109,11 @@ function Dashboard() {
       });
   }, []);
 
-  const handleAddCredit = (event) => {
-    event.preventDefault();
-
-    setShowModal(false);
-  };
-
   return (
     <>
       <Container className="mx-auto w-80 text-center">
         <h1>Dashboard</h1>
-        <Button
-          className="boton-espacio"
-          variant="primary"
-          style={{ borderColor: "white" }}
-          onClick={() => setShowModal(true)}
-        >
-          Añadir Crédito
-        </Button>
-        <AddCreditModal
-          show={showModal}
-          handleClose={() => setShowModal(false)}
-          handleSubmit={handleAddCredit}
-        />
+
         {error ? (
           <Alert variant="danger">Error en el servidor: {error.message}</Alert>
         ) : credits.length === 0 ? (

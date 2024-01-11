@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import UserModal from "../card/UserCard"; // Importa los modales aquí
-import BusinessModal from "../card/BusinessCard"; // Importa los modales aquí
+import UserModal from "../card/UserCard";
+import BusinessModal from "../card/BusinessCard";
 
 function Admin() {
   const [showUserModal, setShowUserModal] = useState(false);
@@ -20,16 +20,14 @@ function Admin() {
   };
 
   const handleCloseBusinessModal = () => {
-    
     setShowBusinessModal(false);
   };
 
   return (
     <Container>
-      <Row className="my-4">
-        <Col md={4} className="mb-4">
-          {" "}
-          <Card className="shadow" style={{ width: "18rem" }}>
+      <Row className="my-4 justify-content-center">
+        <Col md={6} lg={4} className="mb-4">
+          <Card className="shadow text-center">
             <Card.Body>
               <Card.Title>Usuarios</Card.Title>
               <Card.Text>Gestionar usuarios de la plataforma.</Card.Text>
@@ -43,9 +41,8 @@ function Admin() {
             </Card.Body>
           </Card>
         </Col>
-        <Col md={4} className="mb-4">
-          {" "}
-          <Card className="shadow" style={{ width: "18rem" }}>
+        <Col md={6} lg={4} className="mb-4">
+          <Card className="shadow text-center">
             <Card.Body>
               <Card.Title>Negocios</Card.Title>
               <Card.Text>Gestionar negocios.</Card.Text>

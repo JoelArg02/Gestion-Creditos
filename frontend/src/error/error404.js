@@ -1,32 +1,33 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./error404.css";
+import "./error404.css"; 
 
-function Error404(isAuthenticated) {
+function Error404({ isAuthenticated }) { 
+  
   return (
-    <Container className="error404-container mt-5">
-      <Row className="justify-content-center">
+    <Container className="error404-container custom-container">
+      <Row className="justify-content-center align-items-center">
         <Col md={8} className="text-center">
-          <h1 className="display-4 error-title text-effect">Error 404</h1>
-          <p className="lead text-appear">La página que buscas no existe.</p>
-          <p className="text-appear-delay">
-            Lo sentimos, pero la página que estás buscando no se encuentra en
-            este sitio.
+          <h1 className="error-title">Error 404: Página No Encontrada</h1>
+          <p className="error-description">
+            La página que estás intentando ver no existe o ha sido movida.
           </p>
           {isAuthenticated ? (
             <Button
               variant="primary"
-              className="custom-button hover-effect"
+              style={{ borderColor: "white" }}
+              className="error-button"
               as={Link}
               to="/"
             >
-              Ir a la página de inicio
+              Volver a la página de inicio
             </Button>
           ) : (
             <Button
               variant="primary"
-              className="custom-button hover-effect"
+              className="error-button"
+              style={{ borderColor: "white" }}
               as={Link}
               to="/login"
             >

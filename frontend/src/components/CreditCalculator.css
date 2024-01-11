@@ -1,39 +1,79 @@
-.center-row td {
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-
-*{
-  text-align: center;
-  vertical-align: middle;
+.card-custom {
+  max-width: 65%;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-@media screen and (max-width: 600px) {
-  .input-group {
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+.row-custom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.col-custom {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.form-field-container {
+  margin-bottom: 10px;
+}
+
+.input-custom,
+.select-custom {
+  width: 100%;
+}
+
+.label-custom {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.input-group-custom {
+  flex-wrap: nowrap;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+.select-custom {
+  /* Estilos existentes para select */
+  -webkit-appearance: none;
+  /* Para Safari */
+  -moz-appearance: none;
+  /* Para Firefox */
+  appearance: none;
+}
+
+.select-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  /* Esto asegura que el ícono no interfiera con el funcionamiento del select */
+}
+
+
+@media screen and (max-width: 768px) {
+  .card-custom {
+    max-width: 85%;
   }
 
-  .form-control {
-    font-size: 16px; /* Tamaño de fuente más grande para mejor legibilidad */
+  .row-custom {
+    flex-direction: column;
   }
 
-  .card {
-    margin-top: 10px;
-    padding: 15px;
-  }
-
-  .table-cell {
-    padding: 15px; /* Espaciado más grande para facilidad de toque */
-  }
-
-  .container {
-    padding: 5px; /* Reducir el padding en contenedores */
-  }
-
-  h3, h4 {
-    font-size: 18px; /* Aumentar el tamaño de los encabezados */
+  .col-custom {
+    padding: 0;
   }
 }

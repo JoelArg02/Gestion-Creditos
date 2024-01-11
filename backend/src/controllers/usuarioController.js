@@ -65,7 +65,9 @@ exports.register = (req, res) => {
 
 exports.login = (req, res) => {
   const { usuario, contrasena } = req.body;
-
+  const ip = req.ip;
+  const userAgent = req.get("user-agent");
+  
   if (!usuario || !contrasena) {
     return res.status(400).json({ error: "Datos faltantes o inválidos" });
   }
@@ -80,7 +82,7 @@ exports.login = (req, res) => {
     JOIN configuracion_negocio ON usuarios.id_configuracion_negocio = configuracion_negocio.id_configuracion
     WHERE usuarios.usuario = $1
   `;
-
+  
   poolc.query(query, [usuario], (errorUsuario, results) => {
     if (errorUsuario) {
       console.error("Error al buscar el usuario:", errorUsuario);

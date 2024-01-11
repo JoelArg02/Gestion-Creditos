@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./App.css";
-import Header from "./components/Header";
+import Header from "./general/Header";
 import HomePage from "./components/homePage";
 import Login from "./components/login";
 import Servicios from "./components/Services";
@@ -16,7 +16,7 @@ import Contact from "./components/Contact";
 import Dashboard from "./components/Dashboard";
 import Error404 from "./error/error404";
 import Admin from "./components/Admin";
-import Footer from "./components/Footer";
+import Footer from "./general/Footer";
 import CreditUser from "./components/CreditUser";
 import AddCredit from "./components/AddCredit";
 import CreditCalculator from "./components/CreditCalculator";
@@ -150,7 +150,7 @@ function App() {
             path="/CreditUser"
             element={<CreditUser personDni={personDni} />}
           />
-          <Route 
+          <Route
             path="/payments"
             element={
               isAuthenticated || userRole === 1 || userRole === 4 ? (
@@ -162,7 +162,10 @@ function App() {
               )
             }
           />
-          <Route path="*" element={<Error404/>} />
+          <Route
+            path="*"
+            element={<Error404 isAuthenticated={isAuthenticated} />}
+          />
         </Routes>
         <Footer />
       </div>

@@ -1,15 +1,13 @@
 -- Eliminar la base de datos si existe y crear una nueva
 -- En PostgreSQL, no es común manejar la creación de bases de datos en scripts SQL,
 -- se asume que ya está creada y se utiliza directamente.
-
 -- Conectar a la base de datos 'creditos' (debe ser creada previamente en PostgreSQL)
 -- \c creditos
-
 -- Desactivar las verificaciones de clave foránea (no es común en PostgreSQL)
 -- SET foreign_key_checks = 0;
-
 -- Configurar zona horaria (se puede configurar a nivel de sesión o base de datos)
-SET TIMEZONE = 'America/Guayaquil';
+SET
+    TIMEZONE = 'America/Guayaquil';
 
 -- Creación de tablas
 CREATE TABLE configuracion_negocio (
@@ -55,7 +53,6 @@ CREATE TABLE personas (
     FOREIGN KEY (id_referencia_persona) REFERENCES referencias(id_referencia)
 );
 
-
 CREATE TABLE usuarios (
     id_usuario SERIAL PRIMARY KEY,
     usuario VARCHAR(255) NOT NULL UNIQUE,
@@ -72,6 +69,16 @@ CREATE TABLE usuarios (
     FOREIGN KEY (id_persona) REFERENCES personas(id_persona)
 );
 
+CREATE TABLE detalle_credito (
+    id_detalle_credito SERIAL PRIMARY KEY,
+    detalle_credito VARCHAR(255) NOT NULL
+);
+
+insert into
+    detalle_credito (detalle_credito)
+values
+    ('Credito de 1 año');
+
 CREATE TABLE creditos (
     id_credito SERIAL PRIMARY KEY,
     id_usuario_credito_crea INT NOT NULL,
@@ -83,6 +90,8 @@ CREATE TABLE creditos (
     fecha_inicio DATE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     estado BOOLEAN NOT NULL,
+    detalle_credito int NOT NULL,
+    FOREIGN KEY (detalle_credito) REFERENCES detalle_credito(id_detalle_credito),
     FOREIGN KEY (id_usuario_credito_crea) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_usuario_credito_usuario) REFERENCES usuarios(id_usuario)
 );
@@ -94,31 +103,133 @@ CREATE TABLE pagos (
     fecha_pago DATE NOT NULL,
     FOREIGN KEY (id_credito) REFERENCES creditos(id_credito)
 );
+
 -- Inserciones
-INSERT INTO configuracion_negocio (negocio, url_logo, url_favicon, lema, facebook, instagram, whatsapp, correo_admin, correo_publico) 
-VALUES 
-('Nexfon', 'https://nexfon-logo.com', 'https://nexfon-favicon.com', 'Conectando tu mundo', 'https://facebook.com/nexfon', 'https://instagram.com/nexfon', '+1234567890', 'admin@nexfon.com', 'contact@nexfon.com');
+INSERT INTO
+    configuracion_negocio (
+        negocio,
+        url_logo,
+        url_favicon,
+        lema,
+        facebook,
+        instagram,
+        whatsapp,
+        correo_admin,
+        correo_publico
+    )
+VALUES
+    (
+        'Nexfon',
+        'https://nexfon-logo.com',
+        'https://nexfon-favicon.com',
+        'Conectando tu mundo',
+        'https://facebook.com/nexfon',
+        'https://instagram.com/nexfon',
+        '+1234567890',
+        'admin@nexfon.com',
+        'contact@nexfon.com'
+    );
 
-insert into referencias (nombre_trabajo, telefono_trabajo, telefono_trabajo_c, imagen_hogar) values 
-('Juan Perez', '0998765432', '0998765432', '/1.jpg');
+insert into
+    referencias (
+        nombre_trabajo,
+        telefono_trabajo,
+        telefono_trabajo_c,
+        imagen_hogar
+    )
+values
+    (
+        'Juan Perez',
+        '0998765432',
+        '0998765432',
+        '/1.jpg'
+    );
 
-INSERT INTO personas (nombre, apellido, telefono, cedula, provincia, ciudad, direccion, correo, id_referencia_persona) 
-VALUES 
-('Juan', 'Pérez', '0998765432','1710202449', 'Ecuador', 'Quito', 'Calle Falsa 123', 'juan.perez@example.com', 1);
+INSERT INTO
+    personas (
+        nombre,
+        apellido,
+        telefono,
+        cedula,
+        provincia,
+        ciudad,
+        direccion,
+        correo,
+        id_referencia_persona
+    )
+VALUES
+    (
+        'Juan',
+        'Pérez',
+        '0998765432',
+        '1710202449',
+        'Ecuador',
+        'Quito',
+        'Calle Falsa 123',
+        'juan.perez@example.com',
+        1
+    );
 
-INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Encargado Creditos'), ('Vendedor'), ('Cobros'), ('Cliente');
+INSERT INTO
+    roles (nombre_rol)
+VALUES
+    ('Administrador'),
+    ('Encargado Creditos'),
+    ('Vendedor'),
+    ('Cobros'),
+    ('Cliente');
 
-INSERT INTO usuarios (usuario, contrasena, email, id_configuracion_negocio, id_persona, id_rol) 
-VALUES 
-('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 'joel.darguello@gmail.com', 1, 1, 1);
+INSERT INTO
+    usuarios (
+        usuario,
+        contrasena,
+        email,
+        id_configuracion_negocio,
+        id_persona,
+        id_rol
+    )
+VALUES
+    (
+        'admin',
+        '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi',
+        'joel.darguello@gmail.com',
+        1,
+        1,
+        1
+    );
 
-insert into creditos (id_usuario_credito_crea, id_usuario_credito_usuario, monto, plazo, interes, entrada, fecha_inicio, fecha_vencimiento, estado) values 
-(1, 1, 800, 7, 25.00, 20.00, '2023-01-01', '2023-12-31', true);
+insert into
+    creditos (
+        id_usuario_credito_crea,
+        id_usuario_credito_usuario,
+        monto,
+        plazo,
+        interes,
+        entrada,
+        fecha_inicio,
+        fecha_vencimiento,
+        estado,
+        detalle_credito
+    )
+values
+    (
+        1,
+        1,
+        800,
+        7,
+        25.00,
+        20.00,
+        '2023-01-01',
+        '2023-12-31',
+        true,
+        1
+    );
 
-INSERT INTO pagos (id_credito, monto, fecha_pago)
-VALUES 
-  (1, 100.00, CURRENT_DATE),
-  (1, 150.00, CURRENT_DATE),
-  (1, 200.00, CURRENT_DATE),
-  (1, 50.00, CURRENT_DATE),
-  (1, 75.00, CURRENT_DATE);
+INSERT INTO
+    pagos (id_credito, monto, fecha_pago)
+VALUES
+    (1, 100.00, CURRENT_DATE),
+    (1, 150.00, CURRENT_DATE),
+    (1, 200.00, CURRENT_DATE),
+    (1, 50.00, CURRENT_DATE),
+    (1, 75.00, CURRENT_DATE);

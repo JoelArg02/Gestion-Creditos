@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Table, Row, Col, Card, Alert } from "react-bootstrap";
+import {
+  Container,
+  Table,
+  Row,
+  Col,
+  Card,
+  Alert,
+  Button,
+} from "react-bootstrap";
 import "./CreditUser.css";
 import { getCredit } from "../api/api";
 import { getPago } from "../api/pago";
@@ -20,7 +28,7 @@ function CreditUser({ personDni }) {
   const [amortizationSchedule, setAmortizationSchedule] = useState([]);
   const [amountFinanced, setAmountFinanced] = useState(0);
   const [entryQuota, setEntryQuota] = useState(0);
-  const [payments, setPayments] = useState([]);
+  // const [payments, setPayments] = useState([]);
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -52,7 +60,7 @@ function CreditUser({ personDni }) {
 
       try {
         const data = await getPago(creditData[0].id_credito); // Supongo que getPago recibe el ID del crédito
-        setPayments(data);
+        // setPayments(data);
         console.log(data);
       } catch (error) {
         setErrorSearch("Error al obtener los pagos");
@@ -142,11 +150,12 @@ function CreditUser({ personDni }) {
     return `${day}-${month}-${year}`;
   };
 
-  const calculateEndDate = () => {
-    let date = new Date(startDate);
-    date.setMonth(date.getMonth() + term);
-    setEndDate(formatDate(date));
-  };
+  // const calculateEndDate = () => {
+  //   let date = new Date(startDate);
+  //   date.setMonth(date.getMonth() + term);
+  //   setEndDate(formatDate(date));
+  // };
+
   useEffect(() => {
     if (personDni) {
       fetchCreditData(personDni);
@@ -156,6 +165,7 @@ function CreditUser({ personDni }) {
   const handleReturn = (e) => {
     setCedula("");
     setCreditData("");
+    
   };
 
   const handleCedulaChange = (e) => {
@@ -181,7 +191,6 @@ function CreditUser({ personDni }) {
           <Col md={6} lg={4}>
             <Card className="shadow-card" style={{ width: "25rem" }}>
               <Card.Body>
-                
                 <h1 className="text-center">¡Revisa tu crédito!</h1>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
@@ -221,14 +230,6 @@ function CreditUser({ personDni }) {
   }
 
   if (creditData && creditData.length > 0) {
-    const cardStyle = {
-      backgroundColor: "#f8f9fa",
-      border: "1px solid #ddd",
-      borderRadius: "10px",
-      padding: "20px",
-      marginTop: "20px",
-    };
-
     const headerStyle = {
       textAlign: "center",
       marginBottom: "20px",
@@ -259,17 +260,6 @@ function CreditUser({ personDni }) {
       padding: "10px 5px",
     };
 
-    const tableCellStyle = {
-      textAlign: "left",
-      padding: "10px",
-      border: "1px solid #ddd",
-    };
-
-    const inputGroupStyle = {
-      marginBottom: "10px",
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-    };
     return (
       <Container className="container my-4">
         <div style={tableStyles}>
@@ -296,6 +286,9 @@ function CreditUser({ personDni }) {
               ))}
             </tbody>
           </Table>
+          <Button variant="primary" onClick={handleReturn}>
+            Regresar
+          </Button>
         </div>
       </Container>
     );
