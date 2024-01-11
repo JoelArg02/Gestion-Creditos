@@ -8,3 +8,32 @@
   text-align: center;
   vertical-align: middle;
 }
+
+@media screen and (max-width: 600px) {
+  .input-group {
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .form-control {
+    font-size: 16px; /* Tamaño de fuente más grande para mejor legibilidad */
+  }
+
+  .card {
+    margin-top: 10px;
+    padding: 15px;
+  }
+
+  .table-cell {
+    padding: 15px; /* Espaciado más grande para facilidad de toque */
+  }
+
+  .container {
+    padding: 5px; /* Reducir el padding en contenedores */
+  }
+
+  h3, h4 {
+    font-size: 18px; /* Aumentar el tamaño de los encabezados */
+  }
+}

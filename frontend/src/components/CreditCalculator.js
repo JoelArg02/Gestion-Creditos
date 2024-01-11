@@ -136,6 +136,7 @@ function CreditCalculator(props) {
     <Container className="container my-4">
       <Card style={cardStyle}>
         <Card.Body>
+          <h4>Prueba</h4>
           <Table responsive striped bordered hover size="sm">
             <tbody>
               <tr style={tableCellStyle}>

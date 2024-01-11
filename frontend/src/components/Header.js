@@ -31,7 +31,7 @@ function Header({
   };
 
   return (
-    <Navbar bg="dark" expand="lg" className="shadow-sm navbar-dark">
+    <Navbar bg="white" expand="lg" className="shadow-sm navbar-white">
       <Container>
         <Navbar.Brand as={Link} to={businessName ? "#" : "/"}>
           {businessName || "Inicio"}

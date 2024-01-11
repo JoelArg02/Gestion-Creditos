@@ -92,12 +92,6 @@ function Login(props) {
                 <Form.Group className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
                   <InputGroup>
-                    <Button
-                      variant="outline-secondary"
-                      onClick={togglePasswordVisibility}
-                    >
-                      {showPassword ? "Ocultar" : "Mostrar"}
-                    </Button>
                     <Form.Control
                       type={showPassword ? "text" : "password"}
                       name="contrasena"
@@ -105,6 +99,12 @@ function Login(props) {
                       onChange={handleInputChange}
                       placeholder="Ingresa tu contraseña"
                     />
+                    <Button
+                      variant="outline-secondary"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? "Ocultar" : "Mostrar"}
+                    </Button>
                   </InputGroup>
                 </Form.Group>
                 <div className="mb-3 text-center">

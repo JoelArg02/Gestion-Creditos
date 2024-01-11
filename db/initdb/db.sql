@@ -31,11 +31,12 @@ CREATE TABLE roles (
 );
 
 -- Nota: La tabla 'referencia' debe crearse antes de 'personas' para establecer la clave foránea
-CREATE TABLE referencia (
-    id_referencias SERIAL PRIMARY KEY,
+CREATE TABLE referencias (
+    id_referencia SERIAL PRIMARY KEY,
     nombre_trabajo VARCHAR(255) NOT NULL,
     telefono_trabajo VARCHAR(255) NOT NULL,
-    telefono_trabajo_c VARCHAR(255) NOT NULL
+    telefono_trabajo_c VARCHAR(255) NOT NULL,
+    imagen_hogar VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE personas (
@@ -45,13 +46,13 @@ CREATE TABLE personas (
     telefono VARCHAR(255) NOT NULL,
     cedula INTEGER NOT NULL,
     telefono_2 VARCHAR(255),
-    pais VARCHAR(255) NOT NULL,
+    provincia VARCHAR(255) NOT NULL,
     ciudad VARCHAR(255) NOT NULL,
     direccion VARCHAR(255) NOT NULL,
     direccion_2 VARCHAR(255),
     correo VARCHAR(255) NOT NULL,
     id_referencia_persona INT,
-    FOREIGN KEY (id_referencia_persona) REFERENCES referencia(id_referencias)
+    FOREIGN KEY (id_referencia_persona) REFERENCES referencias(id_referencia)
 );
 
 
@@ -98,9 +99,12 @@ INSERT INTO configuracion_negocio (negocio, url_logo, url_favicon, lema, faceboo
 VALUES 
 ('Nexfon', 'https://nexfon-logo.com', 'https://nexfon-favicon.com', 'Conectando tu mundo', 'https://facebook.com/nexfon', 'https://instagram.com/nexfon', '+1234567890', 'admin@nexfon.com', 'contact@nexfon.com');
 
-INSERT INTO personas (nombre, apellido, telefono, cedula, pais, ciudad, direccion, correo) 
+insert into referencias (nombre_trabajo, telefono_trabajo, telefono_trabajo_c, imagen_hogar) values 
+('Juan Perez', '0998765432', '0998765432', '/1.jpg');
+
+INSERT INTO personas (nombre, apellido, telefono, cedula, provincia, ciudad, direccion, correo, id_referencia_persona) 
 VALUES 
-('Juan', 'Pérez', '0998765432','1710202449', 'Ecuador', 'Quito', 'Calle Falsa 123', 'juan.perez@example.com');
+('Juan', 'Pérez', '0998765432','1710202449', 'Ecuador', 'Quito', 'Calle Falsa 123', 'juan.perez@example.com', 1);
 
 INSERT INTO roles (nombre_rol) VALUES ('Administrador'), ('Encargado Creditos'), ('Vendedor'), ('Cobros'), ('Cliente');
 
@@ -108,7 +112,8 @@ INSERT INTO usuarios (usuario, contrasena, email, id_configuracion_negocio, id_p
 VALUES 
 ('admin', '$2b$10$tp7XPY3ypO90tyN5XX2.HeCKTvkY/U43cMqndYwTuwboV8AVptzHi', 'joel.darguello@gmail.com', 1, 1, 1);
 
-insert into creditos (id_usuario_credito_crea, id_usuario_credito_usuario, monto, plazo, interes, entrada, fecha_inicio, fecha_vencimiento, estado) values (1, 1, 10000.00, 12, 30.00, 30.00, '2023-01-01', '2023-12-31', true);
+insert into creditos (id_usuario_credito_crea, id_usuario_credito_usuario, monto, plazo, interes, entrada, fecha_inicio, fecha_vencimiento, estado) values 
+(1, 1, 800, 7, 25.00, 20.00, '2023-01-01', '2023-12-31', true);
 
 INSERT INTO pagos (id_credito, monto, fecha_pago)
 VALUES 

@@ -181,6 +181,7 @@ function CreditUser({ personDni }) {
           <Col md={6} lg={4}>
             <Card className="shadow-card" style={{ width: "25rem" }}>
               <Card.Body>
+                
                 <h1 className="text-center">¡Revisa tu crédito!</h1>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
