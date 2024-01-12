@@ -12,6 +12,7 @@ const businessRoutes = require('./routes/businessRoutes');
 const rolRoutes = require('./routes/rolRoutes');
 const personRoutes = require('./routes/personRoutes');
 const pagosRoutes = require('./routes/pagosRoutes');
+const mailerRoutes = require('./routes/mailerRoutes');
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
   origin: '*', // Permite todas las fuentes
@@ -36,6 +37,8 @@ app.put('/', (req, res) => {
 });
 
 // Ruta de Negocios
+
+app.use('/api/mail', mailerRoutes);
 
 app.use('/api/business', businessRoutes);
 

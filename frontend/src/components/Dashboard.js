@@ -161,10 +161,10 @@ function Dashboard() {
 
                       <div className="col-auto">
                         <span
-                          className={`badge text-start ${getColorForStatus(
+                          className={`badge text-center ${getColorForStatus(
                             credito.estado
                           )}`}
-                          style={{ width: "75px" }}
+                          style={{ width: "100px", borderRadius: "50px" }}
                         >
                           {credito.estado}
                         </span>

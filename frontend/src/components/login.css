@@ -46,36 +46,5 @@
   to { opacity: 1; }
 }
 
-/* Media Queries para pantallas pequeñas (máximo 767px) */
-@media only screen and (max-width: 767px) {
-  .card {
-    border: 1px solid red; 
-  }
-
-  .card-header {
-    background-color: #FFCCCC; 
-    color: #990000;
-  }
-
-  .form-control {
-    background-color: #FEE; 
-    border-color: #FF9999;
-  }
-}
-
-/* Media Queries para pantallas medianas (768px - 991px) */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-  .card {
-    border: 1px solid blue; 
-  }
-
-  .card-body {
-    background-color: #F0F0FF; 
-  }
-
-  .btn {
-    background-color: #6699CC; 
-  }
-}
 
 

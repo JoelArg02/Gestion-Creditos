@@ -10,7 +10,10 @@
     max-width: 100%; /* Asegura que sea responsivo y no se desborde en dispositivos pequeños */
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
-  
+  .image-container:hover .hover-text {
+    display: block;
+}
+
   /* Estilo para el hover del campo de selección */
   .custom-select:hover {
     border-color: #b2b8bd;

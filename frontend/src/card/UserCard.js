@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Modal, Button, Form, Alert, Row, Col, Image } from "react-bootstrap";
 import CreatableSelect from "react-select/creatable";
 import { getUsers, updateUser } from "../api/api";
@@ -14,7 +14,10 @@ function UserCard({ show, handleClose }) {
   const [showReferenceForm, setShowReferenceForm] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
   const [success, setSuccess] = useState("");
+  const [imagenUrl, setImagenUrl] = useState("");
+
   const [personDetails, setPersonDetails] = useState({
     nombre: "",
     apellido: "",
@@ -95,6 +98,11 @@ function UserCard({ show, handleClose }) {
       }));
     }
   };
+  useEffect(() => {
+    if (referenciaDetails.imagen_hogar) {
+      setImagenUrl(`img${referenciaDetails.imagen_hogar}`);
+    }
+  }, [referenciaDetails]);
 
   useEffect(() => {
     if (selectedUserOption) {
@@ -129,6 +137,18 @@ function UserCard({ show, handleClose }) {
     }
     fetchData();
   }, []);
+
+  const cambiarImagen = () => {
+    fileInputRef.current.click();
+  };
+
+  const manejarCambioImagen = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setImagenUrl(url);
+    }
+  };
 
   const handleSelectUser = (selectedOption) => {
     setSelectedUserOption(selectedOption);
@@ -214,20 +234,52 @@ function UserCard({ show, handleClose }) {
           </Col>
         </Row>
         <Row>
-          <Col>
-            <Form.Label>Imagen Hogar</Form.Label>
-            <Col>
+          <Col className="d-flex justify-content-center">
+            <div
+              className="image-container"
+              style={{ position: "relative", cursor: "pointer" }}
+              onClick={cambiarImagen}
+              onMouseOver={(e) =>
+                (e.currentTarget.children[1].style.display = "block")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.children[1].style.display = "none")
+              }
+            >
               <Image
-                src={`../../data-img${referenciaDetails.imagen_hogar}`}
-                style={{ width: "100px", height: "100px" }}
+                src={imagenUrl}
+                style={{ width: "200px", height: "200px", marginTop: "30px" }}
                 fluid
               />
-            </Col>
+              <div
+                className="hover-text"
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  color: "white",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  padding: "10px",
+                  display: "none",
+                  textAlign: "center",
+                }}
+              >
+                Clic para cambiar de foto
+              </div>
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={manejarCambioImagen}
+            />
           </Col>
         </Row>
       </Form.Group>
     </>
   );
+
   console.log(referenciaDetails.imagen_hogar);
   const renderSelectedUserDetails = () => {
     if (!selectedUserOption) return null;

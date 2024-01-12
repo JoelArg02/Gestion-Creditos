@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const secretKey = process.env.SECRET_KEY || "secretKey";
 const mailer = require("../helpers/mailer.js");
+const mailerController = require("./mailerController");
 
 exports.getUsuarios = (req, res) => {
   Usuario.getAllUsuarios((err, usuarios) => {
@@ -28,7 +29,6 @@ exports.getUserById = async (req, res) => {
     res.json(usuario);
   });
 };
-
 
 exports.findUserByUser = (req, res) => {
   const { usuario } = req.params;
@@ -65,12 +65,12 @@ exports.register = (req, res) => {
 
 exports.login = (req, res) => {
   const { usuario, contrasena } = req.body;
-  const ip = req.ip;
-  const userAgent = req.get("user-agent");
-  
+
   if (!usuario || !contrasena) {
     return res.status(400).json({ error: "Datos faltantes o inválidos" });
   }
+  const ip = req.ip; 
+  const fechaActual = new Date().toISOString();
 
   const query = `
     SELECT 
@@ -82,7 +82,7 @@ exports.login = (req, res) => {
     JOIN configuracion_negocio ON usuarios.id_configuracion_negocio = configuracion_negocio.id_configuracion
     WHERE usuarios.usuario = $1
   `;
-  
+
   poolc.query(query, [usuario], (errorUsuario, results) => {
     if (errorUsuario) {
       console.error("Error al buscar el usuario:", errorUsuario);
@@ -117,7 +117,7 @@ exports.login = (req, res) => {
           userId: user.id_usuario,
           userName: user.usuario,
           userRole: user.id_rol,
-          
+
           userMail: user.email,
           personName: user.nombre,
           personLastName: user.apellido,
@@ -130,6 +130,8 @@ exports.login = (req, res) => {
           personEmail: user.correo,
           businessName: user.negocio,
         };
+        mailerController.sendLoginNotificationEmail(user.email, ip, fechaActual);
+
         jwt.sign(payload, secretKey, { expiresIn: "1h" }, (errorJwt, token) => {
           if (errorJwt) {
             return res
@@ -183,7 +185,6 @@ exports.verifyRecoveryCode = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
-
 
 exports.updatePassword = (req, res) => {
   const { id_usuario } = req.params;

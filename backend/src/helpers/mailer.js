@@ -9,10 +9,27 @@ const transporter = nodemailer.createTransport({
     clientId:
       "967394478850-ho3clgo567dcu24dculqkvnn3jmcn9ed.apps.googleusercontent.com",
     clientSecret: "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",
-    refreshToken:
-      "1//04RSBmpTIvII0CgYIARAAGAQSNwF-L9Irt8cS_u6pgf4F2CjArOIEo-8H389IW1dBeuw2KUJcPBDwV4ZfoBp1b9lYDlCWSe4OlNg",
+    refreshToken: "1//04nau1WJyI2aQCgYIARAAGAQSNwF-L9IrPiBhkuejrutrbD3dSprJm9ObBDLmKqIhxoOddQc-5sL6F7Prg8tbw_S0HrpJRrvZwD4",
   },
 });
+
+
+exports.sendContactEmail = (email, subject, htmlContent, callback) => {
+  const mailOptions = {
+      from: 'nexfonec123@gmail.com',
+      to: "joel.darguello@gmail.com",
+      subject: subject,
+      html: htmlContent // Usar html en lugar de text
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error al enviar email:", error);
+      return callback(error, null);
+    }
+    callback(null, info);
+  });
+};
 
 exports.sendRecoveryCode = (email, code, callback) => {
   const mailOptions = {
@@ -31,12 +48,12 @@ exports.sendRecoveryCode = (email, code, callback) => {
   });
 };
 
-exports.sendLoginNotification = (email, ip, userAgent, callback) => {
+exports.sendLoginNotification = (email, ip, callback) => {
   const mailOptions = {
     from: "nexfonec123@gmail.com",
     to: email,
     subject: "Notificación de Inicio de Sesión",
-    text: `Se ha iniciado sesión desde la IP: ${ip} con el navegador: ${userAgent}`,
+    text: `Se ha iniciado sesión desde la IP: ${ip} `,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
