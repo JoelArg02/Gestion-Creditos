@@ -166,9 +166,9 @@ function App() {
           <Route
             path="/admin"
             element={
-              isAuthenticated && userRole === 1 ? (
+              isAuthenticated ? (
                 <Layout>
-                  <Admin />
+                  <Admin userRole={userRole} />
                 </Layout>
               ) : (
                 <Navigate to={isAuthenticated ? "/dashboard" : "/login"} />
@@ -180,6 +180,8 @@ function App() {
             element={
               isAuthenticated ? (
                 <Layout>
+                  {userRole === 5 ? <Navigate to="/CreditUser" /> : null}
+                  {userRole === 4 ? <Navigate to="/admin" /> : null}
                   <Dashboard />
                 </Layout>
               ) : (
@@ -187,6 +189,7 @@ function App() {
               )
             }
           />
+
           <Route
             path="/AddCredit"
             element={
@@ -211,7 +214,7 @@ function App() {
             path="/CreditUser"
             element={
               <Layout>
-                <CreditUser />
+                <CreditUser personDni={personDni} />
               </Layout>
             }
           />

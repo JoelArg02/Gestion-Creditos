@@ -14,7 +14,7 @@ import { getCredit } from "../api/api";
 import { getPago } from "../api/pago";
 import Loading from "../general/loading";
 
-function CreditUser({ personDni }) {
+function CreditUser({ personDni, userRole }) {
   const [cedula, setCedula] = useState(personDni || "");
   const [creditData, setCreditData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -286,9 +286,11 @@ function CreditUser({ personDni }) {
               ))}
             </tbody>
           </Table>
+          {userRole === 1 && (
           <Button variant="primary" onClick={handleReturn}>
             Regresar
           </Button>
+          )}
         </div>
       </Container>
     );

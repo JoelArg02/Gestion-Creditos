@@ -45,14 +45,26 @@ function Header({
           <Nav className="me-auto">
             {isLoggedIn ? (
               <>
+                {(userRole === 1 ||
+                  userRole === 2 ||
+                  userRole === 3 ||
+                  userRole === 4) && (
+                  <>
+                    <Nav.Link as={Link} to="/admin">
+                      Administracion
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/CreditCalculator">
+                      Calcular Crédito
+                    </Nav.Link>
+                  </>
+                )}
+
                 {userRole === 1 && ( // Administrador
                   <>
                     <Nav.Link as={Link} to="/dashboard">
                       Dashboard
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/admin">
-                      Administracion
-                    </Nav.Link>
+
                     <Nav.Link as={Link} to="/CreditCalculator">
                       Calcular Credito
                     </Nav.Link>
@@ -67,19 +79,11 @@ function Header({
                 )}
                 {(userRole === 3 || userRole === 1) && (
                   <>
+                    <Nav.Link as={Link} to="/dashboard">
+                      Dashboard
+                    </Nav.Link>
                     <Nav.Link as={Link} to="/payments">
                       Cobros
-                    </Nav.Link>
-                  </>
-                )}
-                {userRole === 4 && ( // Cobros para los roles 4 y 1
-                  <>
-                    <Nav.Link as={Link} to="/ventas">
-                      Ventas
-                    </Nav.Link>
-
-                    <Nav.Link as={Link} to="/CreditCalculator">
-                      Calcular Credito
                     </Nav.Link>
                   </>
                 )}
@@ -88,14 +92,14 @@ function Header({
                     <Nav.Link as={Link} to="/CreditUser">
                       Ver Crédito
                     </Nav.Link>
+                    <Nav.Link as={Link} to="/CreditCalculator">
+                      Calcular Credito
+                    </Nav.Link>
                     <Nav.Link as={Link} to="/services">
                       Servicios
                     </Nav.Link>
                     <Nav.Link as={Link} to="/products">
                       Productos
-                    </Nav.Link>
-                    <Nav.Link as={Link} to="/CreditCalculator">
-                      Calcular Credito
                     </Nav.Link>
                   </>
                 )}
