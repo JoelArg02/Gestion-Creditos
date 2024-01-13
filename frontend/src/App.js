@@ -39,7 +39,6 @@ function App() {
   const [personDireccion, setPersonDireccion] = useState("");
   const [personEmail, setPersonEmail] = useState("");
   const [personDni, setPersonDni] = useState("");
-  console.log(userRole);
   const isTokenExpired = (token) => {
     try {
       const decoded = jwtDecode(token);

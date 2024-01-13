@@ -61,7 +61,6 @@ function CreditUser({ personDni, userRole }) {
       try {
         const data = await getPago(creditData[0].id_credito); // Supongo que getPago recibe el ID del crédito
         // setPayments(data);
-        console.log(data);
       } catch (error) {
         setErrorSearch("Error al obtener los pagos");
       } finally {

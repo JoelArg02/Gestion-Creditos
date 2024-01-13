@@ -76,7 +76,6 @@ Usuario.updatePassword = (id_usuario, contrasena, callback) => {
     if (err) {
       return callback(err);
     }
-    console.log(id_usuario, contrasena, hash);
     poolc.query(
       "UPDATE usuarios SET contrasena = $1 WHERE id_usuario = $2",
       [hash, id_usuario],

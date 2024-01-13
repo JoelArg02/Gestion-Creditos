@@ -71,7 +71,7 @@ exports.sendLoginNotificationEmail = (email, ip) => {
     if (error) {
       console.error("Error al enviar email:", error);
     } else {
-      console.log("Correo de notificación de inicio de sesión enviado");
+      console.log("Email enviado correctamente:")
     }
   });
 };

@@ -57,7 +57,6 @@ const FormularioCliente = () => {
 
           direccionHogar: "", // Este campo lo dejarás vacío para que el cliente lo complete
         });
-        console.log("Datos del formulario cargados:", datos);
       } catch (error) {
         console.error("Error al cargar los datos del formulario:", error);
       } finally {
@@ -74,7 +73,6 @@ const FormularioCliente = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos del formulario enviados:", formData);
   };
 
   if (loading) {

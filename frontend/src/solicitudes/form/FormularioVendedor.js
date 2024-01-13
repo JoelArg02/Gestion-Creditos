@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import { crearSolicitud } from "../../api/solicitud"; // Asegúrate de que la ruta sea correcta
+import React, { useState, useEffect } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import { crearSolicitud } from "../../api/solicitud";
+import { CSSTransition } from "react-transition-group";
+
 import Loading from "../../general/loading";
 
 const FormVendor = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
     nombreCliente: "",
     cedulaCliente: "",
@@ -12,7 +16,19 @@ const FormVendor = () => {
     valorDinero: "",
     detalles: "",
   });
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -24,8 +40,16 @@ const FormVendor = () => {
     try {
       const response = await crearSolicitud(formData);
       console.log("Solicitud enviada:", response);
+      setSuccess("Solicitud enviada con éxito");
+      setTimeout(() => {
+        setSuccess("");
+      }, 5000);
     } catch (error) {
       console.error("Error al enviar solicitud:", error);
+      setError("Error al enviar solicitud");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
     } finally {
       setLoading(false);
     }
@@ -35,6 +59,24 @@ const FormVendor = () => {
   }
   return (
     <Form onSubmit={handleSubmit}>
+      <CSSTransition
+        in={!!error}
+        timeout={300}
+        classNames="alert"
+        unmountOnExit
+      >
+        <Alert variant="danger">{error}</Alert>
+      </CSSTransition>
+
+      <CSSTransition
+        in={!!success}
+        timeout={300}
+        classNames="alert"
+        unmountOnExit
+      >
+        <Alert variant="success">{success}</Alert>
+      </CSSTransition>
+
       <Form.Group className="mb-3">
         <Form.Label>Nombre del Cliente</Form.Label>
         <Form.Control
@@ -71,10 +113,10 @@ const FormVendor = () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Valor del Crédito</Form.Label>
+        <Form.Label>Valor del Producto solicitado</Form.Label>
         <Form.Control
           type="number"
-          placeholder="Ingrese el valor del crédito"
+          placeholder="Ingrese el valor del producto en efectivo"
           name="valorDinero"
           value={formData.valorDinero}
           onChange={handleChange}
@@ -82,7 +124,7 @@ const FormVendor = () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Detalles de la Solicitud</Form.Label>
+        <Form.Label>Detalles de los productos</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}

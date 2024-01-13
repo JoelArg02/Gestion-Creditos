@@ -56,7 +56,6 @@ function UserCard({ show, handleClose }) {
           imagen_hogar: referenceData.imagen_hogar,
         });
       }
-      console.log(referenceData);
     } catch (error) {
       setError("Error al obtener detalles de la referencia");
     }
@@ -76,8 +75,6 @@ function UserCard({ show, handleClose }) {
         ciudad: personData.ciudad,
         referencias: personData.id_referencia_persona,
       });
-      console.log(personData);
-      console.log(personData.id_referencia_persona);
     } catch (error) {
       setError("Error al obtener detalles de la persona");
     }
@@ -280,7 +277,6 @@ function UserCard({ show, handleClose }) {
     </>
   );
 
-  console.log(referenciaDetails.imagen_hogar);
   const renderSelectedUserDetails = () => {
     if (!selectedUserOption) return null;
     const selectedUser = usuarios.find(
