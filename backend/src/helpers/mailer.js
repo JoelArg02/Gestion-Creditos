@@ -24,7 +24,7 @@ exports.sendContactEmail = (email, subject, htmlContent, callback) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error("Error al enviar email:", error);
+      console.error("Error al enviar email pilas:", error);
       return callback(error, null);
     }
     callback(null, info);
