@@ -145,7 +145,7 @@ function Dashboard() {
             <Card>
               <Card.Header>
                 <h6 className="text-primary fw-bold m-0 text-black">
-                  Lista de Créditos
+                  Solitudes
                 </h6>
               </Card.Header>
               <ListGroup variant="flush">
