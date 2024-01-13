@@ -18,6 +18,7 @@ import {
   PointElement,
   LineElement,
   Title,
+  Filler,
   Tooltip,
   Legend,
   ArcElement,
@@ -26,6 +27,8 @@ import {
 import "./Dashboard.css"; // Import your external CSS file
 import Loading from "../general/loading";
 import { obtenerSolicitudesPendientes } from "../api/solicitud";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 ChartJS.register(
   CategoryScale,
@@ -36,7 +39,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   ArcElement,
-  DoughnutController
+  DoughnutController,
+  Filler
 );
 
 const lineChartData = {
@@ -75,7 +79,7 @@ function getColorForStatus(status) {
       return "bg-success";
     case "Negado":
       return "bg-danger";
-    case "Pendiente":
+    case "pendiente":
       return "bg-warning";
     default:
       return "bg-secondary";
@@ -87,6 +91,26 @@ function Dashboard() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [solicitudes, setSolicitudes] = useState([]); // Initialize as an array
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const solicitudesPorPagina = 4;
+  const totalPages = Math.ceil(solicitudes.length / solicitudesPorPagina);
+
+  const getCurrentPageSolicitudes = () => {
+    const startIndex = (currentPage - 1) * solicitudesPorPagina;
+    return solicitudes.slice(startIndex, startIndex + solicitudesPorPagina);
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((page) => Math.min(page + 1, totalPages));
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage((page) => Math.max(page - 1, 1));
+  };
+
+  // Obtener las solicitudes de la página actual
+  const solicitudesPaginadas = getCurrentPageSolicitudes();
 
   useEffect(() => {
     getCredits()
@@ -101,14 +125,9 @@ function Dashboard() {
       setLoading(true);
       try {
         const response = await obtenerSolicitudesPendientes();
-        if (response && response.data && response.data.length > 0) {
-          setSolicitudes(response.data);
-          console.log("API Response:", response.data); // Log the API response
-        } else {
-          setSolicitudes([]);
-        }
+        setSolicitudes(response);
       } catch (error) {
-        console.error("Error al obtener las solicitudes pendientes", error);
+        console.error("Error al obtener las solicitudes pendientes");
         setError(error);
       } finally {
         setLoading(false);
@@ -118,11 +137,42 @@ function Dashboard() {
     cargarSolicitudesPendientes();
   }, []);
 
-  console.log("Solicitudes State:", solicitudes);
-
   if (loading) {
     return <Loading />;
   }
+  const buttonStyles = {
+    enabled: {
+      backgroundColor: "black", // Color cuando está habilitado
+      borderColor: "white",
+    },
+    disabled: {
+      backgroundColor: "#cccccc", // Gris claro cuando está deshabilitado
+      borderColor: "white",
+    },
+  };
+
+  const PaginationNumbers = ({ totalPages, currentPage, setCurrentPage }) => {
+    const buttonStyle = (page) => ({
+      borderColor: "white",
+      margin: "0 4px",
+      backgroundColor: currentPage === page ? "#cccccc" : "black", // Fondo gris claro para la página actual
+    });
+
+    return (
+      <div className="pagination-numbers">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <Button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            style={buttonStyle(page)}
+          >
+            {page}
+          </Button>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <>
       <Container className="mx-auto w-80 text-center">
@@ -159,51 +209,80 @@ function Dashboard() {
             <Card>
               <Card.Header>
                 <h6 className="text-primary fw-bold m-0 text-black">
-                  Solicitudes
+                  Solicitudes pendientes
                 </h6>
               </Card.Header>
               <ListGroup variant="flush">
-                {solicitudes.length > 0 ? (
-                  solicitudes.map(
-                    (
-                      solicitud // Map through the solicitudes array
-                    ) => (
-                      <ListGroup.Item key={solicitud.id}>
-                        <div className="row align-items-center justify-content-between">
-                          <div className="col text-start">
-                            <h6 className="mb-0">{solicitud.nombre_cliente}</h6>
-                            <span>{solicitud.cedula_cliente}</span>
-                            <br />
-                            <span>{solicitud.email_cliente}</span>
-                          </div>
-                          <div className="col text-start">
-                            <span>
-                              Monto solicitado: {solicitud.monto_solicitado}
-                            </span>
-                            <br />
-                            <span>Detalles: {solicitud.detalles}</span>
-                          </div>
-
-                          <div className="col-auto">
-                            <span
-                              className={`badge text-center ${getColorForStatus(
-                                solicitud.estado
-                              )}`}
-                              style={{ width: "100px", borderRadius: "50px" }}
-                            >
-                              {solicitud.estado}
-                            </span>
-                          </div>
+                {solicitudesPaginadas && solicitudesPaginadas.length > 0 ? (
+                  solicitudesPaginadas.map((solicitud) => (
+                    <ListGroup.Item key={solicitud.id}>
+                      <div className="row align-items-center justify-content-between">
+                        <div className="col text-start">
+                          <h6 className="mb-0">{solicitud.nombre_cliente}</h6>
+                          <span>{solicitud.cedula_cliente}</span>
+                          <br />
+                          <span>{solicitud.email_cliente}</span>
                         </div>
-                      </ListGroup.Item>
-                    )
-                  )
+                        <div className="col text-start">
+                          <span>
+                            Monto solicitado: {solicitud.monto_solicitado}
+                          </span>
+                          <br />
+                          <span>Detalles: {solicitud.detalles}</span>
+                        </div>
+
+                        <div className="col-auto">
+                          <span
+                            className={`badge text-center ${getColorForStatus(
+                              solicitud.estado
+                            )}`}
+                            style={{ width: "100px", borderRadius: "50px" }}
+                          >
+                            {solicitud.estado.charAt(0).toUpperCase() +
+                              solicitud.estado.slice(1).toLowerCase()}
+                          </span>
+                        </div>
+                      </div>
+                    </ListGroup.Item>
+                  ))
                 ) : (
                   <ListGroup.Item>
                     No hay solicitudes disponibles
                   </ListGroup.Item>
                 )}
               </ListGroup>
+              <div
+                className="pagination-buttons"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <Button
+                  onClick={goToPreviousPage}
+                  style={
+                    currentPage === 1
+                      ? buttonStyles.disabled
+                      : buttonStyles.enabled
+                  }
+                  disabled={currentPage === 1}
+                >
+                  <FontAwesomeIcon icon={faArrowLeft} /> Anterior
+                </Button>
+                <PaginationNumbers
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+                <Button
+                  onClick={goToNextPage}
+                  style={
+                    currentPage === totalPages
+                      ? buttonStyles.disabled
+                      : buttonStyles.enabled
+                  }
+                  disabled={currentPage === totalPages}
+                >
+                  Siguiente <FontAwesomeIcon icon={faArrowRight} />
+                </Button>
+              </div>
             </Card>
           </Col>
         </Row>

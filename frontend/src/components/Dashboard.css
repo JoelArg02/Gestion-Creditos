@@ -1,2 +1,10 @@
-.boton-espacio{
-    margin: 10px;}
+.boton-espacio {
+    margin: 10px;
+}
+
+.pagination-buttons{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+}

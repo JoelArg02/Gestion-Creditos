@@ -34,8 +34,6 @@ const actualizarSolicitud = async (id, datosActualizados) => {
 const obtenerSolicitudesPendientes = async () => {
     try {
         const response = await axios.get(`${apiConfig.baseURL}/solicitud/pendientes`);
-        console.log(response.data);
-
         return response.data;
     } catch (error) {
         throw error;
