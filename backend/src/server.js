@@ -13,6 +13,7 @@ const rolRoutes = require('./routes/rolRoutes');
 const personRoutes = require('./routes/personRoutes');
 const pagosRoutes = require('./routes/pagosRoutes');
 const mailerRoutes = require('./routes/mailerRoutes');
+const solicitudRoutes = require('./routes/solicitudRoutes');
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
   origin: '*', // Permite todas las fuentes
@@ -59,6 +60,9 @@ app.use('/api/persons', personRoutes);
 
 // Rutas para pagos
 app.use('/api/pagos', pagosRoutes);
+
+// Rutas de formularios/solicituds
+app.use('/api/solicitud', solicitudRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {

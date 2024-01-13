@@ -9,17 +9,17 @@ const transporter = nodemailer.createTransport({
     clientId:
       "967394478850-ho3clgo567dcu24dculqkvnn3jmcn9ed.apps.googleusercontent.com",
     clientSecret: "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",
-    refreshToken: "1//04nau1WJyI2aQCgYIARAAGAQSNwF-L9IrPiBhkuejrutrbD3dSprJm9ObBDLmKqIhxoOddQc-5sL6F7Prg8tbw_S0HrpJRrvZwD4",
+    refreshToken:
+      "1//04nau1WJyI2aQCgYIARAAGAQSNwF-L9IrPiBhkuejrutrbD3dSprJm9ObBDLmKqIhxoOddQc-5sL6F7Prg8tbw_S0HrpJRrvZwD4",
   },
 });
 
-
 exports.sendContactEmail = (email, subject, htmlContent, callback) => {
   const mailOptions = {
-      from: 'nexfonec123@gmail.com',
-      to: "joel.darguello@gmail.com",
-      subject: subject,
-      html: htmlContent // Usar html en lugar de text
+    from: "nexfonec123@gmail.com",
+    to: "joel.darguello@gmail.com",
+    subject: subject,
+    html: htmlContent, // Usar html en lugar de text
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -59,6 +59,23 @@ exports.sendLoginNotification = (email, ip, callback) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error("Error al enviar email de notificación:", error);
+      return callback(error, null);
+    }
+    callback(null, info);
+  });
+};
+
+exports.sendEmail = (email, subject, htmlContent, callback) => {
+  const mailOptions = {
+    from: "nexfonec123@gmail.com",
+    to: email,
+    subject: subject,
+    html: htmlContent,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error al enviar email:", error);
       return callback(error, null);
     }
     callback(null, info);
