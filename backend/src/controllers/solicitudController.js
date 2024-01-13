@@ -10,7 +10,7 @@ exports.crearSolicitud = (req, res) => {
         if (err) {
             return res.status(500).send("Error al crear la solicitud: " + err.message);
         }
-        const enlaceFormularioCliente = `http://localhost:3000/formulario-cliente/${idFormularioCliente}`;
+        const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
         const emailCliente = nuevaSolicitud.email_cliente; // Asegúrate de que este campo coincida con tu modelo
         const asuntoEmail = "Complete su solicitud";
         const contenidoHtml = `Por favor complete su solicitud en: ${enlaceFormularioCliente}`;

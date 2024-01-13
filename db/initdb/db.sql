@@ -35,6 +35,7 @@ CREATE TABLE solicitudes (
     email_cliente VARCHAR(255) NOT NULL,
     valor_dinero DECIMAL NOT NULL,
     detalles TEXT,
+    aprobado BOOLEAN NOT NULL DEFAULT FALSE,
     id_formulario_cliente UUID NOT NULL
 );
 

@@ -1,11 +1,11 @@
-const poolc = require("../config/db"); // Asegúrate de que la ruta sea correcta
+const poolc = require("../config/db"); 
 
 const Solicitud = {};
 
 Solicitud.crear = (datosSolicitud, callback) => {
   const { nombreCliente, cedulaCliente, emailCliente, valorDinero, detalles } =
     datosSolicitud;
-  const idFormularioCliente = datosSolicitud.idFormularioCliente; // Usar el UUID pasado desde el controlador
+  const idFormularioCliente = datosSolicitud.idFormularioCliente; 
 
   poolc.query(
     "INSERT INTO solicitudes (nombre_cliente, cedula_cliente, email_cliente, valor_dinero, detalles, id_formulario_cliente) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
