@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 
 function cargarContenidoHtml(nombreArchivo) {
-  const rutaArchivo = path.join("html", nombreArchivo);
+  const rutaArchivo = path.join("../html", nombreArchivo);
   return fs.readFileSync(rutaArchivo, "utf8");
 }
 
