@@ -44,14 +44,14 @@ exports.actualizarEstado = (req, res) => {
 
 function enviarCorreoCliente(email, idFormularioCliente, fechaExpiracion) {
   const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
-  const contenidoHtml = `
-    <html>
-      <body>
-        <p>Su solicitud de crédito ha sido aprobada. Por favor complete el proceso de solicitud antes del ${fechaExpiracion.toLocaleDateString()} haciendo clic en el siguiente enlace:</p>
-        <a href="${enlaceFormularioCliente}">Completar Solicitud</a>
-      </body>
-    </html>
-  `;
+  let contenidoHtml = cargarContenidoHtml("cliente-aprobado.html");
+
+  contenidoHtml = contenidoHtml.replace("${enlaceFormularioCliente}", enlaceFormularioCliente);
+  contenidoHtml = contenidoHtml.replace("${fechaExpiracion.toLocaleDateString()}", fechaExpiracion.toLocaleDateString());
+  
+  
+
+  
   mailer.sendEmail(
     email,
     "Solicitud de Crédito Aprobada",
