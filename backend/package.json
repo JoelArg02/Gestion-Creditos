@@ -22,7 +22,9 @@
     "mysql2": "^3.6.5",
     "mysql2-promise": "^0.1.4",
     "nodemailer": "^6.9.7",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "uid": "^2.0.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0"

@@ -12,7 +12,7 @@ import "./login.css";
 import React, { useState } from "react";
 import { login } from "../api/api";
 import ModalPasswordHelp from "../modal/ModalPasswordHelp";
-import Loading from "../general/loading";
+import Loading from "./loading";
 
 function Login(props) {
   const navigate = useNavigate();

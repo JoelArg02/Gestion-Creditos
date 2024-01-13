@@ -1,12 +1,13 @@
 import React from 'react';
-import SolicitudVendedor from './form/form.js';
+import SolicitudVendedor from './form/FormularioVendedor';
+import { Container } from 'react-bootstrap';
 
 const Home = () => {
   return (
-    <div>
-      <h1>Bienvenido a la Página de Inicio</h1>
+    <Container>
+      <h1 className="text-center my-4">Genera Consulta</h1>
       <SolicitudVendedor />
-    </div>
+    </Container>
   );
 }
 

@@ -28,6 +28,17 @@ CREATE TABLE roles (
     nombre_rol VARCHAR(255) NOT NULL UNIQUE
 );
 
+CREATE TABLE solicitudes (
+    id SERIAL PRIMARY KEY,
+    nombre_cliente VARCHAR(255) NOT NULL,
+    cedula_cliente VARCHAR(255) NOT NULL,
+    email_cliente VARCHAR(255) NOT NULL,
+    valor_dinero DECIMAL NOT NULL,
+    detalles TEXT,
+    id_formulario_cliente UUID NOT NULL
+);
+
+
 -- Nota: La tabla 'referencia' debe crearse antes de 'personas' para establecer la clave foránea
 CREATE TABLE referencias (
     id_referencia SERIAL PRIMARY KEY,
