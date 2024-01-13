@@ -46,7 +46,6 @@ function enviarCorreoCliente(email, idFormularioCliente, fechaExpiracion) {
   const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
   let contenidoHtml = cargarContenidoHtml("cliente-aprobado.html");
 
-  // Reemplaza los placeholders en el contenido HTML con los valores reales
   contenidoHtml = contenidoHtml.replace("${enlaceFormularioCliente}", enlaceFormularioCliente);
   contenidoHtml = contenidoHtml.replace("${fechaExpiracion.toLocaleDateString()}", fechaExpiracion.toLocaleDateString());
   

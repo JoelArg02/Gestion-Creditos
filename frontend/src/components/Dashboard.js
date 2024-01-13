@@ -24,6 +24,8 @@ import {
   DoughnutController,
 } from "chart.js";
 import "./Dashboard.css"; // Import your external CSS file
+import Loading from "../general/loading";
+import { obtenerSolicitudesPendientes } from "../api/solicitud";
 
 ChartJS.register(
   CategoryScale,
@@ -67,21 +69,6 @@ const lineChartData = {
   ],
 };
 
-const creditos = [
-  {
-    id: 1,
-    estado: "Por Aprobar",
-    detalle: "Crédito de $5000",
-    name: "Juan Arguello",
-  },
-  {
-    id: 2,
-    estado: "Negado",
-    detalle: "Crédito de $5000",
-    name: "Juan Arguello",
-  },
-];
-
 function getColorForStatus(status) {
   switch (status) {
     case "Por Aprobar":
@@ -98,6 +85,8 @@ function getColorForStatus(status) {
 function Dashboard() {
   const [credits, setCredits] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [solicitudes, setSolicitudes] = useState([]); // Initialize as an array
 
   useEffect(() => {
     getCredits()
@@ -107,8 +96,33 @@ function Dashboard() {
       .catch((error) => {
         setError(error);
       });
+
+    const cargarSolicitudesPendientes = async () => {
+      setLoading(true);
+      try {
+        const response = await obtenerSolicitudesPendientes();
+        if (response && response.data && response.data.length > 0) {
+          setSolicitudes(response.data);
+          console.log("API Response:", response.data); // Log the API response
+        } else {
+          setSolicitudes([]);
+        }
+      } catch (error) {
+        console.error("Error al obtener las solicitudes pendientes", error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarSolicitudesPendientes();
   }, []);
 
+  console.log("Solicitudes State:", solicitudes);
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       <Container className="mx-auto w-80 text-center">
@@ -145,33 +159,50 @@ function Dashboard() {
             <Card>
               <Card.Header>
                 <h6 className="text-primary fw-bold m-0 text-black">
-                  Solitudes
+                  Solicitudes
                 </h6>
               </Card.Header>
               <ListGroup variant="flush">
-                {creditos.map((credito) => (
-                  <ListGroup.Item key={credito.id}>
-                    <div className="row align-items-center justify-content-between">
-                      <div className="col text-start">
-                        <h6 className="mb-0">{credito.name}</h6>
-                      </div>
-                      <div className="col text-start">
-                        <span className="text-xs">{credito.detalle}</span>
-                      </div>
+                {solicitudes.length > 0 ? (
+                  solicitudes.map(
+                    (
+                      solicitud // Map through the solicitudes array
+                    ) => (
+                      <ListGroup.Item key={solicitud.id}>
+                        <div className="row align-items-center justify-content-between">
+                          <div className="col text-start">
+                            <h6 className="mb-0">{solicitud.nombre_cliente}</h6>
+                            <span>{solicitud.cedula_cliente}</span>
+                            <br />
+                            <span>{solicitud.email_cliente}</span>
+                          </div>
+                          <div className="col text-start">
+                            <span>
+                              Monto solicitado: {solicitud.monto_solicitado}
+                            </span>
+                            <br />
+                            <span>Detalles: {solicitud.detalles}</span>
+                          </div>
 
-                      <div className="col-auto">
-                        <span
-                          className={`badge text-center ${getColorForStatus(
-                            credito.estado
-                          )}`}
-                          style={{ width: "100px", borderRadius: "50px" }}
-                        >
-                          {credito.estado}
-                        </span>
-                      </div>
-                    </div>
+                          <div className="col-auto">
+                            <span
+                              className={`badge text-center ${getColorForStatus(
+                                solicitud.estado
+                              )}`}
+                              style={{ width: "100px", borderRadius: "50px" }}
+                            >
+                              {solicitud.estado}
+                            </span>
+                          </div>
+                        </div>
+                      </ListGroup.Item>
+                    )
+                  )
+                ) : (
+                  <ListGroup.Item>
+                    No hay solicitudes disponibles
                   </ListGroup.Item>
-                ))}
+                )}
               </ListGroup>
             </Card>
           </Col>

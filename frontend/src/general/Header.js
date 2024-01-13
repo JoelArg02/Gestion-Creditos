@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
 import ProfileModal from "../modal/ModalProfile";
-import Loading from "./loading";
 
 function Header({
   isLoggedIn,
@@ -18,7 +17,6 @@ function Header({
   const [showProfileModal, setShowProfileModal] = useState(false);
   const handleProfileClick = () => setShowProfileModal(true);
   const handleCloseProfileModal = () => setShowProfileModal(false);
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,11 +25,9 @@ function Header({
   };
 
   const handleLogoutClick = () => {
-    setLoading(true);
     localStorage.removeItem("token");
     navigate("/");
     window.location.reload();
-    setLoading(false);
   };
 
   return (
