@@ -13,44 +13,45 @@ exports.crearSolicitud = (req, res) => {
         .send("Error al crear la solicitud: " + err.message);
     }
     const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
-    const emailCliente = nuevaSolicitud.email_cliente; // Asegúrate de que este campo coincida con tu modelo
+    const emailCliente = nuevaSolicitud.email_cliente;
     const asuntoEmail = "Complete su solicitud";
     const contenidoHtml = `
-    <html>
-      <head>
-        <style>
-          .email-container {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            padding: 20px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            text-align: center;
-          }
-          .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-          }
-          .btn:hover {
-            background-color: #0056b3;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="email-container">
-          <h2>Complete su Solicitud</h2>
-          <p>Por favor complete su solicitud haciendo clic en el siguiente enlace:</p>
-          <a href="${enlaceFormularioCliente}" class="btn">Completar Solicitud</a>
-        </div>
-      </body>
-    </html>
-    `;
+                <html>
+                  <head>
+                    <style>
+                      .email-container {
+                        font-family: Arial, sans-serif;
+                        background-color: #f2f2f2;
+                        padding: 20px;
+                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                        border-radius: 10px;
+                        text-align: center;
+                      }
+                      .btn {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        margin-top: 20px;
+                        background-color: #ffffff; /* Fondo blanco */
+                        color: #000000; /* Texto negro */
+                        border: 1px solid #007bff; /* Borde azul para destacar */
+                        border-radius: 5px;
+                        text-decoration: none;
+                        font-weight: bold;
+                      }
+                      .btn:hover {
+                        background-color: #e8e8e8; /* Un ligero cambio de color al pasar el ratón por encima */
+                      }
+                    </style>
+                  </head>
+                  <body>
+                    <div class="email-container">
+                      <h2>Complete su Solicitud</h2>
+                      <p>Por favor complete su solicitud haciendo clic en el siguiente enlace:</p>
+                      <a href="${enlaceFormularioCliente}" class="btn">Completar Solicitud</a>
+                    </div>
+                  </body>
+                </html>
+                `;
     mailer.sendEmail(
       emailCliente,
       asuntoEmail,
