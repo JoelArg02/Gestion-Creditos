@@ -21,6 +21,7 @@ import CreditUser from "./components/CreditUser";
 import AddCredit from "./components/AddCredit";
 import CreditCalculator from "./components/CreditCalculator";
 import Payments from "./components/Payments";
+import Solicitudes from "./solicitudes/home.js";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -166,6 +167,7 @@ function App() {
             path="*"
             element={<Error404 isAuthenticated={isAuthenticated} />}
           />
+          <Route path="/solicitudes" element={<Solicitudes />} />
         </Routes>
         <Footer />
       </div>

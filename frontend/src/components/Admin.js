@@ -56,12 +56,27 @@ function Admin() {
             </Card.Body>
           </Card>
         </Col>
+
+        <UserModal show={showUserModal} handleClose={handleCloseUserModal} />
+        <BusinessModal
+          show={showBusinessModal}
+          handleClose={handleCloseBusinessModal}
+        />
+        <Col md={6} lg={4} className="mb-4">
+          <Card className="shadow text-center">
+            <Card.Body>
+              <Card.Title>Solicitud</Card.Title>
+              <Card.Text>Gestion de solicitudes</Card.Text>
+              <Button
+                variant="primary"
+                style={{ borderColor: "white" }}
+              >
+                Administrar Usuarios
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
-      <UserModal show={showUserModal} handleClose={handleCloseUserModal} />
-      <BusinessModal
-        show={showBusinessModal}
-        handleClose={handleCloseBusinessModal}
-      />
     </Container>
   );
 }
