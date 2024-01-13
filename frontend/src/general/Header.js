@@ -45,27 +45,18 @@ function Header({
                   userRole === 2 ||
                   userRole === 3 ||
                   userRole === 4) && (
+                  <Nav.Link as={Link} to="/admin">
+                    Administracion
+                  </Nav.Link>
+                )}
+                {(userRole === 1 || userRole === 2 || userRole === 4) && (
                   <>
-                    <Nav.Link as={Link} to="/admin">
-                      Administracion
-                    </Nav.Link>
                     <Nav.Link as={Link} to="/CreditCalculator">
                       Calcular Crédito
                     </Nav.Link>
                   </>
                 )}
 
-                {userRole === 1 && ( // Administrador
-                  <>
-                    <Nav.Link as={Link} to="/dashboard">
-                      Dashboard
-                    </Nav.Link>
-
-                    <Nav.Link as={Link} to="/CreditCalculator">
-                      Calcular Credito
-                    </Nav.Link>
-                  </>
-                )}
                 {(userRole === 2 || userRole === 1) && ( // Cobros para los roles 4 y 1
                   <>
                     <Nav.Link as={Link} to="/AddCredit">
@@ -73,10 +64,10 @@ function Header({
                     </Nav.Link>
                   </>
                 )}
-                {(userRole === 3 || userRole === 1) && (
+                {userRole === 3 && (
                   <>
-                    <Nav.Link as={Link} to="/dashboard">
-                      Dashboard
+                    <Nav.Link as={Link} to="/CreditCalculator">
+                      Calcular Crédito
                     </Nav.Link>
                     <Nav.Link as={Link} to="/payments">
                       Cobros

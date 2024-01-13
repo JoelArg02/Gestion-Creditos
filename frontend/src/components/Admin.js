@@ -76,9 +76,12 @@ function Admin(props) {
             <Card.Body>
               <Card.Title>Solicitud</Card.Title>
               <Card.Text>Gestión de solicitudes</Card.Text>
+
+              <Card.Text>Crear y gestionar solicitudes.</Card.Text>
+
               <Link to="/solicitudes">
                 <Button variant="primary" style={{ borderColor: "white" }}>
-                  Administrar Usuarios
+                  Ir a Solicitudes
                 </Button>
               </Link>
             </Card.Body>

@@ -6,6 +6,7 @@ import { Container, Card, Button } from "react-bootstrap";
 const Home = ({ userRole }) => {
   const esAdmin = userRole === 1;
   const esContador = userRole === 2;
+  const esCobrador = userRole === 3;
   const esVendedor = userRole === 4;
 
   // Estado para controlar qué componente se muestra
@@ -48,7 +49,7 @@ const Home = ({ userRole }) => {
         </div>
       )}
 
-      {esVendedor || (esAdmin && mostrarVendedor) ? (
+      {esVendedor || esCobrador ||  (esAdmin && mostrarVendedor) ? (
         <SolicitudVendedor />
       ) : null}
       {esContador || (esAdmin && mostrarContador) ? (

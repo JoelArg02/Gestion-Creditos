@@ -182,6 +182,7 @@ function App() {
                 <Layout>
                   {userRole === 5 ? <Navigate to="/CreditUser" /> : null}
                   {userRole === 4 ? <Navigate to="/admin" /> : null}
+                  {userRole === 3 ? <Navigate to="/payments" /> : null}
                   <Dashboard />
                 </Layout>
               ) : (

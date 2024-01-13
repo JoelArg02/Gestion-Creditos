@@ -172,7 +172,7 @@ function CreditCalculator(props) {
           {/* Segunda Fila */}
           <div className="row-custom">
             <div className="col-custom">
-              {userRole === 1 || userRole === 2 && (
+              {(userRole === 1 || userRole === 2 )&& (
                 <>
                   <span className="label-custom">Fecha de Inicio</span>
                   <div className="form-field-container">
@@ -200,7 +200,7 @@ function CreditCalculator(props) {
                   </div>
                 </>
               )}
-              {userRole === 5 || userRole === 4 && (
+              {(userRole === 5 || userRole === 4 || userRole === 3) && (
                 <>
                   <span className="label-custom">Cuota</span>
                   <div className="form-field-container">
