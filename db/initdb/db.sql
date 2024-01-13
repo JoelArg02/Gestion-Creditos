@@ -33,10 +33,14 @@ CREATE TABLE solicitudes (
     nombre_cliente VARCHAR(255) NOT NULL,
     cedula_cliente VARCHAR(255) NOT NULL,
     email_cliente VARCHAR(255) NOT NULL,
-    valor_dinero DECIMAL NOT NULL,
+    monto_solicitado DECIMAL NOT NULL,
     detalles TEXT,
-    aprobado BOOLEAN NOT NULL DEFAULT FALSE,
+    estado VARCHAR(50) DEFAULT 'pendiente',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    enlace_expira TIMESTAMP,
     id_formulario_cliente UUID NOT NULL
+
 );
 
 

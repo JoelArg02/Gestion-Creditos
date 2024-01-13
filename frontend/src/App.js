@@ -118,9 +118,13 @@ function App() {
           <Route
             path="/"
             element={
-              <Layout>
-                <HomePage />
-              </Layout>
+              isAuthenticated ? (
+                <Navigate to="/dashboard" />
+              ) : (
+                <Layout>
+                  <HomePage />
+                </Layout>
+              )
             }
           />
           <Route
@@ -199,7 +203,7 @@ function App() {
             path="/CreditCalculator"
             element={
               <Layout>
-                <CreditCalculator />
+                <CreditCalculator userRole={userRole} />
               </Layout>
             }
           />
@@ -227,7 +231,7 @@ function App() {
             path="/solicitudes"
             element={
               <Layout>
-                <Solicitudes />
+                <Solicitudes userRole={userRole} />
               </Layout>
             }
           />

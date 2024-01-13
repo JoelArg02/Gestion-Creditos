@@ -125,6 +125,7 @@ function CreditCalculator(props) {
     padding: "10px 5px",
   };
 
+  console.log("userRole", userRole)
   return (
     <Container className="card-custom">
       <Card style={cardStyle}>

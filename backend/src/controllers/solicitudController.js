@@ -1,10 +1,96 @@
 const Solicitud = require("../models/solicitud");
-const { v4: uuidv4 } = require("uuid");
 const mailer = require("../helpers/mailer");
+const emailContador = "joelitodaniel02@gmail.com";
+const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const path = require("path");
+
+function cargarContenidoHtml(nombreArchivo) {
+  const rutaArchivo = path.join("html", nombreArchivo);
+  return fs.readFileSync(rutaArchivo, "utf8");
+}
+
+exports.actualizarEstado = (req, res) => {
+  const { id } = req.params;
+  const { estado } = req.body;
+  let fechaExpiracion = null;
+
+  Solicitud.actualizarEstado(
+    id,
+    estado,
+    fechaExpiracion,
+    (err, solicitudActualizada) => {
+      if (err) {
+        return res
+          .status(500)
+          .send("Error al actualizar la solicitud: " + err.message);
+      }
+
+      if (estado === "aprobado") {
+        enviarCorreoCliente(
+          solicitudActualizada.email_cliente,
+          solicitudActualizada.id_formulario_cliente,
+          (fechaExpiracion = new Date()),
+          fechaExpiracion.setDate(fechaExpiracion.getDate() + 3)
+        );
+      } else if (estado === "rechazado") {
+        enviarCorreoRechazo(solicitudActualizada.email_cliente);
+      }
+
+      res.status(200).json(solicitudActualizada);
+    }
+  );
+};
+
+function enviarCorreoCliente(email, idFormularioCliente, fechaExpiracion) {
+  const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
+  const contenidoHtml = `
+    <html>
+      <body>
+        <p>Su solicitud de crédito ha sido aprobada. Por favor complete el proceso de solicitud antes del ${fechaExpiracion.toLocaleDateString()} haciendo clic en el siguiente enlace:</p>
+        <a href="${enlaceFormularioCliente}">Completar Solicitud</a>
+      </body>
+    </html>
+  `;
+  mailer.sendEmail(
+    email,
+    "Solicitud de Crédito Aprobada",
+    contenidoHtml,
+    (error, info) => {
+      if (error) {
+        console.error("Error al enviar email al cliente:", error);
+      }
+    }
+  );
+}
+
+function enviarCorreoRechazo(email) {
+  const contenidoHtml = `
+        <html>
+            <body>
+                <p>Lamentamos informarle que su solicitud de crédito ha sido rechazada.</p>
+            </body>
+        </html>
+    `;
+  mailer.sendEmail(
+    email,
+    "Solicitud de Crédito Rechazada",
+    contenidoHtml,
+    (error, info) => {
+      if (error) {
+        console.error("Error al enviar email de rechazo al cliente:", error);
+      }
+    }
+  );
+}
 
 exports.crearSolicitud = (req, res) => {
-  const idFormularioCliente = uuidv4(); // Generar UUID
-  const datosSolicitud = { ...req.body, idFormularioCliente };
+  const idFormularioCliente = uuidv4(); // Generar un UUID para la solicitud
+  const datosSolicitud = {
+    ...req.body,
+    idFormularioCliente,
+    estado: "pendiente",
+  };
 
   Solicitud.crear(datosSolicitud, (err, nuevaSolicitud) => {
     if (err) {
@@ -12,72 +98,59 @@ exports.crearSolicitud = (req, res) => {
         .status(500)
         .send("Error al crear la solicitud: " + err.message);
     }
-    const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
-    const emailCliente = nuevaSolicitud.email_cliente;
-    const asuntoEmail = "Complete su solicitud";
-    const contenidoHtml = `
-                <html>
-                  <head>
-                    <style>
-                      .email-container {
-                        font-family: Arial, sans-serif;
-                        background-color: #f2f2f2;
-                        padding: 20px;
-                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-                        border-radius: 10px;
-                        text-align: center;
-                      }
-                      .btn {
-                        display: inline-block;
-                        padding: 10px 20px;
-                        margin-top: 20px;
-                        background-color: #ffffff; /* Fondo blanco */
-                        color: #000000; /* Texto negro */
-                        border: 1px solid #007bff; /* Borde azul para destacar */
-                        border-radius: 5px;
-                        text-decoration: none;
-                        font-weight: bold;
-                      }
-                      .btn:hover {
-                        background-color: #e8e8e8; /* Un ligero cambio de color al pasar el ratón por encima */
-                      }
-                    </style>
-                  </head>
-                  <body>
-                    <div class="email-container">
-                      <h2>Complete su Solicitud</h2>
-                      <p>Por favor complete su solicitud haciendo clic en el siguiente enlace:</p>
-                      <a href="${enlaceFormularioCliente}" class="btn">Completar Solicitud</a>
-                    </div>
-                  </body>
-                </html>
-                `;
-    mailer.sendEmail(
-      emailCliente,
-      asuntoEmail,
-      contenidoHtml,
-      (error, info) => {
-        if (error) {
-          console.error("Error al enviar email:", error);
-          // Puedes optar por enviar una respuesta diferente aquí si el envío de email es crítico
-        }
-      }
-    );
 
+    enviarCorreoContador(emailContador, nuevaSolicitud);
     res.status(201).json(nuevaSolicitud);
   });
 };
 
+function enviarCorreoContador(email, nuevaSolicitud) {
+  let contenidoHtml = cargarContenidoHtml("contador.html");
+
+  contenidoHtml = contenidoHtml.replace(
+    "${nombre_cliente}",
+    nuevaSolicitud.nombre_cliente
+  );
+  contenidoHtml = contenidoHtml.replace(
+    "${monto_solicitado}",
+    nuevaSolicitud.monto_solicitado
+  );
+  contenidoHtml = contenidoHtml.replace("${detalles}", nuevaSolicitud.detalles);
+
+  mailer.sendEmail(
+    email,
+    "Nueva Solicitud de Crédito Pendiente",
+    contenidoHtml,
+    (error, info) => {
+      if (error) {
+        console.error("Error al enviar email al contador:", error);
+      }
+    }
+  );
+}
+
 exports.getSolicitudByFormularioId = (req, res) => {
   const formularioId = req.params.id;
 
-  Solicitud.getByFormularioId(formularioId, (error, solicitud) => {
-    if (error) {
-      return res.status(500).json({ error: error.message });
+  Solicitud.getByFormularioId(formularioId, (err, solicitud) => {
+    if (err) {
+      return res
+        .status(500)
+        .send("Error al obtener la solicitud: " + err.message);
     }
     if (!solicitud) {
-      return res.status(404).json({ message: "Solicitud no encontrada" });
+      return res.status(404).send("Solicitud no encontrada.");
     }
     res.status(200).json(solicitud);
+  });
+};
+
+exports.obtenerSolicitudesPendientes = (req, res) => {
+  Solicitud.obtenerPendientes((error, solicitudes) => {
+    if (error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(200).json(solicitudes);
+    }
   });
 };

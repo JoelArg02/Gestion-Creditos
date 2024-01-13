@@ -51,7 +51,7 @@ function Header({
                       Dashboard
                     </Nav.Link>
                     <Nav.Link as={Link} to="/admin">
-                      Admin
+                      Administracion
                     </Nav.Link>
                     <Nav.Link as={Link} to="/CreditCalculator">
                       Calcular Credito

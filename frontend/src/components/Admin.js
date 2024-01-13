@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import UserModal from "../card/UserCard";
 import BusinessModal from "../card/BusinessCard";
+import { Link } from "react-router-dom"; // Asegúrate de importar Link desde react-router-dom
+
 
 function Admin() {
   const [showUserModal, setShowUserModal] = useState(false);
@@ -66,13 +68,14 @@ function Admin() {
           <Card className="shadow text-center">
             <Card.Body>
               <Card.Title>Solicitud</Card.Title>
-              <Card.Text>Gestion de solicitudes</Card.Text>
-              <Button
-                variant="primary"
-                style={{ borderColor: "white" }}
-              >
-                Administrar Usuarios
-              </Button>
+              <Card.Text>Gestión de solicitudes</Card.Text>
+              <Link to="/solicitudes">
+                {" "}
+                {/* Agrega Link con la ruta deseada */}
+                <Button variant="primary" style={{ borderColor: "white" }}>
+                  Administrar Usuarios
+                </Button>
+              </Link>
             </Card.Body>
           </Card>
         </Col>

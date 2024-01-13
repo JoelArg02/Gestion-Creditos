@@ -23,11 +23,24 @@ const crearSolicitud = async (datosSolicitud) => {
 // Actualizar una solicitud existente
 const actualizarSolicitud = async (id, datosActualizados) => {
     try {
-        const response = await axios.put(`${apiConfig.baseURL}/solicitud/${id}`, datosActualizados);
+        const response = await axios.put(`${apiConfig.baseURL}/solicitud/actualizar/${id}`, datosActualizados);
+        
         return response.data;
     } catch (error) {
         throw error;
     }
 };
 
-export { getSolicitudById, crearSolicitud, actualizarSolicitud };
+const obtenerSolicitudesPendientes = async () => {
+    try {
+        const response = await axios.get(`${apiConfig.baseURL}/solicitud/pendientes`);
+        console.log(response.data);
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+  
+
+export { getSolicitudById, crearSolicitud, actualizarSolicitud, obtenerSolicitudesPendientes };
