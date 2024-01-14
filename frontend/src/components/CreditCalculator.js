@@ -171,7 +171,7 @@ function CreditCalculator(props) {
           {/* Segunda Fila */}
           <div className="row-custom">
             <div className="col-custom">
-              {(userRole === 1 || userRole === 2 )&& (
+              {(userRole === 1 || userRole === 2) && (
                 <>
                   <span className="label-custom">Fecha de Inicio</span>
                   <div className="form-field-container">
@@ -186,15 +186,11 @@ function CreditCalculator(props) {
 
               {userRole === "" && (
                 <>
-                  <span className="label-custom">Cuota</span>
+                  <span className="label-custom">Entrada</span>
                   <div className="form-field-container">
                     <InputGroup className="input-group-custom">
                       <InputGroup.Text>$</InputGroup.Text>
-                      <Form.Control
-                        disabled
-                        type="number"
-                        value={monthlyQuota.toFixed(2)}
-                      />
+                      <Form.Control type="number" value={entryQuota} disabled />
                     </InputGroup>
                   </div>
                 </>
@@ -215,7 +211,6 @@ function CreditCalculator(props) {
                 </>
               )}
 
-
               {(userRole === 1 || userRole === 2) && (
                 <>
                   <span className="label-custom">Interés</span>
@@ -227,7 +222,7 @@ function CreditCalculator(props) {
                   </div>
                 </>
               )}
-              {(userRole === 1 || userRole === 2 )&&(
+              {(userRole === 1 || userRole === 2) && (
                 <>
                   <span className="label-custom">Entrada</span>
                   <div className="form-field-container">
@@ -241,7 +236,7 @@ function CreditCalculator(props) {
             </div>
 
             <div className="col-custom">
-              {(userRole === 1 || userRole === 2 ) && (
+              {(userRole === 1 || userRole === 2) && (
                 <>
                   <span className="label-custom">Fecha Final</span>
                   <div className="form-field-container">

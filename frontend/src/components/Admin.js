@@ -87,6 +87,38 @@ function Admin(props) {
             </Card.Body>
           </Card>
         </Col>
+        <Col md={6} lg={4} className="mb-4">
+          <Card className="shadow text-center">
+            <Card.Body>
+              <Card.Title>Reportes</Card.Title>
+              <Card.Text>Gestión de reportes</Card.Text>
+
+              <Card.Text>Generar reportes.</Card.Text>
+
+              <Link to="/reportes">
+                <Button variant="primary" style={{ borderColor: "white" }}>
+                  Ir a Reportes
+                </Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={6} lg={4} className="mb-4">
+          <Card className="shadow text-center">
+            <Card.Body>
+              <Card.Title>Credito</Card.Title>
+              <Card.Text>Gestión de credito</Card.Text>
+
+              <Card.Text>Asignar Creditos</Card.Text>
+
+              <Link to="/perfil">
+                <Button variant="primary" style={{ borderColor: "white" }}>
+                  Asignar Credito
+                </Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
     </Container>
   );

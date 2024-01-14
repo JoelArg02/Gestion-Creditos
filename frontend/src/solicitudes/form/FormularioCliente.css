@@ -1,9 +1,63 @@
-.custom-container-cl{
+.custom-container-cl {
     margin-top: 50px;
     margin-bottom: 20px;
     padding: 20px;
     border: 1px solid #e5e5e5;
     border-radius: 5px;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+}
+
+.custom-container-cl .mb-4 {
+    background-color: #dff0d8;
+    /* Un verde claro para el fondo */
+    border: 1px solid #d6e9c6;
+    /* Un verde un poco más oscuro para el borde */
+    color: #3c763d;
+    /* Un verde oscuro para el texto */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    margin-bottom: 20px;
+    /* Espaciado inferior */
+    transition: box-shadow 0.3s ease;
+    /* Transición suave para la sombra */
+
+}
+
+.custom-container-cl .mb-4 .card-title {
+    font-family: 'Arial', sans-serif;
+    /* Fuente para el título */
+    font-size: 1.5rem;
+    /* Tamaño más grande para el título */
+    font-weight: bold;
+    /* Texto en negrita */
+    color: #28a745;
+    /* Un verde más intenso para el título */
+    
+}
+
+.custom-container-cl .mb-4 .card-text {
+    font-family: 'Verdana', sans-serif;
+    /* Fuente para el texto */
+    color: #555;
+    /* Color de texto estándar */
+    margin-top: 10px;
+    /* Espaciado superior para el texto */
+}
+
+custom-container-cl .mb-4:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Sombra más pronunciada al pasar el mouse */
+}
+
+.custom-container-cl .mb-4 button {
+    transition: transform 0.2s ease;
+    /* Transición suave para el efecto de clic */
+}
+
+.custom-container-cl .mb-4 button:hover {
+    transform: scale(1.05);
+    /* Ligeramente más grande al pasar el mouse */
 }

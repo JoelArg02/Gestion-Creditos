@@ -1,5 +1,9 @@
 {
+  "name": "joel-creditos",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "jsonwebtoken": "^9.0.2"
-  }
+  },
+  "proxy": "https://gist.githubusercontent.com"
 }
