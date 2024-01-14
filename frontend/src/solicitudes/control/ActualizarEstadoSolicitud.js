@@ -1,19 +1,18 @@
-// ActualizarEstadoSolicitud.js
 import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Card } from "react-bootstrap";
 import {
   actualizarSolicitud,
   obtenerSolicitudesPendientes,
-} from "../../api/solicitud"; // Asegúrate de que la ruta sea correcta
+} from "../../api/solicitud";
 import Loading from "../../general/loading";
-import './ActualizarEstadoSolicitud.css';
+import "./ActualizarEstadoSolicitud.css";
+
 const ActualizarEstadoSolicitud = () => {
   const [solicitudes, setSolicitudes] = useState([]);
   const [idSolicitudSeleccionada, setIdSolicitudSeleccionada] = useState("");
   const [estado, setEstado] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [loading, setLoading] = useState(false);
-  const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
 
   useEffect(() => {
     const cargarSolicitudesPendientes = async () => {
@@ -22,7 +21,8 @@ const ActualizarEstadoSolicitud = () => {
         const solicitudesPendientes = await obtenerSolicitudesPendientes();
         setSolicitudes(solicitudesPendientes);
       } catch (error) {
-        console.error("Error al obtener las solicitudes pendientes");
+        console.error("Error al obtener las solicitudes pendientes", error);
+        setMensaje("Error al cargar las solicitudes pendientes.");
       } finally {
         setLoading(false);
       }
@@ -31,30 +31,25 @@ const ActualizarEstadoSolicitud = () => {
     cargarSolicitudesPendientes();
   }, []);
 
-  useEffect(() => {
-    if (idSolicitudSeleccionada) {
-      const solicitud = solicitudes.find(
-        (solicitud) => solicitud.id === idSolicitudSeleccionada
-      );
-      setSolicitudSeleccionada(solicitud);
-    } else {
-      setSolicitudSeleccionada(null);
-    }
-  }, [idSolicitudSeleccionada, solicitudes]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       await actualizarSolicitud(idSolicitudSeleccionada, { estado });
-      setMensaje(`Se actualizo el estado a ${estado}`);
-      setSolicitudSeleccionada(null);
+      setMensaje(`Se actualizó el estado a ${estado}.`);
+      setIdSolicitudSeleccionada("");
+      setEstado("");
     } catch (error) {
-      setMensaje("Error al actualizar el estado");
+      console.error("Error al actualizar el estado", error);
+      setMensaje("Error al actualizar el estado.");
     } finally {
       setLoading(false);
     }
   };
+
+  const solicitudSeleccionada = solicitudes.find(
+    (s) => s.id.toString() === idSolicitudSeleccionada
+  );
 
   if (loading) {
     return <Loading />;
@@ -71,8 +66,7 @@ const ActualizarEstadoSolicitud = () => {
           <option value="">Seleccione una Solicitud</option>
           {solicitudes.map((solicitud) => (
             <option key={solicitud.id} value={solicitud.id}>
-              {solicitud.nombre_cliente} - {solicitud.cedula_cliente} - {"$"}
-              {solicitud.monto_solicitado}
+              {`${solicitud.nombre_cliente} ${solicitud.apellido_cliente} - ${solicitud.cedula_cliente} - $${solicitud.monto_solicitado}`}
             </option>
           ))}
         </Form.Select>
@@ -83,14 +77,17 @@ const ActualizarEstadoSolicitud = () => {
           <Card.Body>
             <Card.Title>Detalles de la Solicitud</Card.Title>
             <Card.Text>
-              <strong>Cliente:</strong> {solicitudSeleccionada.nombre_cliente}
+              <strong>Cliente:</strong>{" "}
+              {`${solicitudSeleccionada.nombre_cliente} ${solicitudSeleccionada.apellido_cliente}`}
               <br />
               <strong>Cédula:</strong> {solicitudSeleccionada.cedula_cliente}
               <br />
-              <strong>Monto Solicitado:</strong>{" "}
+              <strong>Monto Solicitado:</strong> $
               {solicitudSeleccionada.monto_solicitado}
               <br />
               <strong>Detalles:</strong> {solicitudSeleccionada.detalles}
+              <br />
+              <strong>Estado Actual:</strong> {solicitudSeleccionada.estado}
             </Card.Text>
           </Card.Body>
         </Card>
@@ -111,12 +108,16 @@ const ActualizarEstadoSolicitud = () => {
         <Button
           variant="primary"
           type="submit"
-          style={{borderColor: "white"}}
           disabled={!idSolicitudSeleccionada || !estado}
         >
           Actualizar Estado
         </Button>
-        <Button as="a" href="/solicitudes" className="custom-buttom" variant="secondary">
+        <Button
+          as="a"
+          href="/solicitudes"
+          className="custom-buttom"
+          variant="secondary"
+        >
           Volver
         </Button>
       </Form>
