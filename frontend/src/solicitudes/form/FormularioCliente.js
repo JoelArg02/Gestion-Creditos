@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Form,
+  Button,
+  Card,
+  Row,
+  Col,
+  Alert,
+} from "react-bootstrap";
 import { getSolicitudById } from "../../api/solicitud";
+import { uploadFile } from "../../api/files";
+import { createUser } from "../../api/user";
+import { createReference } from "../../api/reference";
+import { createPerson } from "../../api/person";
 import "./FormularioCliente.css";
 import Loading from "../../general/loading";
 
@@ -10,10 +22,13 @@ const FormularioCliente = () => {
   const [selectedPdf, setSelectedPdf] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImageUrl, setPreviewImageUrl] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { id } = useParams();
   const [formData, setFormData] = useState({
     nombreCliente: "",
+    apellidoCliente: "",
     emailCliente: "",
     detalles: "",
     emailCliente: "",
@@ -55,7 +70,7 @@ const FormularioCliente = () => {
           emailCliente: datos.email_cliente,
           cedulaCliente: datos.cedula_cliente,
 
-          direccionHogar: "", // Este campo lo dejarás vacío para que el cliente lo complete
+          direccionHogar: "",
         });
       } catch (error) {
         console.error("Error al cargar los datos del formulario:", error);
@@ -73,6 +88,124 @@ const FormularioCliente = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    try {
+      let pdfUrl, imageUrl;
+
+      if (selectedPdf) {
+        const pdfResponse = await uploadFile(selectedPdf);
+        pdfUrl = pdfResponse.data.Location;
+      }
+
+      if (selectedImage) {
+        const imageResponse = await uploadFile(selectedImage);
+        imageUrl = imageResponse.data.Location;
+      }
+
+      const referenceData = {
+        nombre_trabajo: formData.nombre_trabajo,
+        telefono_trabajo: formData.telefono_trabajo,
+        telefono_trabajo_c: "123456", // Valor predeterminado
+        imagen_hogar: imageUrl,
+        rol_pago: pdfUrl,
+      };
+
+      let referenceId; // Declara la variable fuera del alcance de los bloques try
+
+      try {
+        const referenceResponse = await createReference(referenceData);
+
+        if (!referenceResponse || !referenceResponse.id_referencia) {
+          throw new Error(
+            "La respuesta de la API no contiene el ID de referencia"
+          );
+        }
+
+        referenceId = parseInt(referenceResponse.id_referencia, 10);
+        if (isNaN(referenceId)) {
+          throw new Error("El ID de referencia no es un número válido");
+        }
+      } catch (error) {
+        console.error("Error al crear la referencia:", error);
+        setError("Error al crear la referencia: " + error.message);
+        setLoading(false);
+        return;
+      }
+
+      let personId;
+
+      try {
+        const personData = {
+          nombre: formData.nombreCliente,
+          apellido: formData.apellidoCliente,
+          telefono: formData.numeroCelular,
+          cedula: formData.cedulaCliente,
+          telefono_2: formData.numeroCelular,
+          provincia: formData.provincia,
+          ciudad: formData.ciudad,
+          direccion: formData.direccion,
+          direccion_2: formData.direccion_2,
+          correo: formData.emailCliente,
+          id_referencia_persona: referenceId,
+        };
+
+        const personResponse = await createPerson(personData);
+
+        personId = parseInt(personResponse.id_persona, 10);
+        if (isNaN(personId)) {
+          throw new Error("El ID de la persona no es un número válido");
+        }
+
+
+        // Continúa con el resto de tu lógica para crear el usuario
+        // ...
+      } catch (error) {
+        console.error("Error al crear la persona:", error);
+        setError("Error al crear la persona: " + error.message);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const userData = {
+          usuario: formData.nombreCliente.charAt(0) + formData.apellidoCliente,
+          contrasena: "nexfon",
+          email: formData.emailCliente,
+          id_persona: personId,
+          id_rol: 5,
+          id_configuracion_negocio: 1,
+        };
+
+        await createUser(userData);
+
+      } catch (error) {
+        console.error("Error al crear el usuario:", error);
+      }
+
+      setSuccess("Solicitud enviada con éxito");
+    } catch (error) {
+      console.error("Error en el proceso de solicitud:", error);
+      setError("Error al enviar la solicitud");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const setSuccess = (message) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 5000); // 5000 milisegundos = 5 segundos
+  };
+
+  const setError = (message) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 5000); // 5000 milisegundos = 5 segundos
   };
 
   if (loading) {
@@ -81,6 +214,10 @@ const FormularioCliente = () => {
 
   return (
     <Container className="custom-container-cl">
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+
+      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+
       <Card>
         <Card.Body>
           <Card.Title>Formulario de Aprobación</Card.Title>
@@ -98,20 +235,31 @@ const FormularioCliente = () => {
                   />
                 </Form.Group>
               </Col>
-
-              <Col md={6}>
+              <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>Email del Cliente</Form.Label>
+                  <Form.Label>Apellido del Cliente</Form.Label>
                   <Form.Control
-                    type="email"
-                    placeholder="Ingrese email del cliente"
-                    name="emailCliente"
-                    value={formData.emailCliente}
+                    type="text"
+                    placeholder="Ingrese apellido del cliente"
+                    name="apellidoCliente"
+                    value={formData.apellidoCliente}
                     onChange={handleChange}
                   />
                 </Form.Group>
               </Col>
             </Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Email del Cliente</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Ingrese email del cliente"
+                  name="emailCliente"
+                  value={formData.emailCliente}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
 
             <Row>
               <Col md={6}>
@@ -132,8 +280,8 @@ const FormularioCliente = () => {
                   <Form.Control
                     type="text"
                     placeholder="Numero Celular"
-                    name="cedulaCliente"
-                    value={formData.cedulaCliente}
+                    name="numeroCelular"
+                    value={formData.numeroCelular}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -146,8 +294,8 @@ const FormularioCliente = () => {
                   <Form.Control
                     type="text"
                     placeholder="Ingrese la dirección"
-                    name="direccionHogar"
-                    value={formData.direccionHogar}
+                    name="direccion"
+                    value={formData.direccion}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -158,8 +306,8 @@ const FormularioCliente = () => {
                   <Form.Control
                     type="text"
                     placeholder="Ingrese la dirección"
-                    name="direccionHogar"
-                    value={formData.direccionHogar}
+                    name="direccion_2"
+                    value={formData.direccion_2}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -172,8 +320,8 @@ const FormularioCliente = () => {
                   <Form.Control
                     type="text"
                     placeholder="Ingrese la dirección"
-                    name="direccionHogar"
-                    value={formData.direccionHogar}
+                    name="ciudad"
+                    value={formData.ciudad}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -184,8 +332,8 @@ const FormularioCliente = () => {
                   <Form.Control
                     type="text"
                     placeholder="Ingrese la dirección"
-                    name="direccionHogar"
-                    value={formData.direccionHogar}
+                    name="provincia"
+                    value={formData.provincia}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -198,9 +346,9 @@ const FormularioCliente = () => {
                   <Form.Label>Nombre trabajo</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Nombre"
-                    name="nombreCliente"
-                    value={formData.nombreCliente}
+                    placeholder="Nombre del Trabajo"
+                    name="nombre_trabajo" // Cambiado para reflejar el campo de la base de datos
+                    value={formData.nombre_trabajo}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -210,9 +358,9 @@ const FormularioCliente = () => {
                   <Form.Label>Telefono trabajo</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Telefono"
-                    name="nombreCliente"
-                    value={formData.nombreCliente}
+                    placeholder="Telefono del Trabajo"
+                    name="telefono_trabajo" // Cambiado para reflejar el campo de la base de datos
+                    value={formData.telefono_trabajo}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -267,6 +415,7 @@ const FormularioCliente = () => {
               variant="primary"
               style={{ borderColor: "white", marginTop: "1rem" }}
               type="submit"
+              onClick={handleSubmit}
             >
               Completar Solicitud
             </Button>

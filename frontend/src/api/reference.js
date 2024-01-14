@@ -10,4 +10,16 @@ const getReferenceById = async (id) => {
     }
 };
 
-export { getReferenceById};
+const createReference = async (referenceData) => {
+    try {
+        const response = await axios.post(
+            `${apiConfig.baseURL}/referencia/create`,
+            referenceData
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export { getReferenceById, createReference};

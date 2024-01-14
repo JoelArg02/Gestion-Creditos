@@ -5,7 +5,6 @@ import apiConfig from "./apiConfig";
 const getUsers = async () => {
   try {
     const response = await axios.get(`${apiConfig.baseURL}/usuarios`);
-    // Accede a la propiedad 'usuarios' del objeto JSON
     if (response.data && Array.isArray(response.data.usuarios)) {
       return response.data.usuarios;
     } else {

@@ -6,6 +6,9 @@ const jwt = require("jsonwebtoken");
 const secretKey = process.env.SECRET_KEY || "secretKey";
 const mailer = require("../helpers/mailer.js");
 const mailerController = require("./mailerController");
+const { sendEmail } = require("../helpers/mailer.js");
+const { createUser } = require("../models/Usuario");
+
 
 exports.getUsuarios = (req, res) => {
   Usuario.getAllUsuarios((err, usuarios) => {
@@ -43,24 +46,107 @@ exports.findUserByUser = (req, res) => {
   });
 };
 
-exports.register = (req, res) => {
-  const { usuario, contrasena, id_configuracion_negocio } = req.body;
-  if (!usuario || !contrasena || !id_configuracion_negocio) {
+exports.register = async (req, res) => {
+  const {
+    usuario,
+    contrasena,
+    email,
+    id_persona,
+    id_rol,
+    id_configuracion_negocio,
+  } = req.body;
+
+  if (
+    !usuario ||
+    !contrasena ||
+    !email ||
+    !id_persona ||
+    !id_rol ||
+    !id_configuracion_negocio
+  ) {
     return res.status(400).json({ error: "Datos faltantes o inválidos" });
   }
 
-  Usuario.createUser(
-    usuario,
-    contrasena,
-    id_configuracion_negocio,
-    (error, user) => {
-      if (error) {
-        console.error("Error al registrar usuario:", error);
-        return res.status(500).json({ error: "Error al registrar usuario" });
+  try {
+    const newUsername = await createUserWithUniqueUsername(
+      usuario,
+      contrasena,
+      email,
+      id_persona,
+      id_rol,
+      id_configuracion_negocio
+    );
+
+    // Envía el correo electrónico con las credenciales
+    const subject = "Credenciales de acceso";
+    const htmlContent = `Tu nombre de usuario es: ${newUsername}<br>Tu contraseña es: ${contrasena}`;
+
+    sendEmail(email, subject, htmlContent, (emailError, emailInfo) => {
+      if (emailError) {
+        console.error("Error al enviar el correo electrónico:", emailError);
+        // Puedes manejar el error de envío de correo electrónico aquí
+      } else {
+        console.log("Correo electrónico enviado exitosamente:", emailInfo);
       }
-      res.status(201).json({ message: "Usuario registrado exitosamente" });
+    });
+
+    res.status(201).json({ message: "Usuario registrado exitosamente" });
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    res.status(500).json({ error: "Error al registrar usuario" });
+  }
+};
+
+const createUserWithUniqueUsername = async (
+  usuario,
+  contrasena,
+  email,
+  id_persona,
+  id_rol,
+  id_configuracion_negocio
+) => {
+  let uniqueUsername = usuario;
+  let attempt = 1;
+
+  // La función ahora devuelve una promesa
+  const createUserPromise = (username) => {
+    return new Promise((resolve, reject) => {
+      Usuario.createUser(
+        username,
+        contrasena,
+        email,
+        id_persona,
+        id_rol,
+        id_configuracion_negocio,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(username);
+          }
+        }
+      );
+    });
+  };
+
+  while (true) {
+    try {
+      // Espera la resolución de la promesa
+      await createUserPromise(uniqueUsername);
+      return uniqueUsername;
+    } catch (error) {
+      // Manejo de errores
+      if (
+        error.code === "23505" &&
+        error.constraint === "usuarios_usuario_key"
+      ) {
+        uniqueUsername = usuario + attempt;
+        attempt++;
+      } else {
+        throw error;
+      }
     }
-  );
+  }
 };
 
 exports.login = (req, res) => {
@@ -69,8 +155,6 @@ exports.login = (req, res) => {
   if (!usuario || !contrasena) {
     return res.status(400).json({ error: "Datos faltantes o inválidos" });
   }
-  const ip = req.ip; 
-  const fechaActual = new Date().toISOString();
 
   const query = `
     SELECT 
@@ -130,7 +214,15 @@ exports.login = (req, res) => {
           personEmail: user.correo,
           businessName: user.negocio,
         };
-        mailerController.sendLoginNotificationEmail(user.email, ip, fechaActual);
+
+        const ip = req.ip;
+        const fechaActual = new Date().toISOString();
+        
+        mailerController.sendLoginNotificationEmail(
+          user.email,
+          ip,
+          fechaActual
+        );
 
         jwt.sign(payload, secretKey, { expiresIn: "1h" }, (errorJwt, token) => {
           if (errorJwt) {

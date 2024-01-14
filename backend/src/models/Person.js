@@ -26,4 +26,48 @@ Person.getPersonById = (id, callback) => {
   );
 };
 
+Person.createPerson = (
+  nombre,
+  apellido,
+  telefono,
+  cedula,
+  telefono_2,
+  provincia,
+  ciudad,
+  direccion,
+  direccion_2,
+  correo,
+  id_referencia_persona,
+  callback
+) => {
+  if (typeof callback !== "function") {
+    throw new Error("Callback debe ser una función");
+  }
+  poolc.query(
+    "INSERT INTO personas (nombre, apellido, telefono, cedula, telefono_2, provincia, ciudad, direccion, direccion_2, correo, id_referencia_persona) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id_persona",
+    [
+      nombre,
+      apellido,
+      telefono,
+      cedula,
+      telefono_2,
+      provincia,
+      ciudad,
+      direccion,
+      direccion_2,
+      correo,
+      id_referencia_persona,
+    ],
+    function (error, result) {
+      if (error) {
+        return callback(error);
+      }
+
+      // Asegúrate de que result contiene el ID y pásalo al callback
+      const userId = result.rows[0].id_persona;
+      callback(null, userId);
+    }
+  );
+};
+
 module.exports = Person;

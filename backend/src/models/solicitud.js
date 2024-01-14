@@ -3,19 +3,23 @@ const poolc = require("../config/db");
 const Solicitud = {};
 
 Solicitud.crear = (datosSolicitud, callback) => {
+
   const estado = "pendiente";
   const {
     nombreCliente,
+    apellidoCliente,
     cedulaCliente,
     emailCliente,
     valorDinero,
     detalles,
     idFormularioCliente,
   } = datosSolicitud;
+  console.log(datosSolicitud);
   poolc.query(
-    "INSERT INTO solicitudes (nombre_cliente, cedula_cliente, email_cliente, monto_solicitado, detalles, id_formulario_cliente, estado) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+    "INSERT INTO solicitudes (nombre_cliente, apellido_Cliente, cedula_cliente, email_cliente, monto_solicitado, detalles, id_formulario_cliente, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
     [
       nombreCliente,
+      apellidoCliente,
       cedulaCliente,
       emailCliente,
       valorDinero,
@@ -25,8 +29,10 @@ Solicitud.crear = (datosSolicitud, callback) => {
     ],
     (err, results) => {
       if (err) {
+        console.log(err);
         callback(err, null);
       } else {
+        console.log(results.rows[0]);
         callback(null, results.rows[0]);
       }
     }

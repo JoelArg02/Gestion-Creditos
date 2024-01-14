@@ -7,5 +7,7 @@ const personController = require('../controllers/personController');
 router.get('/', personController.getPersons);
 router.get("/id/:id_persona", personController.getPersonById);
 
+// Crear persona
+router.post('/create', personController.createPerson);
 
 module.exports = router;

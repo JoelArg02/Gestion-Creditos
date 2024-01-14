@@ -2,25 +2,38 @@ const poolc = require("../config/db"); // Asegúrate de que la ruta sea correcta
 
 const Referencia = {};
 
-Referencia.createReferencia = (nombreTrabajo, telefonoTrabajo, telefonoTrabajoC, callback) => {
-  db.query(
-    'INSERT INTO referencias (nombre_trabajo, telefono_trabajo, telefono_trabajo_c, ) VALUES (?, ?, ?)',
-    [nombreTrabajo, telefonoTrabajo, telefonoTrabajoC],
-    (error, results) => {
-      if (error) {
-        return callback(error, null);
-      }
-      if (results.affectedRows === 1) {
-        callback(null, "Referencia creada con éxito");
+Referencia.createReference = (
+  nombre_trabajo,
+  telefono_trabajo,
+  telefono_trabajo_c,
+  imagen_hogar,
+  rol_pago,
+  callback
+) => {
+  if (typeof callback !== "function") {
+    throw new Error("Callback debe ser una función");
+  }
+  poolc.query(
+    "INSERT INTO referencias (nombre_trabajo, telefono_trabajo, telefono_trabajo_c, imagen_hogar, rol_pago) VALUES ($1, $2, $3, $4, $5) RETURNING id_referencia",
+    [
+      nombre_trabajo,
+      telefono_trabajo,
+      telefono_trabajo_c,
+      imagen_hogar,
+      rol_pago,
+    ],
+    (err, results) => {
+      if (err) {
+        callback(err, null);
       } else {
-        callback(new Error("No se pudo crear la referencia"), null);
+        callback(null, results.rows[0].id_referencia);
       }
     }
   );
 };
 
 Referencia.getAllReferencias = (callback) => {
-  db.query('SELECT * FROM referencias', (error, results) => {
+  db.query("SELECT * FROM referencias", (error, results) => {
     if (error) {
       return callback(error, null);
     }
@@ -41,6 +54,5 @@ Referencia.getReferenceById = (id, callback) => {
     }
   );
 };
-
 
 module.exports = Referencia;

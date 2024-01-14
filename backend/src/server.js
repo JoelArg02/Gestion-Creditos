@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5200;
 
+
 // Suponiendo que tienes estos archivos y rutas correctamente definidos
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const creditoRoutes = require('./routes/creditoRoutes');
@@ -14,6 +15,7 @@ const personRoutes = require('./routes/personRoutes');
 const pagosRoutes = require('./routes/pagosRoutes');
 const mailerRoutes = require('./routes/mailerRoutes');
 const solicitudRoutes = require('./routes/solicitudRoutes');
+const SpacesRoutes = require('./routes/SpacesRoutes');
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
   origin: '*', // Permite todas las fuentes
@@ -37,6 +39,10 @@ app.put('/', (req, res) => {
   res.send('¡Bienvenido a la aplicación de gestión de créditos!');
 });
 
+
+app.set('trust proxy', true); // trust first proxy
+
+
 // Ruta de Negocios
 
 app.use('/api/mail', mailerRoutes);
@@ -56,13 +62,16 @@ app.use('/api/credit', creditoRoutes);
 app.use('/api/rols', rolRoutes);
 
 // Rutas de personas
-app.use('/api/persons', personRoutes);
+app.use('/api/person', personRoutes);
 
 // Rutas para pagos
 app.use('/api/pagos', pagosRoutes);
 
 // Rutas de formularios/solicituds
 app.use('/api/solicitud', solicitudRoutes);
+
+// Rutas de Spaces
+app.use('/api/spaces', SpacesRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {
@@ -78,3 +87,5 @@ app.use((req, res, next) => {
 app.listen(port, () => {
   console.log(`Servidor Express corriendo en el puerto ${port}`);
 });
+
+

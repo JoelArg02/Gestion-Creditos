@@ -117,7 +117,6 @@ function Payments() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Pago procesado para:", selectedUser, selectedCredit);
   };
 
   const creditOptions = userCredits.map((credit) => ({

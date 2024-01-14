@@ -27,7 +27,10 @@ Usuario.getUserById = (id, callback) => {
 Usuario.createUser = (
   usuario,
   contrasena,
-  id_configuracion_usuario,
+  email,
+  id_persona,
+  id_rol,
+  id_configuracion_negocio,
   callback
 ) => {
   if (typeof callback !== "function") {
@@ -40,8 +43,8 @@ Usuario.createUser = (
     }
 
     poolc.query(
-      "INSERT INTO usuarios (usuario, contrasena, id_configuracion_usuario) VALUES ($1, $2, $3)",
-      [usuario, hash, id_configuracion_usuario],
+      "INSERT INTO usuarios (usuario, contrasena, email, id_persona, id_rol, id_configuracion_negocio) VALUES ($1, $2, $3, $4, $5, $6)",
+      [usuario, hash, email, id_persona, id_rol, id_configuracion_negocio],
       function (error, result) {
         if (error) {
           return callback(error);
@@ -52,6 +55,7 @@ Usuario.createUser = (
     );
   });
 };
+
 
 Usuario.findUserByUser = (usuario, callback) => {
   poolc.query(

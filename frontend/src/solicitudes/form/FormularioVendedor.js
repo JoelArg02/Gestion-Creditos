@@ -11,6 +11,7 @@ const FormVendor = () => {
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
     nombreCliente: "",
+    apellidoCliente: "",
     cedulaCliente: "",
     emailCliente: "",
     valorDinero: "",
@@ -87,6 +88,18 @@ const FormVendor = () => {
           onChange={handleChange}
         />
       </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Label>Apellido del Cliente</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Ingrese nombre del cliente"
+          name="apellidoCliente"
+          value={formData.apellidoCliente}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      
 
       <Form.Group className="mb-3">
         <Form.Label>Cédula del Cliente</Form.Label>

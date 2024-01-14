@@ -85,6 +85,7 @@ function enviarCorreoRechazo(email) {
 }
 
 exports.crearSolicitud = (req, res) => {
+  console.log(req.body);
   const idFormularioCliente = uuidv4(); // Generar un UUID para la solicitud
   const datosSolicitud = {
     ...req.body,

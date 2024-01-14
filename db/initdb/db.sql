@@ -31,6 +31,7 @@ CREATE TABLE roles (
 CREATE TABLE solicitudes (
     id SERIAL PRIMARY KEY,
     nombre_cliente VARCHAR(255) NOT NULL,
+    apellido_cliente VARCHAR(255) NOT NULL,
     cedula_cliente VARCHAR(255) NOT NULL,
     email_cliente VARCHAR(255) NOT NULL,
     monto_solicitado DECIMAL NOT NULL,
@@ -40,7 +41,6 @@ CREATE TABLE solicitudes (
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     enlace_expira TIMESTAMP,
     id_formulario_cliente UUID NOT NULL
-
 );
 
 
@@ -50,7 +50,8 @@ CREATE TABLE referencias (
     nombre_trabajo VARCHAR(255) NOT NULL,
     telefono_trabajo VARCHAR(255) NOT NULL,
     telefono_trabajo_c VARCHAR(255) NOT NULL,
-    imagen_hogar VARCHAR(255) NOT NULL
+    imagen_hogar VARCHAR(255) NOT NULL,
+    rol_pago VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE personas (
@@ -65,7 +66,7 @@ CREATE TABLE personas (
     direccion VARCHAR(255) NOT NULL,
     direccion_2 VARCHAR(255),
     correo VARCHAR(255) NOT NULL,
-    id_referencia_persona INT,
+    id_referencia_persona INT DEFAULT 1,
     FOREIGN KEY (id_referencia_persona) REFERENCES referencias(id_referencia)
 );
 

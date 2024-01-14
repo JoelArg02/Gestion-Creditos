@@ -24,3 +24,57 @@ exports.getPersonById = async (req, res) => {
     res.json(usuario);
   });
 };
+
+exports.createPerson = (req, res) => {
+  const {
+    nombre,
+    apellido,
+    telefono,
+    cedula,
+    telefono_2,
+    provincia,
+    ciudad,
+    direccion,
+    direccion_2,
+    correo,
+    id_referencia_persona,
+  } = req.body;
+
+  if (
+    !nombre ||
+    !apellido ||
+    !telefono ||
+    !cedula ||
+    !telefono_2 ||
+    !provincia ||
+    !ciudad ||
+    !direccion ||
+    !direccion_2 ||
+    !correo
+  ) {
+    return res.status(400).json({ error: "Datos faltantes o inválidos" });
+  }
+
+  Person.createPerson(
+    nombre,
+    apellido,
+    telefono,
+    cedula,
+    telefono_2,
+    provincia,
+    ciudad,
+    direccion,
+    direccion_2,
+    correo,
+    id_referencia_persona,
+    (error, userId) => {
+      if (error) {
+        console.error("Error al registrar persona:", error);
+        return res.status(500).json({ error: "Error al registrar persona" });
+      }
+      res
+        .status(201)
+        .json({ message: "Persona registrada exitosamente", id_persona: userId });
+    }
+  );
+};
