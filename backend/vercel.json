@@ -1,12 +1,8 @@
 {
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/next",
-        "config": {
-          "buildCommand": "node src/server.js"
-        }
-      }
-    ]
-  }
-  
+  "builds": [
+    {
+      "src": "src/server.js",
+      "use": "@vercel/node"
+    }
+  ]
+}
