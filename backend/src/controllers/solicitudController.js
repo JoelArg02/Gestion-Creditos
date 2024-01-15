@@ -65,16 +65,12 @@ function enviarCorreoCliente(email, idFormularioCliente, fechaExpiracion) {
 }
 
 function enviarCorreoRechazo(email) {
-  const contenidoHtml = `
-        <html>
-            <body>
-                <p>Lamentamos informarle que su solicitud de crédito ha sido rechazada.</p>
-            </body>
-        </html>
-    `;
+  const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
+  let contenidoHtml = cargarContenidoHtml("cliente-rechazado.html");
+
   mailer.sendEmail(
     email,
-    "Solicitud de Crédito Rechazada",
+    "Solicitud de Crédito Rechazada - Nexfon",
     contenidoHtml,
     (error, info) => {
       if (error) {

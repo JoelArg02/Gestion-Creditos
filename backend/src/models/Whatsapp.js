@@ -9,12 +9,13 @@ const whatsappConfig = {
 exports.sendMessage = async (recipient, message) => {
     try {
         const response = await axios.post(whatsappConfig.url, {
+            messaging_product: "whatsapp", // Añade esta línea
             to: recipient,
             type: 'text',
             text: { body: message }
         }, {
             headers: { 'Authorization': `Bearer ${whatsappConfig.token}` }
-        });g
+        });
 
         console.log('Mensaje enviado:', response.data);
         return response.data;
@@ -23,6 +24,7 @@ exports.sendMessage = async (recipient, message) => {
         throw error;
     }
 };
+
 
 exports.sendMessageTemplate = async (recipient, templateName, languageCode) => {
     try {

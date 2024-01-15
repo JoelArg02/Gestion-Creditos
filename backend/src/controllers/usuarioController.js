@@ -9,7 +9,10 @@ const mailerController = require("./mailerController");
 const { sendEmail } = require("../helpers/mailer.js");
 const { createUser } = require("../models/Usuario");
 
-
+function cargarContenidoHtml(nombreArchivo) {
+  const rutaArchivo = path.join(__dirname, "../html", nombreArchivo);
+  return fs.readFileSync(rutaArchivo, "utf8");
+}
 exports.getUsuarios = (req, res) => {
   Usuario.getAllUsuarios((err, usuarios) => {
     if (err) {
@@ -78,9 +81,12 @@ exports.register = async (req, res) => {
     );
 
     // Envía el correo electrónico con las credenciales
-    const subject = "Credenciales de acceso";
-    const htmlContent = `Tu nombre de usuario es: ${newUsername}<br>Tu contraseña es: ${contrasena}`;
+    const subject = "Credenciales de acceso - Nexfon";
+    
+    let htmlContent = cargarContenidoHtml("new-user.html");
 
+    contenidoHtml = contenidoHtml.replace("${newUsername}", usuario);
+     contenidoHtml = contenidoHtml.replace("${contrasena}", contrasena);
     sendEmail(email, subject, htmlContent, (emailError, emailInfo) => {
       if (emailError) {
         console.error("Error al enviar el correo electrónico:", emailError);

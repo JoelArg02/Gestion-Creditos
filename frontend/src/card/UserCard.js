@@ -55,6 +55,7 @@ function UserCard({ show, handleClose }) {
           telefonoTrabajoC: referenceData.telefono_trabajo_c,
           imagen_hogar: referenceData.imagen_hogar,
         });
+        console.log(referenceData.imagen_hogar)
       }
     } catch (error) {
       setError("Error al obtener detalles de la referencia");
@@ -97,7 +98,7 @@ function UserCard({ show, handleClose }) {
   };
   useEffect(() => {
     if (referenciaDetails.imagen_hogar) {
-      setImagenUrl(`img${referenciaDetails.imagen_hogar}`);
+      setImagenUrl(`${referenciaDetails.imagen_hogar}`);
     }
   }, [referenciaDetails]);
 
@@ -312,7 +313,7 @@ function UserCard({ show, handleClose }) {
                 />
               </Col>
             </Row>
-            <Row>
+            
               <Form.Label>Email</Form.Label>
               <Form.Control
                 name="correo"
@@ -320,7 +321,7 @@ function UserCard({ show, handleClose }) {
                 value={personDetails.correo}
                 onChange={handleInputChange}
               />
-            </Row>
+            
             <h4>Direccion</h4>
             <Row>
               <Col>

@@ -1,34 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmación de Crédito</title>
 </head>
+<style>
+    h1 {
+        color: #0056b3;
+    }
+</style>
+
 <body>
-    <table width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4; font-family: Arial, sans-serif;">
-        <tr>
-            <td align="center">
-                <table width="600" cellspacing="0" cellpadding="0" style="margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                    <tr>
-                        <td align="center">
-                            <h1 style="font-family: Arial, sans-serif;">¡Felicidades!</h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="color: #333; line-height: 1.6; font-family: Arial, sans-serif;">
-                            <p>Su solicitud de crédito ha sido aprobada. Por favor complete el proceso de solicitud antes del <strong>${fechaExpiracion.toLocaleDateString()}</strong> haciendo clic en el siguiente enlace:</p>
-                            <a href="${enlaceFormularioCliente}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; text-align: center;">Completar Solicitud</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="color: #666; font-size: 0.8em; font-family: Arial, sans-serif; text-align: center;">
-                            <p class="footer">Si tiene alguna pregunta, no dude en contactarnos.</p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+
+    <div style="background-color: #f4f4f4; padding-top: 50px; padding-bottom: 50px;">
+        <table width="100%" cellspacing="0" cellpadding="0" style=" font-family: Arial, sans-serif;">
+            <tr>
+                <td align="center">
+                    <table width="600" cellspacing="0" cellpadding="0"
+                        style="margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                        <tr>
+                            <td align="center">
+                                <h1 style="font-family: Arial, sans-serif;">¡Felicidades!</h1>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color: #333; line-height: 1.6; font-family: Arial, sans-serif;">
+                                <p>Su solicitud de crédito ha sido aprobada. Por favor complete el proceso de
+                                    solicitud
+                                    antes del <strong>${fechaExpiracion.toLocaleDateString()}</strong> haciendo clic
+                                    en
+                                    el siguiente enlace:</p>
+                                <a href="${enlaceFormularioCliente}"
+                                    style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; text-align: center;">Completar
+                                    Solicitud</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                style="color: #666; font-size: 0.8em; font-family: Arial, sans-serif; text-align: center;">
+                                <p class="footer">Si tiene alguna pregunta, no dude en contactarnos.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </body>
+
 </html>
