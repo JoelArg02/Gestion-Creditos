@@ -14,7 +14,7 @@ exports.sendMessage = async (recipient, message) => {
             text: { body: message }
         }, {
             headers: { 'Authorization': `Bearer ${whatsappConfig.token}` }
-        });
+        });g
 
         console.log('Mensaje enviado:', response.data);
         return response.data;
