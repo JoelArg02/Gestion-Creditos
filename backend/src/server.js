@@ -16,6 +16,8 @@ const pagosRoutes = require('./routes/pagosRoutes');
 const mailerRoutes = require('./routes/mailerRoutes');
 const solicitudRoutes = require('./routes/solicitudRoutes');
 const SpacesRoutes = require('./routes/SpacesRoutes');
+const webhookRoutes = require('./routes/webhookRoutes');
+
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
   origin: '*', // Permite todas las fuentes
@@ -41,6 +43,10 @@ app.put('/', (req, res) => {
 
 
 app.set('trust proxy', true); // trust first proxy
+
+// Ruta de whatsapp
+
+app.use('/api/whatsapp', webhookRoutes);
 
 
 // Ruta de Negocios
