@@ -6,5 +6,6 @@ router.post('/webhook', whatsappController.webhook);
 
 router.post('/send-message', whatsappController.sendMessage);
 
+router.post('/send-template-message', whatsappController.sendTemplateMessage);
 
 module.exports = router;
