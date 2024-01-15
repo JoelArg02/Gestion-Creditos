@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const port = process.env.PORT || 5200;
+const port = 5200;
 
 
 // Suponiendo que tienes estos archivos y rutas correctamente definidos
