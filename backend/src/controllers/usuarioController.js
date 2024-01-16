@@ -8,6 +8,9 @@ const mailer = require("../helpers/mailer.js");
 const mailerController = require("./mailerController");
 const { sendEmail } = require("../helpers/mailer.js");
 const { createUser } = require("../models/Usuario");
+const path = require("path");
+const fs = require("fs");
+
 
 function cargarContenidoHtml(nombreArchivo) {
   const rutaArchivo = path.join(__dirname, "../html", nombreArchivo);
@@ -80,19 +83,19 @@ exports.register = async (req, res) => {
       id_configuracion_negocio
     );
 
-    // Envía el correo electrónico con las credenciales
     const subject = "Credenciales de acceso - Nexfon";
     
     let htmlContent = cargarContenidoHtml("new-user.html");
 
-    contenidoHtml = contenidoHtml.replace("${newUsername}", usuario);
-     contenidoHtml = contenidoHtml.replace("${contrasena}", contrasena);
+    htmlContent = htmlContent.replace("${newUsername}", usuario);
+     htmlContent = htmlContent.replace("${contrasena}", contrasena);
     sendEmail(email, subject, htmlContent, (emailError, emailInfo) => {
       if (emailError) {
         console.error("Error al enviar el correo electrónico:", emailError);
         // Puedes manejar el error de envío de correo electrónico aquí
       } else {
-        console.log("Correo electrónico enviado exitosamente:", emailInfo);
+
+        //Se envio correctamente
       }
     });
 

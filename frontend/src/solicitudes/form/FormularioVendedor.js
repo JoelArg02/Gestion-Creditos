@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import { Form, Button, Alert } from "react-bootstrap";
+import { ValidationContext } from "../../contexts/ValidationContext";
 import { crearSolicitud } from "../../api/solicitud";
 import { CSSTransition } from "react-transition-group";
 
 import Loading from "../../general/loading";
 
 const FormVendor = () => {
+  const { isValidCI } = useContext(ValidationContext);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -30,9 +33,27 @@ const FormVendor = () => {
       return () => clearTimeout(timer);
     }
   }, [error]);
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData({ ...formData, [name]: value });
+
+    if (name === "cedulaCliente") {
+        if (value.length === 10) {
+            const validationResponse = isValidCI(value);
+            if (!validationResponse.isValid) {
+                console.log(validationResponse.message); // O mostrar en la UI
+                setError("La cédula es inválida, debe ser una cédula real.");
+            } else {
+                setError("");
+            }
+        } else {
+            setError("");
+        }
+    }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,7 +109,7 @@ const FormVendor = () => {
           onChange={handleChange}
         />
       </Form.Group>
-      
+
       <Form.Group className="mb-3">
         <Form.Label>Apellido del Cliente</Form.Label>
         <Form.Control
@@ -99,7 +120,6 @@ const FormVendor = () => {
           onChange={handleChange}
         />
       </Form.Group>
-      
 
       <Form.Group className="mb-3">
         <Form.Label>Cédula del Cliente</Form.Label>

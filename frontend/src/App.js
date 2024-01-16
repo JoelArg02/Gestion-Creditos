@@ -23,6 +23,9 @@ import CreditCalculator from "./components/CreditCalculator";
 import Payments from "./components/Payments";
 import Solicitudes from "./solicitudes/home.js";
 import FormularioCliente from "./solicitudes/form/FormularioCliente.js";
+import { ValidationProvider } from './contexts/ValidationContext';
+        
+    
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -111,6 +114,7 @@ function App() {
   );
 
   return (
+    <ValidationProvider>
     <Router>
       <div>
         <Routes>
@@ -253,6 +257,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </ValidationProvider>
   );
 }
 

@@ -14,13 +14,12 @@ Solicitud.crear = (datosSolicitud, callback) => {
     detalles,
     idFormularioCliente,
   } = datosSolicitud;
-  console.log(datosSolicitud);
   poolc.query(
     "INSERT INTO solicitudes (nombre_cliente, apellido_Cliente, cedula_cliente, email_cliente, monto_solicitado, detalles, id_formulario_cliente, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
     [
       nombreCliente,
       apellidoCliente,
-      cedulaCliente,
+      cedulaCliente,   
       emailCliente,
       valorDinero,
       detalles,

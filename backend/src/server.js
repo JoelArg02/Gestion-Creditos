@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -93,5 +94,10 @@ app.use((req, res, next) => {
 app.listen(port, () => {
   console.log(`Servidor Express corriendo en el puerto ${port}`);
 });
+
+const result = require('dotenv').config();
+if (result.error) {
+  throw result.error;
+}
 
 
