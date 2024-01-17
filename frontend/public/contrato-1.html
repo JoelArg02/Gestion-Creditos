@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Contrato de COMPRA VENTA</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-color: #f5f5f5;
+            /* Color de fondo fuera del documento A4 */
+        }
+
+        .a4-container {
+            width: 210mm;
+            height: 600mm;
+            padding: 15mm;
+            /* Espacio interior para el contenido */
+            background: white;
+            /* Fondo blanco para el contenido del A4 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Sombra para dar efecto de página */
+        }
+
+        /* Tus estilos existentes para el contenido */
+        .container {
+            margin: 15px;
+        }
+
+        /* ...otros estilos... */
+    </style>
+</head>
+
+<body>
+    <div class="a4-container">
+        <div class="container">
+            <div>
+                <div style="text-align: end;">lunes</div>
+                <h4 style="text-align: center;">CONTRATO DE COMPRA-VENTA</h4>
+            </div>
+            <br>
+            <div><strong>PRIMERA:</strong>
+                <br>
+                <br>
+            </div>
+            <div>
+                Comparece, por una parte: <strong>${NOMBRE_NEGGOCIO) (NEXFON)</strong>, con número de RUC
+                <strong>${NUMERO_RUC}</strong>; a quien (es) en
+                adelante se le(s) identificará como <strong>LA PARTE VENDEDORA</strong>, y por otra parte
+                <strong>APELLIDO APELLIDO NOMBRE NOMBRE</strong>,
+                con número de cédula <strong>${CEDULA}</strong>; a quien(es) en adelante se le(s) identificará como LA
+                PARTE COMPRADORA;
+                quienes libre y voluntariamente, con plena capacidad libertad y conocimiento, convienen en celebrar el
+                siguiente contrato, de conformidad a las estipulaciones que se indica a continuación
+            </div>
+            <br>
+            <div><strong>SEGUNDA: </strong></div>
+            <br>
+            <div>LA PARTE VENDEDORA vende y da en perpetua enajenación a LA PARTE COMPRADORA, el bien(es) que se
+                detallan a continuación:</div>
+            <div>
+                <ul>
+                    <li>${Elementos}</li>
+                    <li>${Elementos}</li>
+                    <li>${Elementos}</li>
+                </ul>
+            </div>
+            <br>
+            <div><strong>TERCERA: </strong></div>
+            <br>
+            <div>
+                LA PARTE COMPRADORA declara haber recibido el bien(es) descrito en la cláusula anterior, con pleno
+                conocimiento de causa y a su entera satisfacción, es decir que lo adquiere en el estado que se
+                encuentra.
+            </div>
+            <br>
+            <div><strong>CUARTA: </strong></div>
+            <br>
+            <div>
+                El PRECIO fijado por las partes de común acuerdo y que LA PARTE COMPRADORA cancela por este bien es la
+                suma de <strong>${PRECIO}</strong> <strong>${PRECIO_ESCRITO</strong> dólares de los Estados Unidos de
+                América; mismos que son cancelados de la siguiente forma:
+            </div>
+            <br />
+            <table border="02" align="center">
+                <tr>
+                    <th>Detalle</th>
+                    <th>Valor</th>
+                    <th>Fecha de Corte</th>
+                    <th>Estado</th>
+                </tr>
+                <tr>
+                    <td>Entrada</td>
+                    <td>${PRECIO}</td>
+                    <td>${FECHA}</td>
+                    <td>${ESTADO}</td>
+                </tr>
+            </table>
+            <br>
+            <div><strong>QUINTA: </strong></div>
+            <br>
+
+            <div> LA PARTE VENDEDORA expone los valores por moralidad si y únicamente si LA PARTE COMPRADORA no cancela
+                los
+                valores dentro de las fechas establecidas; y LA PARTE COMPRADORA acepta los valores de moralidad
+                descritos a
+                continuación:
+            </div>
+
+            <div style="text-align: center;">
+                <br>
+                <table align="center" border="2 ">
+                    <tr>
+                        <th>Tiempo de pago</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Semana 1</td>
+                        <td>$2.00</td>
+                    </tr>
+                    <tr>
+                        <td>Semana 2</td>
+                        <td>$5.00</td>
+                    </tr>
+                    <tr>
+                        <td>Semana 3</td>
+                        <td>$5.00</td>
+                    </tr>
+                    <tr>
+                        <td>Semana 4</td>
+                        <td>$5.00</td>
+                    </tr>
+                    <tr>
+                        <td>Llamadas telefonicas
+                            <br>(Despues de la fecha de corte)
+                        </td>
+                        <td>35.00</td>
+                    </tr>
+                    <tr>
+                        <td>Visita</td>
+                        <td>$20.00</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div>
+                <br>
+                <div><strong>SEXTA: </strong></div>
+                <br>
+                <div>Los comparecientes en caso de controversia, como consecuencia de este contrato, se someten a los
+                    jueces
+                    competentes y señalan como sus domicilios para recibir posteriores notificaciones, las siguientes:
+                </div>
+            </div>
+            <div>
+                <h4 style="text-align: center;">VENDEDORES</h4>
+                <div>
+                    <ul>
+                        <li>Nombre: ${NOMBRE_NEGOCIO}</li>
+                        <li>Dirección: ${DIRECCION_NEGOCIO}</li>
+                        <li>Teléfono: ${TELEFONO_NEGOCIO}</li>
+                        <li>Correo: ${CORREO_NEGOCIO}</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <h4 style="text-align: center;">COMPRADORES</h4>
+                <div>
+                    <ul>
+                        <li>Nombre: ${NOMBRE_NEGOCIO}</li>
+                        <li>Dirección: ${DIRECCION_NEGOCIO}</li>
+                        <li>Teléfono: ${TELEFONO_NEGOCIO}</li>
+                        <li>Correo: ${CORREO_NEGOCIO}</li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <div><strong>SEPTIMA: </strong></div>
+            <div><strong>OBSERVACIONES: </strong></div>
+            <br>
+            <div>
+                <div style="margin-top: 20px;">
+                    _________________________________________________________________________________________________
+                </div>
+                <div style="margin-top: 20px;">
+                    _________________________________________________________________________________________________
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                Este documento se suscribe por duplicado en Quito a los ${dias} días del mes de ${mes} del año 2024.
+            </div>
+
+            <br><br><br><br>
+            <div><strong>OCTAVA: </strong></div>
+            <br>
+            <div><strong>FIRMAS: </strong></div>
+            <br><br>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); margin-left: 20px; margin-right: 20px;">
+            <div style="margin-top: 20px;">___________________</div>
+            <div style="margin-top: 20px;">___________________</div>
+            <div style="margin-top: 20px;">___________________</div>
+            <div style="margin-top: 20px;">___________________</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); margin-left: 20px; margin-right: 20px;">
+            <div style="margin-right: 35px; text-align: center; margin-top: 15px;">NEXFON</div>
+            <div style="margin-right: 35px; text-align: center; margin-top: 15px;">COMPRADOR</div>
+            <div style="margin-right: 35px; text-align: center; margin-top: 15px;">CONYUGE</div>
+            <div style="margin-right: 35px; text-align: center; margin-top: 15px;">GARANTE</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); margin-left: 20px; margin-right: 20px;">
+            <div style="margin-top: 20px;">CI:________________</div>
+            <div style="margin-top: 20px;">CI:________________</div>
+            <div style="margin-top: 20px;">CI:________________</div>
+            <div style="margin-top: 20px;">CI:________________</div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+
+</html>

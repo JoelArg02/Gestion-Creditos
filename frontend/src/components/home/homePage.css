@@ -9,3 +9,7 @@
     height: 400px;
     object-fit: cover;
   }
+
+  .my-custom-container{
+    margin-top: 20px;
+  }

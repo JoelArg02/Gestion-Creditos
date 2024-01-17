@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Carousel, Card, Button, Container, Row, Col } from "react-bootstrap";
-import ModalSeguridad from "../modal/ModalSeguridad";
-import ModalAnalisis from "../modal/ModalAnalisis";
-import ModalAcceso from "../modal/ModalAcceso";
+import ModalSeguridad from "../../modal/ModalSeguridad";
+import ModalAnalisis from "../../modal/ModalAnalisis";
+import ModalAcceso from "../../modal/ModalAcceso";
 import "./homePage.css";
 
 function HomePage() {

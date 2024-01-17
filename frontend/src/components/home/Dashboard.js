@@ -9,7 +9,7 @@ import {
   Col,
   ListGroup,
 } from "react-bootstrap";
-import { getCredits } from "../api/api";
+import { getCredits } from "../../api/api";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -25,8 +25,8 @@ import {
   DoughnutController,
 } from "chart.js";
 import "./Dashboard.css"; // Import your external CSS file
-import Loading from "../general/loading";
-import { obtenerSolicitudesPendientes } from "../api/solicitud";
+import Loading from "../../general/loading";
+import { obtenerSolicitudesPendientes } from "../../api/solicitud";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -175,20 +175,20 @@ function Dashboard() {
 
   return (
     <>
-      <Container className="mx-auto w-80 text-center">
-        <h1>Dashboard</h1>
+      <Container className="mx-auto w-80 text-center my-custom-container">
+        <h1>Bienvenidos a Nuestros Servicios de Crédito</h1>
 
         {error ? (
           <Alert variant="danger">Error en el servidor: {error.message}</Alert>
         ) : credits.length === 0 ? (
           <Alert variant="info">
-            No hay información de créditos disponible.
+            No hya creditos :S ya hay que subir
           </Alert>
         ) : (
           <Table striped bordered hover></Table>
         )}
       </Container>
-
+     
       <Container>
         <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
           <Col>

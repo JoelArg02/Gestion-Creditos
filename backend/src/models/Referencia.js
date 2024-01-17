@@ -33,7 +33,7 @@ Referencia.createReference = (
 };
 
 Referencia.getAllReferencias = (callback) => {
-  db.query("SELECT * FROM referencias", (error, results) => {
+  poolc.query("SELECT * FROM referencias", (error, results) => {
     if (error) {
       return callback(error, null);
     }

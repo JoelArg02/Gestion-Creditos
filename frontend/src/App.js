@@ -9,12 +9,12 @@ import { jwtDecode } from "jwt-decode";
 import "./App.css";
 import Header from "./general/Header";
 import Footer from "./general/Footer";
-import HomePage from "./components/homePage";
+import HomePage from "./components/home/homePage";
 import Login from "./general/login.js";
-import Servicios from "./components/Services";
-import Products from "./components/Products";
-import Contact from "./components/Contact";
-import Dashboard from "./components/Dashboard";
+import Servicios from "./Invitates/Services.js";
+import Products from "./Invitates/Products";
+import Contact from "./Invitates/Contact";
+import Dashboard from "./components/home/Dashboard";
 import Error404 from "./error/error404";
 import Admin from "./components/Admin";
 import CreditUser from "./components/CreditUser";
@@ -23,9 +23,8 @@ import CreditCalculator from "./components/CreditCalculator";
 import Payments from "./components/Payments";
 import Solicitudes from "./solicitudes/home.js";
 import FormularioCliente from "./solicitudes/form/FormularioCliente.js";
-import { ValidationProvider } from './contexts/ValidationContext';
-        
-    
+import { ValidationProvider } from "./contexts/ValidationContext";
+import CreditManagementHome from "./components/creditos/CreditManagementHome";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -115,148 +114,154 @@ function App() {
 
   return (
     <ValidationProvider>
-    <Router>
-      <div>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" />
-              ) : (
+      <Router>
+        <div>
+          <Routes>
+           
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <Layout>
+                    <HomePage />
+                  </Layout>
+                )
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <Layout>
+                    <Login />
+                  </Layout>
+                )
+              }
+            />
+            <Route
+              path="/products"
+              element={
                 <Layout>
-                  <HomePage />
+                  <Products />
                 </Layout>
-              )
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" />
-              ) : (
+              }
+            />
+            <Route
+              path="/creditos"
+              element={
                 <Layout>
-                  <Login />
+                  <CreditManagementHome />
                 </Layout>
-              )
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              <Layout>
-                <Products />
-              </Layout>
-            }
-          />
-          <Route
-            path="/services"
-            element={
-              <Layout>
-                <Servicios />
-              </Layout>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <Layout>
-                <Contact />
-              </Layout>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              isAuthenticated ? (
+              }
+            />
+            <Route
+              path="/services"
+              element={
                 <Layout>
-                  <Admin userRole={userRole} />
+                  <Servicios />
                 </Layout>
-              ) : (
-                <Navigate to={isAuthenticated ? "/dashboard" : "/login"} />
-              )
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              isAuthenticated ? (
+              }
+            />
+            <Route
+              path="/contact"
+              element={
                 <Layout>
-                  {userRole === 5 ? <Navigate to="/CreditUser" /> : null}
-                  {userRole === 4 ? <Navigate to="/admin" /> : null}
-                  {userRole === 3 ? <Navigate to="/payments" /> : null}
-                  <Dashboard />
+                  <Contact />
                 </Layout>
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                isAuthenticated ? (
+                  <Layout>
+                    <Admin userRole={userRole} />
+                  </Layout>
+                ) : (
+                  <Navigate to={isAuthenticated ? "/dashboard" : "/login"} />
+                )
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                isAuthenticated ? (
+                  <Layout>
+                    {userRole === 5 ? <Navigate to="/CreditUser" /> : null}
+                    {userRole === 4 ? <Navigate to="/admin" /> : null}
+                    {userRole === 3 ? <Navigate to="/payments" /> : null}
+                    <Dashboard />
+                  </Layout>
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
 
-          <Route
-            path="/AddCredit"
-            element={
-              isAuthenticated || userRole === 1 || userRole === 2 ? (
+            <Route
+              path="/AddCredit"
+              element={
                 <Layout>
                   <AddCredit />
                 </Layout>
-              ) : (
-                <Navigate to={isAuthenticated ? "/dashboard" : "/login"} />
-              )
-            }
-          />
-          <Route
-            path="/CreditCalculator"
-            element={
-              <Layout>
-                <CreditCalculator userRole={userRole} />
-              </Layout>
-            }
-          />
-          <Route
-            path="/CreditUser"
-            element={
-              <Layout>
-                <CreditUser personDni={personDni} />
-              </Layout>
-            }
-          />
-          <Route
-            path="/payments"
-            element={
-              isAuthenticated || userRole === 1 || userRole === 4 ? (
+              }
+            />
+
+            <Route
+              path="/CreditCalculator"
+              element={
                 <Layout>
-                  <Payments />
+                  <CreditCalculator userRole={userRole} />
                 </Layout>
-              ) : (
-                <Navigate to={isAuthenticated ? "/dashboard" : "/login"} />
-              )
-            }
-          />
-          <Route
-            path="/solicitudes"
-            element={
-              <Layout>
-                <Solicitudes userRole={userRole} />
-              </Layout>
-            }
-          />
-          <Route
-            path="*"
-            element={
-              <Layout>
-                <Error404 />
-              </Layout>
-            }
-          />
-          <Route
-            path="/formulario-cliente/:id"
-            element={<FormularioCliente />}
-          />
-        </Routes>
-      </div>
-    </Router>
+              }
+            />
+            <Route
+              path="/CreditUser"
+              element={
+                <Layout>
+                  <CreditUser personDni={personDni} />
+                </Layout>
+              }
+            />
+            <Route
+              path="/payments"
+              element={
+                isAuthenticated || userRole === 1 || userRole === 4 ? (
+                  <Layout>
+                    <Payments />
+                  </Layout>
+                ) : (
+                  <Navigate to={isAuthenticated ? "/dashboard" : "/login"} />
+                )
+              }
+            />
+            <Route
+              path="/solicitudes"
+              element={
+                <Layout>
+                  <Solicitudes userRole={userRole} />
+                </Layout>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <Layout>
+                  <Error404 />
+                </Layout>
+              }
+            />
+            <Route
+              path="/formulario-cliente/:id"
+              element={<FormularioCliente />}
+            />
+          </Routes>
+        </div>
+      </Router>
     </ValidationProvider>
   );
 }

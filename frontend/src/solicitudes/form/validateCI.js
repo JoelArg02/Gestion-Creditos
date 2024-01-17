@@ -56,8 +56,6 @@ function isValidCI(ci) {
 
 	if(isNumeric) {	
 		// El total debe ser igual al último número de la cédula
-		console.log(ci, total, individual);
-		console.log(ci, typeof ci, ci.length)
 		// La cédula debe contener al menos 10 dígitos
 		if(ci.toString().length != 10) { 
 			alert("La c\u00E9dula debe ser de: 10 d\u00EDgitos.");

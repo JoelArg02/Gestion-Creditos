@@ -66,7 +66,6 @@ const FormularioCliente = () => {
       setLoading(true);
       try {
         const datos = await getSolicitudById(id);
-        console.log(datos);
         setFormData({
           nombreCliente: datos.nombre_cliente,
           apellidoCliente: datos.apellido_cliente,
@@ -236,7 +235,7 @@ const FormularioCliente = () => {
         <Card className="mb-4 text-center">
           <Card.Body>
             <Card.Title style={{ fontSize: "1.75rem", fontWeight: "bold" }}>
-              ¡Felicidades, te aprobamos tu crédito!
+              ¡Felicidades, te preprobamos tu crédito!
             </Card.Title>
             <Card.Text style={{ fontSize: "1.25rem", margin: "20px 0" }}>
               A continuación, llena el formulario para un crédito. <br />

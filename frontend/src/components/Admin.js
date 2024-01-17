@@ -25,7 +25,7 @@ function Admin(props) {
   };
 
   return (
-    <Container>
+    <Container className="containerxd">
       <Row className="my-4 justify-content-center">
         {props.userRole === 1 || props.userRole === 2 ? (
           <>

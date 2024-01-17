@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Button, Container } from "react-bootstrap";
 import ProfileModal from "../modal/ModalProfile";
+import "./Header.css";
 
 function Header({
   isLoggedIn,
@@ -45,9 +46,14 @@ function Header({
                   userRole === 2 ||
                   userRole === 3 ||
                   userRole === 4) && (
-                  <Nav.Link as={Link} to="/admin">
-                    Administracion
-                  </Nav.Link>
+                  <>
+                    <Nav.Link as={Link} to="/admin">
+                      Administracion
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/creditos">
+                      creditos
+                    </Nav.Link>
+                  </>
                 )}
                 {(userRole === 1 || userRole === 2 || userRole === 4) && (
                   <>
@@ -57,13 +63,6 @@ function Header({
                   </>
                 )}
 
-                {(userRole === 2 || userRole === 1) && ( // Cobros para los roles 4 y 1
-                  <>
-                    <Nav.Link as={Link} to="/AddCredit">
-                      Añadir Crédito
-                    </Nav.Link>
-                  </>
-                )}
                 {userRole === 3 && (
                   <>
                     <Nav.Link as={Link} to="/CreditCalculator">
