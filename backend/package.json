@@ -7,7 +7,7 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Joelito El Pro",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1535.0",
