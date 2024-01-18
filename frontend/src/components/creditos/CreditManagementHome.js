@@ -5,25 +5,34 @@ import CreditForm from "./CreditForm/CreditFormUser";
 import Calculadora from "./Extras/Calculadora.js";
 import Contratos from "./Extras/Contratos.js";
 import Loading from "../../general/loading.js";
-import { getPersonById } from "../../api/person";
 import { getUsers } from "../../api/api";
 import { getSolById } from "../../api/solicitud";
+import { getPersonById } from "../../api/person.js";
+import { getReferenceById } from "../../api/reference.js";
 
 const CreditManagementHome = () => {
-  const [selectedUserId, setSelectedUserId] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
   const [userOptions, setUserOptions] = useState([]);
   const [userData, setUserData] = useState(null);
-  const [activeComponent, setActiveComponent] = useState(null);
+  const [activeComponent, setActive] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [idFormularioCliente, setIdFormularioCliente] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const users = await getUsers();
-
-        console.log(users);
-        setUserOptions(users);
+        setUserOptions(
+          users.map((user) => ({
+            value: `${user.id_usuario}-${
+              user.id_solicitud_usuario != null
+                ? user.id_solicitud_usuario
+                : "0"
+            }-${user.id_persona}`,
+            label: user.usuario,
+          }))
+        );
       } catch (error) {
         console.error("Error al cargar usuarios:", error);
       } finally {
@@ -34,65 +43,96 @@ const CreditManagementHome = () => {
     fetchUsers();
   }, []);
 
-  const options = userOptions.map((user) => ({
-    value: `${user.id_usuario}-${
-      user.id_solicitud_usuario != null ? user.id_solicitud_usuario : "0"
-    }`,
-    label: user.usuario,
-  }));
-
-  const handleUserSelect = async (selectedOption) => {
-    const value = selectedOption.value;
-    const [userId, solicitudId] = value.split("-");
-
-    setSelectedUserId(userId);
-
-    if (userId && solicitudId !== undefined) {
-      try {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (selectedOption) {
         setLoading(true);
-        const userData = await getSolById(
-          solicitudId === "0" ? null : solicitudId
-        );
+        const [userId, solicitudIdStr, personaIdStr] =
+          selectedOption.value.split("-");
+        const solicitudId = parseInt(solicitudIdStr, 10);
+        const personaId = parseInt(personaIdStr, 10);
+        if (!isNaN(solicitudId) && solicitudId !== 0) {
+          try {
+            const userData = await getSolById(solicitudId);
+            setUserData(userData);
+            if (userData && userData.id_formulario_cliente) {
+              setIdFormularioCliente(userData.id_formulario_cliente);
+              setActive("CreditForm");
+              try {
+                const personData = await getPersonById(personaId);
 
-        setUserData(userData);
-      } catch (error) {
-        console.error("Error al obtener detalles del usuario:", error);
-      } finally {
+                setUserData((prevUserData) => ({
+                  ...prevUserData,
+                  ...personData,
+                }));
+                try {
+                  const referenceData = await getReferenceById(personData.id_referencia_persona);
+                setUserData((prevUserData) => ({
+                  ...prevUserData,
+                  ...referenceData,
+                }));
+                } catch (error) {
+                  console.error(
+                    "Error al obtener detalles de la referencia:",
+                    error
+                  );
+                }
+              } catch (error) {
+                console.error("Error al obtener detalles del usuario:", error);
+              } finally {
+                setLoading(false);
+              }
+            } else {
+              setIdFormularioCliente(null);
+              setActive(null);
+            }
+          } catch (error) {
+            console.error("Error al obtener detalles del usuario:", error);
+            setUserData(null);
+            setIdFormularioCliente(null);
+          } finally {
+            setLoading(false);
+          }
+        } else {
+          setUserData(null);
+          setIdFormularioCliente(null);
+          setActive(null);
+          setLoading(false);
+        }
+      } else {
+        setUserData(null);
+        setIdFormularioCliente(null);
+        setActive(null);
         setLoading(false);
       }
-    } else {
-      setUserData(null);
-    }
+    };
+
+    fetchUserData();
+  }, [selectedOption]);
+  useEffect(() => {
+    console.log("Datos actualizados de usuario: ", userData);
+  }, [userData]);
+
+  const handleUserSelect = (option) => {
+    setSelectedOption(option);
   };
 
-  const setActive = (component) => {
-    setActiveComponent(component);
-  };
-  const idFormularioCliente = userData && userData.id_formulario_cliente;
-  const idPersona = userData && userData.id_persona;
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container">
       <div className="my-3">
         <Select
-          value={options.find((option) => option.value === selectedUserId)}
+          value={selectedOption}
           onChange={handleUserSelect}
-          options={options}
+          options={userOptions}
           className="form-control"
           placeholder="Seleccione un usuario"
         />
       </div>
-      <div className="component-selector">
-        <button onClick={() => setActive("CreditForm")}>
-          Mostrar CreditForm
-        </button>
-        <button onClick={() => setActive("Calculadora")}>
-          Mostrar Calculadora
-        </button>
-        <button onClick={() => setActive("Contratos")}>
-          Mostrar Contratos
-        </button>
-      </div>
+
       {activeComponent === "CreditForm" && (
         <CreditForm
           userData={userData}

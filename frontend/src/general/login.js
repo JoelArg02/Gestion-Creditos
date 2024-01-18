@@ -65,8 +65,8 @@ function Login(props) {
       setError(
         "Error al iniciar sesión: usuario inexistente o contraseña incorrecta"
       );
-    } finally {
       setLoading(false);
+    } finally {
     }
   };
   if (loading) {

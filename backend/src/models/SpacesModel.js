@@ -25,8 +25,12 @@ class SpacesModel {
       Bucket: this.bucketName,
       Key: newFileName,
       Body: fileBuffer,
-      ACL: "public-read", 
+      ACL: "public-read",
     };
+
+    if (fileExtension === "pdf") {
+      params.ContentDisposition = 'inline';
+    }
 
     try {
       const data = await s3.upload(params).promise();
@@ -35,7 +39,8 @@ class SpacesModel {
       console.error("Error in uploadFile: ", err);
       throw err;
     }
-  }
+}
+
 
   async downloadFile(fileName) {
     const params = {

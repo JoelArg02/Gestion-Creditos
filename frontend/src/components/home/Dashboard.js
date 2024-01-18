@@ -108,7 +108,6 @@ function Dashboard() {
     setCurrentPage((page) => Math.max(page - 1, 1));
   };
 
-  // Obtener las solicitudes de la página actual
   const solicitudesPaginadas = getCurrentPageSolicitudes();
 
   useEffect(() => {
@@ -119,6 +118,7 @@ function Dashboard() {
       .catch((error) => {
         setError(error);
       });
+    setLoading(false);
 
     const cargarSolicitudesPendientes = async () => {
       setLoading(true);

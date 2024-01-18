@@ -1,239 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Container,
-  Form,
-  Button,
   Card,
   Row,
   Col,
+  Button,
   Alert,
+  Form,
+  Modal,
 } from "react-bootstrap";
-import { getSolicitudById } from "../../../api/solicitud";
-import { uploadFile } from "../../../api/files";
-import { createUser } from "../../../api/user";
-import { createReference } from "../../../api/reference";
-import { createPerson } from "../../../api/person";
-import Loading from "../../../general/loading";
 
-const AddCreditForm = ({ onCreditSubmit,  userData, idFormularioCliente }) => {
-  const [loading, setLoading] = useState(false);
-  const [selectedPdf, setSelectedPdf] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [previewImageUrl, setPreviewImageUrl] = useState(null);
+const AddCreditForm = ({ userData }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [showForm, setShowForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const { id } = useParams();
-  const [formData, setFormData] = useState({
-    nombreCliente: "",
-    apellidoCliente: "",
-    detalles: "",
-    cedulaCliente: "",
-    direccionHogar: "",
-    telefono_2: "",
-    ciudad: "",
-    provincia: "",
-    nombre_trabajo: "",
-    telefono_trabajo: "",
-    emailCliente: "",
-    numeroCelular: "",
-    monto_solicitado: "",
-  });
-
-  const handlePdfChange = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type === "application/pdf") {
-      setSelectedPdf(file);
-    } else {
-      alert("Por favor, sube un archivo PDF.");
-      setSelectedPdf(null);
-    }
-  };
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
-      setSelectedImage(file);
-      setPreviewImageUrl(URL.createObjectURL(file));
-    } else {
-      alert("Por favor, sube una imagen en formato PNG o JPEG.");
-      setSelectedImage(null);
-      setPreviewImageUrl(null);
-    }
-  };
-
-  useEffect(() => {
-    const cargarDatosFormulario = async () => {
-      setLoading(true);
-      try {
-        const datos = await getSolicitudById(idFormularioCliente);
-        setFormData({
-          nombreCliente: datos.nombre_cliente,
-          apellidoCliente: datos.apellido_cliente,
-          emailCliente: datos.email_cliente,
-          detalles: datos.detalles,
-          cedulaCliente: datos.cedula_cliente,
-          monto_solicitado: datos.monto_solicitado,
-          direccionHogar: "",
-        });
-      } catch (error) {
-        console.error("Error al cargar los datos del formulario:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    cargarDatosFormulario();
-  }, [id]);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      let pdfUrl, imageUrl;
-
-      if (selectedPdf) {
-        const pdfResponse = await uploadFile(selectedPdf);
-        pdfUrl = pdfResponse.data.Location;
-      }
-
-      if (selectedImage) {
-        const imageResponse = await uploadFile(selectedImage);
-        imageUrl = imageResponse.data.Location;
-      }
-
-      const referenceData = {
-        nombre_trabajo: formData.nombre_trabajo,
-        telefono_trabajo: formData.telefono_trabajo,
-        telefono_trabajo_c: "123456", // Valor predeterminado
-        imagen_hogar: imageUrl,
-        rol_pago: pdfUrl,
-      };
-
-      let referenceId; // Declara la variable fuera del alcance de los bloques try
-
-      try {
-        const referenceResponse = await createReference(referenceData);
-
-        if (!referenceResponse || !referenceResponse.id_referencia) {
-          throw new Error(
-            "La respuesta de la API no contiene el ID de referencia"
-          );
-        }
-
-        referenceId = parseInt(referenceResponse.id_referencia, 10);
-        if (isNaN(referenceId)) {
-          throw new Error("El ID de referencia no es un número válido");
-        }
-      } catch (error) {
-        console.error("Error al crear la referencia:", error);
-        setError("Error al crear la referencia: " + error.message);
-        setLoading(false);
-        return;
-      }
-
-      let personId;
-
-      try {
-        const personData = {
-          nombre: formData.nombreCliente,
-          apellido: formData.apellidoCliente,
-          telefono: formData.numeroCelular,
-          cedula: formData.cedulaCliente,
-          telefono_2: formData.telefono_2,
-          provincia: formData.provincia,
-          ciudad: formData.ciudad,
-          direccion: formData.direccion,
-          direccion_2: formData.direccion_2,
-          correo: formData.emailCliente,
-          id_referencia_persona: referenceId,
-        };
-
-        const personResponse = await createPerson(personData);
-
-        personId = parseInt(personResponse.id_persona, 10);
-        if (isNaN(personId)) {
-          throw new Error("El ID de la persona no es un número válido");
-        }
-
-        // Continúa con el resto de tu lógica para crear el usuario
-        // ...
-      } catch (error) {
-        console.error("Error al crear la persona:", error);
-        setError("Error al crear la persona: " + error.message);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const userData = {
-          usuario: formData.nombreCliente.charAt(0) + formData.apellidoCliente,
-          contrasena: "nexfon",
-          email: formData.emailCliente,
-          id_persona: personId,
-          id_rol: 5,
-          id_configuracion_negocio: 1,
-        };
-
-        await createUser(userData);
-      } catch (error) {
-        console.error("Error al crear el usuario:", error);
-      }
-
-      setSuccess("Solicitud enviada con éxito");
-    } catch (error) {
-      console.error("Error en el proceso de solicitud:", error);
-      setError("Error al enviar la solicitud");
-    } finally {
-      setLoading(false);
-    }
+    // Lógica de envío del formulario
   };
 
-  const setSuccess = (message) => {
-    setSuccessMessage(message);
-
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 5000); // 5000 milisegundos = 5 segundos
-  };
-
-  const setError = (message) => {
-    setErrorMessage(message);
-
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 5000); // 5000 milisegundos = 5 segundos
-  };
-
-  const handleNextClick = () => {
-    setShowForm(true);
-  };
-
-  const handleReturnClick = () => {
-    setShowForm(false);
-  };
-  // Función para manejar el clic en el botón Cancelar (puedes expandirla más adelante)
-  const handleCancelClick = () => {};
-
-  if (loading) {
-    return <Loading />;
+  if (!userData) {
+    return <p>No se encontraron datos para la solicitud.</p>;
   }
+
   return (
     <Container className="custom-container-cl">
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
-
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
       <Card>
         <Card.Body>
-          <Card.Title style={{textAlign: "center"}}>¡Formulario de Revision!</Card.Title>
+          <Card.Title style={{ textAlign: "center" }}>
+            ¡Formulario de Revisión!
+          </Card.Title>
           <Form onSubmit={handleSubmit}>
             <Row>
               <Col md={6}>
@@ -243,24 +46,25 @@ const AddCreditForm = ({ onCreditSubmit,  userData, idFormularioCliente }) => {
                     type="text"
                     placeholder="Ingrese nombre del cliente"
                     name="nombreCliente"
-                    value={formData.nombreCliente}
-                    onChange={handleChange}
+                    value={userData.nombre}
+                    readOnly
                   />
                 </Form.Group>
               </Col>
-              <Col>
+              <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Apellido del Cliente</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Ingrese apellido del cliente"
                     name="apellidoCliente"
-                    value={formData.apellidoCliente}
-                    onChange={handleChange}
+                    value={userData.apellido}
+                    readOnly
                   />
                 </Form.Group>
               </Col>
             </Row>
+
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
@@ -269,9 +73,8 @@ const AddCreditForm = ({ onCreditSubmit,  userData, idFormularioCliente }) => {
                     type="email"
                     placeholder="Ingrese email del cliente"
                     name="emailCliente"
-                    value={formData.emailCliente}
-                    onChange={handleChange}
-                    required
+                    value={userData.correo}
+                    readOnly
                   />
                 </Form.Group>
               </Col>
@@ -282,35 +85,8 @@ const AddCreditForm = ({ onCreditSubmit,  userData, idFormularioCliente }) => {
                     type="number"
                     placeholder="Ingrese telefono del cliente"
                     name="telefono_2"
-                    value={formData.telefono_2}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Cedula</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Cedula"
-                    name="cedulaCliente"
-                    value={formData.cedulaCliente}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Numero Celular</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Numero Celular"
-                    name="numeroCelular"
-                    value={formData.numeroCelular}
-                    onChange={handleChange}
+                    value={userData.telefono}
+                    readOnly
                   />
                 </Form.Group>
               </Col>
@@ -318,152 +94,105 @@ const AddCreditForm = ({ onCreditSubmit,  userData, idFormularioCliente }) => {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Calle Principal</Form.Label>
+                  <Form.Label>Telefono Celular</Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="Ingrese la dirección"
-                    name="direccion"
-                    value={formData.direccion}
-                    onChange={handleChange}
+                    type="number"
+                    placeholder="Ingrese telefono del cliente"
+                    name="telefono_1"
+                    value={userData.telefono_2}
+                    readOnly
                   />
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Calle Secundaria</Form.Label>
+                  <Form.Label>Telefono de Referencia</Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="Ingrese la dirección"
-                    name="direccion_2"
-                    value={formData.direccion_2}
-                    onChange={handleChange}
+                    type="number"
+                    placeholder="Ingrese telefono del cliente"
+                    name="telefono_3"
+                    value={userData.telefono_trabajo}
+                    readOnly
                   />
                 </Form.Group>
               </Col>
             </Row>
             <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Direccion Hogar</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Ingrese direccion del cliente"
+                    name="direccion_trabajo"
+                    value={userData.direccion}
+                    readOnly
+                  />
+                </Form.Group>
+              </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Ciudad</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Ingrese la dirección"
-                    name="ciudad"
-                    value={formData.ciudad}
-                    onChange={handleChange}
+                    placeholder="Ingrese telefono del cliente"
+                    name="telefono_3"
+                    value={userData.ciudad}
+                    readOnly
                   />
                 </Form.Group>
               </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Provincia</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Ingrese la dirección"
-                    name="provincia"
-                    value={formData.provincia}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Parroquia</Form.Label>
-                  <Form.Control type="text" placeholder="Detalles" />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <h4>Referencias laborables</h4>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Nombre trabajo</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Nombre del Trabajo"
-                    name="nombre_trabajo" // Cambiado para reflejar el campo de la base de datos
-                    value={formData.nombre_trabajo}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Telefono trabajo</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Telefono del Trabajo"
-                    name="telefono_trabajo" // Cambiado para reflejar el campo de la base de datos
-                    value={formData.telefono_trabajo}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Rol de Pagos en PDF</Form.Label>
-                  <Form.Control
-                    type="file"
-                    accept=".pdf"
-                    onChange={handlePdfChange}
-                  />
-                  {selectedPdf && (
-                    <p>Archivo seleccionado: {selectedPdf.name}</p>
-                  )}
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Foto de la vivienda</Form.Label>
-                  <Form.Control
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    onChange={handleImageChange}
-                  />
-                  {selectedImage && (
-                    <p>Archivo seleccionado: {selectedImage.name}</p>
-                  )}
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              {previewImageUrl && (
-                <Card>
-                  <Card.Header>Vista Previa de la Imagen</Card.Header>
-                  <Card.Body>
-                    <div style={{ textAlign: "center" }}>
-                      <img
-                        src={previewImageUrl}
-                        alt="Vista previa"
-                        style={{ maxWidth: "250px", height: "auto" }}
-                      />
-                    </div>
-                  </Card.Body>
-                </Card>
-              )}
             </Row>
 
-            <Button
-              variant="primary"
-              style={{ borderColor: "white", marginTop: "1rem" }}
-              type="submit"
-              
-            >
+            {/* Agrega aquí más campos del formulario si es necesario */}
+
+            {/* Visualización de la imagen de la vivienda */}
+            {userData.imagen_hogar && (
+              <div>
+                <h5>Imagen de la Vivienda</h5>
+                <img
+                  src={userData.imagen_hogar}
+                  alt="Imagen de la vivienda"
+                  style={{ maxWidth: "250px", height: "auto" }}
+                />
+              </div>
+            )}
+
+            {/* Botón para abrir el modal del rol de pagos */}
+            {userData.rol_pago && (
+              <div>
+                <h5>Rol de Pagos</h5>
+                <Button variant="link" onClick={handleShowModal}>
+                  Ver Rol de Pagos
+                </Button>
+              </div>
+            )}
+
+            <Button variant="primary" type="submit">
               Aprobar Solicitud
             </Button>
-            <Button
-              variant="secondary"
-              style={{ borderColor: "white", marginTop: "1rem" }}
-            >
-              Cancelar/Reenviar
-            </Button>
+            {/* Otros botones o acciones si son necesarios */}
           </Form>
         </Card.Body>
       </Card>
+      {/* Modal para el PDF */}
+      <Modal show={showModal} onHide={handleCloseModal} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Rol de Pagos</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <embed
+            src={userData.rol_pago}
+            type="application/pdf"
+            style={{ width: "100%", height: "500px" }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
