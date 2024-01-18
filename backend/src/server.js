@@ -95,9 +95,4 @@ app.listen(port, () => {
   console.log(`Servidor Express corriendo en el puerto ${port}`);
 });
 
-const result = require('dotenv').config();
-if (result.error) {
-  throw result.error;
-}
-
 
