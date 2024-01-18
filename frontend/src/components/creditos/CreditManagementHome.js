@@ -4,8 +4,8 @@ import Select from "react-select";
 import CreditForm from "./CreditForm/CreditFormUser";
 import Calculadora from "./Extras/Calculadora.js";
 import Contratos from "./Extras/Contratos.js";
-
-import {getPersonById} from "../../api/person";
+import Loading from "../../general/loading.js";
+import { getPersonById } from "../../api/person";
 import { getUsers } from "../../api/api";
 import { getSolById } from "../../api/solicitud";
 
@@ -14,16 +14,20 @@ const CreditManagementHome = () => {
   const [userOptions, setUserOptions] = useState([]);
   const [userData, setUserData] = useState(null);
   const [activeComponent, setActiveComponent] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const users = await getUsers();
 
         console.log(users);
         setUserOptions(users);
       } catch (error) {
         console.error("Error al cargar usuarios:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -45,19 +49,20 @@ const CreditManagementHome = () => {
 
     if (userId && solicitudId !== undefined) {
       try {
+        setLoading(true);
         const userData = await getSolById(
           solicitudId === "0" ? null : solicitudId
         );
-        
+
         setUserData(userData);
       } catch (error) {
         console.error("Error al obtener detalles del usuario:", error);
+      } finally {
+        setLoading(false);
       }
     } else {
       setUserData(null);
     }
-
-    
   };
 
   const setActive = (component) => {
