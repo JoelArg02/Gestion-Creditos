@@ -5,6 +5,7 @@ import CreditForm from "./CreditForm/CreditFormUser";
 import Calculadora from "./Extras/Calculadora.js";
 import Contratos from "./Extras/Contratos.js";
 
+import {getPersonById} from "../../api/person";
 import { getUsers } from "../../api/api";
 import { getSolById } from "../../api/solicitud";
 
@@ -18,6 +19,7 @@ const CreditManagementHome = () => {
     const fetchUsers = async () => {
       try {
         const users = await getUsers();
+
         console.log(users);
         setUserOptions(users);
       } catch (error) {
@@ -46,7 +48,7 @@ const CreditManagementHome = () => {
         const userData = await getSolById(
           solicitudId === "0" ? null : solicitudId
         );
-        console.log(userData);
+        
         setUserData(userData);
       } catch (error) {
         console.error("Error al obtener detalles del usuario:", error);
@@ -54,12 +56,15 @@ const CreditManagementHome = () => {
     } else {
       setUserData(null);
     }
+
+    
   };
 
   const setActive = (component) => {
     setActiveComponent(component);
   };
   const idFormularioCliente = userData && userData.id_formulario_cliente;
+  const idPersona = userData && userData.id_persona;
 
   return (
     <div className="container">

@@ -17,8 +17,6 @@ import { createPerson } from "../../../api/person";
 import Loading from "../../../general/loading";
 
 const AddCreditForm = ({ onCreditSubmit,  userData, idFormularioCliente }) => {
-  console.log(userData);
-  console.log("envia bien", idFormularioCliente);
   const [loading, setLoading] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
