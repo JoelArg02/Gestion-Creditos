@@ -1,0 +1,9 @@
+@media print {
+    /* Oculta elementos no deseados */
+    header, footer, nav, aside {
+      display: none;
+    }
+  
+    /* Otras reglas de estilo para impresión */
+  }
+  

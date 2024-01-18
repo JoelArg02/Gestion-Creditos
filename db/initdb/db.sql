@@ -81,9 +81,11 @@ CREATE TABLE usuarios (
     id_persona INT,
     id_rol INT,
     id_configuracion_negocio INT,
+    id_solicitud_usuario INT,
     FOREIGN KEY (id_configuracion_negocio) REFERENCES configuracion_negocio(id_configuracion),
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
-    FOREIGN KEY (id_persona) REFERENCES personas(id_persona)
+    FOREIGN KEY (id_persona) REFERENCES personas(id_persona),
+    FOREIGN KEY (id_solicitud_usuario) REFERENCES solicitudes(id)
 );
 
 CREATE TABLE detalle_credito (

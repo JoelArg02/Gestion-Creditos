@@ -24,10 +24,12 @@ const FormularioCliente = () => {
   const [previewImageUrl, setPreviewImageUrl] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [id_solicitud, setId_solicitud] = useState("");
   const [showForm, setShowForm] = useState(false);
 
   const { id } = useParams();
   const [formData, setFormData] = useState({
+    id_solicitud: "",
     nombreCliente: "",
     apellidoCliente: "",
     detalles: "",
@@ -67,6 +69,7 @@ const FormularioCliente = () => {
       try {
         const datos = await getSolicitudById(id);
         setFormData({
+          id_solicitud: datos.id,
           nombreCliente: datos.nombre_cliente,
           apellidoCliente: datos.apellido_cliente,
           emailCliente: datos.email_cliente,
@@ -75,6 +78,8 @@ const FormularioCliente = () => {
           monto_solicitado: datos.monto_solicitado,
           direccionHogar: "",
         });
+        setId_solicitud(datos.id);
+        console.log(datos.id)
       } catch (error) {
         console.error("Error al cargar los datos del formulario:", error);
       } finally {
@@ -160,16 +165,16 @@ const FormularioCliente = () => {
           throw new Error("El ID de la persona no es un número válido");
         }
 
-        // Continúa con el resto de tu lógica para crear el usuario
-        // ...
+        
       } catch (error) {
         console.error("Error al crear la persona:", error);
         setError("Error al crear la persona: " + error.message);
         setLoading(false);
         return;
       }
-
+      
       try {
+        console.log("La id que llego", id_solicitud)
         const userData = {
           usuario: formData.nombreCliente.charAt(0) + formData.apellidoCliente,
           contrasena: "nexfon",
@@ -177,6 +182,7 @@ const FormularioCliente = () => {
           id_persona: personId,
           id_rol: 5,
           id_configuracion_negocio: 1,
+          id_solicitud_usuario: id_solicitud
         };
 
         await createUser(userData);

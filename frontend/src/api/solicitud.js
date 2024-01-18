@@ -40,5 +40,13 @@ const obtenerSolicitudesPendientes = async () => {
     }
 };
   
+const getSolById = async (id) => {
+    try {
+        const response = await axios.get(`${apiConfig.baseURL}/solicitud/id/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
-export { getSolicitudById, crearSolicitud, actualizarSolicitud, obtenerSolicitudesPendientes };
+export { getSolicitudById, crearSolicitud, actualizarSolicitud, obtenerSolicitudesPendientes, getSolById };

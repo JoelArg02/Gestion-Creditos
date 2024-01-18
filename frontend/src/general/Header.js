@@ -30,7 +30,7 @@ function Header({
     navigate("/");
     window.location.reload();
   };
-
+  
   return (
     <Navbar bg="white" expand="lg" className="shadow-sm navbar-white">
       <Container>
@@ -42,6 +42,18 @@ function Header({
           <Nav className="me-auto">
             {isLoggedIn ? (
               <>
+                {userRole === 1 && (
+                  <>
+                    <Nav.Link as={Link} to="/dashboard">
+                      Dashboard
+                    </Nav.Link>
+                  </>
+                )}
+                {(userRole === 1 || userRole === 2) && (
+                  <Nav.Link as={Link} to="/creditos">
+                  Credito
+                </Nav.Link>
+                )}
                 {(userRole === 1 ||
                   userRole === 2 ||
                   userRole === 3 ||
@@ -50,11 +62,10 @@ function Header({
                     <Nav.Link as={Link} to="/admin">
                       Administracion
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/creditos">
-                      creditos
-                    </Nav.Link>
+                    
                   </>
                 )}
+
                 {(userRole === 1 || userRole === 2 || userRole === 4) && (
                   <>
                     <Nav.Link as={Link} to="/CreditCalculator">

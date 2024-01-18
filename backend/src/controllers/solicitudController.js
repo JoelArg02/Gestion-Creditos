@@ -4,6 +4,7 @@ const emailContador = "joelitodaniel02@gmail.com";
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const path = require("path");
+const exp = require("constants");
 
 function cargarContenidoHtml(nombreArchivo) {
   const rutaArchivo = path.join(__dirname, "../html", nombreArchivo);
@@ -151,3 +152,29 @@ exports.obtenerSolicitudesPendientes = (req, res) => {
     }
   });
 };
+
+exports.obtenerSolicitudes = (req, res) => {
+  Solicitud.GetAllSol((error, solicitudes) => {
+    if (error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(200).json(solicitudes);
+    }
+  });
+}
+
+exports.getSolicitudById = (req, res) => {
+  const id = req.params.id;
+
+  Solicitud.getById(id, (err, solicitud) => {
+    if (err) {
+      return res
+        .status(500)
+        .send("Error al obtener la solicitud: " + err.message);
+    }
+    if (!solicitud) {
+      return res.status(404).send("Solicitud no encontrada.");
+    }
+    res.status(200).json(solicitud);
+  });
+}

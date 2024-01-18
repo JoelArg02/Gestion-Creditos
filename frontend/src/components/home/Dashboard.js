@@ -72,7 +72,6 @@ const lineChartData = {
     },
   ],
 };
-
 function getColorForStatus(status) {
   switch (status) {
     case "Por Aprobar":
@@ -181,14 +180,12 @@ function Dashboard() {
         {error ? (
           <Alert variant="danger">Error en el servidor: {error.message}</Alert>
         ) : credits.length === 0 ? (
-          <Alert variant="info">
-            No hya creditos :S ya hay que subir
-          </Alert>
+          <Alert variant="info">No hya creditos :S ya hay que subir</Alert>
         ) : (
           <Table striped bordered hover></Table>
         )}
       </Container>
-     
+
       <Container>
         <Row className="justify-content-center" style={{ marginTop: "2rem" }}>
           <Col>

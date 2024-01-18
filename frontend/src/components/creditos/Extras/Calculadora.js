@@ -129,7 +129,7 @@ function CreditCalculator(props) {
     <Container className="card-custom">
       <Card style={cardStyle}>
         <Card.Body>
-          <h4 style={{color: "#007bff"}}>Credito Calculador</h4>
+          <h4 style={{ color: "#007bff" }}>Credito Calculador</h4>
 
           {/* Primera Fila */}
           <div className="row-custom">
@@ -171,79 +171,68 @@ function CreditCalculator(props) {
           {/* Segunda Fila */}
           <div className="row-custom">
             <div className="col-custom">
-              {(userRole === 1 || userRole === 2) && (
-                <>
-                  <span className="label-custom">Fecha de Inicio</span>
-                  <div className="form-field-container">
+              <>
+                <span className="label-custom">Fecha de Inicio</span>
+                <div className="form-field-container">
+                  <Form.Control
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                </div>
+              </>
+
+              <>
+                <span className="label-custom">Entrada</span>
+                <div className="form-field-container">
+                  <InputGroup className="input-group-custom">
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <Form.Control type="number" value={entryQuota} disabled />
+                  </InputGroup>
+                </div>
+              </>
+
+              <>
+                <span className="label-custom">Cuota</span>
+                <div className="form-field-container">
+                  <InputGroup className="input-group-custom">
+                    <InputGroup.Text>$</InputGroup.Text>
                     <Form.Control
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
+                      disabled
+                      type="number"
+                      value={monthlyQuota.toFixed(2)}
                     />
-                  </div>
-                </>
-              )}
+                  </InputGroup>
+                </div>
+              </>
 
-              
-                <>
-                  <span className="label-custom">Entrada</span>
-                  <div className="form-field-container">
-                    <InputGroup className="input-group-custom">
-                      <InputGroup.Text>$</InputGroup.Text>
-                      <Form.Control type="number" value={entryQuota} disabled />
-                    </InputGroup>
-                  </div>
-                </>
-            
-              {(userRole === 5 || userRole === 4 || userRole === 3) && (
-                <>
-                  <span className="label-custom">Cuota</span>
-                  <div className="form-field-container">
-                    <InputGroup className="input-group-custom">
-                      <InputGroup.Text>$</InputGroup.Text>
-                      <Form.Control
-                        disabled
-                        type="number"
-                        value={monthlyQuota.toFixed(2)}
-                      />
-                    </InputGroup>
-                  </div>
-                </>
-              )}
-
-              {(userRole === 1 || userRole === 2) && (
-                <>
-                  <span className="label-custom">Interés</span>
-                  <div className="form-field-container">
-                    <InputGroup className="input-group-custom">
-                      <InputGroup.Text>%</InputGroup.Text>
-                      <Form.Control type="number" value={interest} disabled />
-                    </InputGroup>
-                  </div>
-                </>
-              )}
-              {(userRole === 1 || userRole === 2) && (
-                <>
-                  <span className="label-custom">Entrada</span>
-                  <div className="form-field-container">
-                    <InputGroup className="input-group-custom">
-                      <InputGroup.Text>$</InputGroup.Text>
-                      <Form.Control type="number" value={entryQuota} disabled />
-                    </InputGroup>
-                  </div>
-                </>
-              )}
+              <>
+                <span className="label-custom">Interés</span>
+                <div className="form-field-container">
+                  <InputGroup className="input-group-custom">
+                    <InputGroup.Text>%</InputGroup.Text>
+                    <Form.Control type="number" value={interest} disabled />
+                  </InputGroup>
+                </div>
+              </>
             </div>
 
             <div className="col-custom">
-              {(userRole === 1 || userRole === 2) && (
-                <>
-                  <span className="label-custom">Fecha Final</span>
-                  <div className="form-field-container">
-                    <Form.Control type="text" value={endDate} disabled />
-                  </div>
-                </>
-              )}
+              <>
+                <span className="label-custom">Fecha Final</span>
+                <div className="form-field-container">
+                  <Form.Control type="text" value={endDate} disabled />
+                </div>
+              </>
+              <>
+                <span className="label-custom">Entrada</span>
+                <div className="form-field-container">
+                  <InputGroup className="input-group-custom">
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <Form.Control type="number" value={entryQuota} disabled />
+                  </InputGroup>
+                </div>
+              </>
               <span className="label-custom">Entrada</span>
               <div className="form-field-container">
                 <InputGroup className="input-group-custom">
@@ -272,21 +261,19 @@ function CreditCalculator(props) {
                   </div>
                 </InputGroup>
               </div>
-              {(userRole === 1 || userRole === 2) && (
-                <>
-                  <span className="label-custom">Total Financiado</span>
-                  <div className="form-field-container">
-                    <InputGroup className="input-group-custom">
-                      <InputGroup.Text>$</InputGroup.Text>
-                      <Form.Control
-                        type="number"
-                        value={amountFinanced.toFixed(2)}
-                        disabled
-                      />
-                    </InputGroup>
-                  </div>
-                </>
-              )}
+              <>
+                <span className="label-custom">Total Financiado</span>
+                <div className="form-field-container">
+                  <InputGroup className="input-group-custom">
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <Form.Control
+                      type="number"
+                      value={amountFinanced.toFixed(2)}
+                      disabled
+                    />
+                  </InputGroup>
+                </div>
+              </>
             </div>
           </div>
         </Card.Body>
@@ -300,7 +287,7 @@ function CreditCalculator(props) {
               <th>Mes</th>
               <th>Pago</th>
               <th>Faltante</th>
-              {(userRole === 1 || userRole === 2) && <th>Fecha</th>}
+              <th>Fecha</th>
             </tr>
           </thead>
           <tbody>
@@ -309,9 +296,8 @@ function CreditCalculator(props) {
                 <td style={cellStyle}>{row.month}</td>
                 <td style={cellStyle}>${row.payment}</td>
                 <td style={cellStyle}>${row.balance}</td>
-                {(userRole === 1 || userRole === 2) && (
-                  <td style={cellStyle}>{row.date}</td>
-                )}
+
+                <td style={cellStyle}>{row.date}</td>
               </tr>
             ))}
           </tbody>

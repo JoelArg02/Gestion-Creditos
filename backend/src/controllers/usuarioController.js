@@ -60,6 +60,7 @@ exports.register = async (req, res) => {
     id_persona,
     id_rol,
     id_configuracion_negocio,
+    id_solicitud_usuario
   } = req.body;
 
   if (
@@ -68,7 +69,8 @@ exports.register = async (req, res) => {
     !email ||
     !id_persona ||
     !id_rol ||
-    !id_configuracion_negocio
+    !id_configuracion_negocio ||
+    !id_solicitud_usuario
   ) {
     return res.status(400).json({ error: "Datos faltantes o inválidos" });
   }
@@ -80,7 +82,8 @@ exports.register = async (req, res) => {
       email,
       id_persona,
       id_rol,
-      id_configuracion_negocio
+      id_configuracion_negocio,
+      id_solicitud_usuario
     );
 
     const subject = "Credenciales de acceso - Nexfon";
@@ -112,7 +115,8 @@ const createUserWithUniqueUsername = async (
   email,
   id_persona,
   id_rol,
-  id_configuracion_negocio
+  id_configuracion_negocio,
+  id_solicitud_usuario
 ) => {
   let uniqueUsername = usuario;
   let attempt = 1;
@@ -127,6 +131,7 @@ const createUserWithUniqueUsername = async (
         id_persona,
         id_rol,
         id_configuracion_negocio,
+        id_solicitud_usuario,
         (err, result) => {
           if (err) {
             reject(err);

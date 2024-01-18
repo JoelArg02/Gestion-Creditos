@@ -16,7 +16,9 @@ import { createReference } from "../../../api/reference";
 import { createPerson } from "../../../api/person";
 import Loading from "../../../general/loading";
 
-const AddCreditForm = ({ onCreditSubmit }) => {
+const AddCreditForm = ({ onCreditSubmit,  userData, idFormularioCliente }) => {
+  console.log(userData);
+  console.log("envia bien", idFormularioCliente);
   const [loading, setLoading] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -36,6 +38,10 @@ const AddCreditForm = ({ onCreditSubmit }) => {
     ciudad: "",
     provincia: "",
     nombre_trabajo: "",
+    telefono_trabajo: "",
+    emailCliente: "",
+    numeroCelular: "",
+    monto_solicitado: "",
   });
 
   const handlePdfChange = (event) => {
@@ -64,7 +70,7 @@ const AddCreditForm = ({ onCreditSubmit }) => {
     const cargarDatosFormulario = async () => {
       setLoading(true);
       try {
-        const datos = await getSolicitudById(id);
+        const datos = await getSolicitudById(idFormularioCliente);
         setFormData({
           nombreCliente: datos.nombre_cliente,
           apellidoCliente: datos.apellido_cliente,

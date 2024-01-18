@@ -91,4 +91,24 @@ Solicitud.obtenerPendientes = (callback) => {
   );
 };
 
+Solicitud.GetAllSol = (callback) => {
+  poolc.query("SELECT * FROM solicitudes", (error, results) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results.rows);
+    }
+  });
+};
+
+
+Solicitud.getById = (id, callback) => {
+  poolc.query("SELECT * FROM solicitudes WHERE id = $1", [id], (error, results) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results.rows[0]);
+    }
+  });
+};
 module.exports = Solicitud;
