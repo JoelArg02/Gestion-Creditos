@@ -9,7 +9,7 @@ import {
   Col,
   ListGroup,
 } from "react-bootstrap";
-import { getCredits } from "../../api/api";
+import { getCredits } from "../api/api";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -25,8 +25,8 @@ import {
   DoughnutController,
 } from "chart.js";
 import "./Dashboard.css"; // Import your external CSS file
-import Loading from "../../general/loading";
-import { obtenerSolicitudesPendientes } from "../../api/solicitud";
+import Loading from "../general/loading";
+import { obtenerSolicitudesPendientes } from "../api/solicitud";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 

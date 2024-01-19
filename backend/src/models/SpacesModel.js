@@ -1,4 +1,4 @@
-const s3 = require("../s3config"); 
+const s3 = require("../s3config");
 const { v4: uuidv4 } = require("uuid");
 
 class SpacesModel {
@@ -29,7 +29,7 @@ class SpacesModel {
     };
 
     if (fileExtension === "pdf") {
-      params.ContentDisposition = 'inline';
+      params.ContentDisposition = "inline";
     }
 
     try {
@@ -39,8 +39,7 @@ class SpacesModel {
       console.error("Error in uploadFile: ", err);
       throw err;
     }
-}
-
+  }
 
   async downloadFile(fileName) {
     const params = {
@@ -86,6 +85,21 @@ class SpacesModel {
       return data.Contents;
     } catch (err) {
       console.error("Error in listFiles: ", err);
+      throw err;
+    }
+  }
+  
+  async getFileStream(fileName) {
+    const params = {
+      Bucket: this.bucketName,
+      Key: fileName,
+    };
+
+    try {
+      const stream = s3.getObject(params).createReadStream();
+      return stream;
+    } catch (err) {
+      console.error("Error in getFileStream: ", err);
       throw err;
     }
   }

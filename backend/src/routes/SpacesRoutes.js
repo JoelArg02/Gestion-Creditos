@@ -16,6 +16,9 @@ router.get('/download/:fileName', (req, res) => {
     spacesController.download(req, res);
 });
 
-// ... puedes agregar más rutas para actualizar, eliminar y listar archivos
+// Nueva ruta para visualizar archivos PDF
+router.get('/view-pdf/:fileName', (req, res) => {
+    spacesController.viewPdf(req, res);
+});
 
 module.exports = router;

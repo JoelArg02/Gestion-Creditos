@@ -27,4 +27,9 @@ const uploadFile = async (file) => {
   }
 };
 
-export {getFile, uploadFile };
+const viewFile = (fileName) => {
+  const fileUrl = `${apiConfig.baseURL}/spaces/view-pdf/${fileName}`;
+  window.open(fileUrl, '_blank');
+};
+
+export { getFile, uploadFile, viewFile };
