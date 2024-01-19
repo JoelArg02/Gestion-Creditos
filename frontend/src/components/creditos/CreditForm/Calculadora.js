@@ -161,7 +161,6 @@ function CreditCalculator(props) {
     props.setAmortizationData(updatedAmortizationData);
 
     // Cambia al componente "Contratos"
-    props.changeComponent("Contratos");
   };
 
   const goToCreditForm = () => {
@@ -224,8 +223,6 @@ function CreditCalculator(props) {
                 </div>
               </>
 
-            
-
               <>
                 <span className="label-custom">Cuota</span>
                 <div className="form-field-container">
@@ -258,7 +255,7 @@ function CreditCalculator(props) {
                   <Form.Control type="text" value={endDate} disabled />
                 </div>
               </>
-              
+
               <span className="label-custom">Entrada</span>
               <div className="form-field-container">
                 <InputGroup className="input-group-custom">
@@ -329,18 +326,10 @@ function CreditCalculator(props) {
           </tbody>
         </Table>
       </div>
-      <Row>
-        <Col>
-          <Button variant="primary" onClick={goToContract}>
-            Contrato
-          </Button>
-        </Col>
-        <Col>
-          <Button variant="primary" onClick={goToCreditForm}>
-            Volver
-          </Button>
-        </Col>
-      </Row>
+
+      <Button variant="primary" onClick={goToContract}>
+        Cargar Credito
+      </Button>
     </Container>
   );
 }

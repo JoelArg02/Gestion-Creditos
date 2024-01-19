@@ -25,7 +25,7 @@ import Solicitudes from "./solicitudes/home.js";
 import FormularioCliente from "./solicitudes/form/FormularioCliente.js";
 import { ValidationProvider } from "./contexts/ValidationContext";
 import CreditManagementHome from "./components/creditos/CreditManagementHome";
-
+import Politics from "./legal/politica-de-privacidad.js";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState("");
@@ -117,7 +117,6 @@ function App() {
       <Router>
         <div>
           <Routes>
-           
             <Route
               path="/"
               element={
@@ -186,6 +185,7 @@ function App() {
                 )
               }
             />
+
             <Route
               path="/dashboard"
               element={
@@ -258,6 +258,14 @@ function App() {
             <Route
               path="/formulario-cliente/:id"
               element={<FormularioCliente />}
+            />
+            <Route
+              path="/politica-de-privacidad"
+              element={
+                <Layout>
+                  <Politics />
+                </Layout>
+              }
             />
           </Routes>
         </div>
