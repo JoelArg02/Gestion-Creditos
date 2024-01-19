@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Table, InputGroup, Form } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Table,
+  InputGroup,
+  Form,
+  Row,
+  Col,
+  Button,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,6 +16,7 @@ import "../../../components/CreditCalculator.css";
 
 function CreditCalculator(props) {
   const userRole = props.userRole;
+  const [amortizationData, setAmortizationData] = useState([]);
   const [cashPrice, setCashPrice] = useState(10);
   const [entryPercentage, setEntryPercentage] = useState(30);
   const [term, setTerm] = useState(1);
@@ -125,6 +135,38 @@ function CreditCalculator(props) {
     padding: "10px 5px",
   };
 
+  const goToContract = () => {
+    // Obtén todos los campos del formulario y sus valores actuales
+    const formData = {
+      cashPrice,
+      entryPercentage,
+      term,
+      interest,
+      monthlyQuota,
+      amountFinanced,
+      amountFinance,
+      entryQuota,
+      startDate,
+      endDate,
+      // Agrega aquí todos los campos adicionales que deseas incluir
+    };
+
+    // Crea una copia de amortizationData
+    const updatedAmortizationData = [...amortizationData];
+
+    // Agrega el objeto formData a amortizationData
+    updatedAmortizationData.push(formData);
+
+    // Llama a la función para pasar el prop amortizationData a Contratos
+    props.setAmortizationData(updatedAmortizationData);
+
+    // Cambia al componente "Contratos"
+    props.changeComponent("Contratos");
+  };
+
+  const goToCreditForm = () => {
+    props.changeComponent("CreditForm");
+  };
   return (
     <Container className="card-custom">
       <Card style={cardStyle}>
@@ -182,15 +224,7 @@ function CreditCalculator(props) {
                 </div>
               </>
 
-              <>
-                <span className="label-custom">Entrada</span>
-                <div className="form-field-container">
-                  <InputGroup className="input-group-custom">
-                    <InputGroup.Text>$</InputGroup.Text>
-                    <Form.Control type="number" value={entryQuota} disabled />
-                  </InputGroup>
-                </div>
-              </>
+            
 
               <>
                 <span className="label-custom">Cuota</span>
@@ -224,15 +258,7 @@ function CreditCalculator(props) {
                   <Form.Control type="text" value={endDate} disabled />
                 </div>
               </>
-              <>
-                <span className="label-custom">Entrada</span>
-                <div className="form-field-container">
-                  <InputGroup className="input-group-custom">
-                    <InputGroup.Text>$</InputGroup.Text>
-                    <Form.Control type="number" value={entryQuota} disabled />
-                  </InputGroup>
-                </div>
-              </>
+              
               <span className="label-custom">Entrada</span>
               <div className="form-field-container">
                 <InputGroup className="input-group-custom">
@@ -303,6 +329,18 @@ function CreditCalculator(props) {
           </tbody>
         </Table>
       </div>
+      <Row>
+        <Col>
+          <Button variant="primary" onClick={goToContract}>
+            Contrato
+          </Button>
+        </Col>
+        <Col>
+          <Button variant="primary" onClick={goToCreditForm}>
+            Volver
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 }

@@ -4,32 +4,45 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Contrato de COMPRA VENTA</title>
+    <title>Nexfon Contrato</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            background-color: #f5f5f5;
-            /* Color de fondo fuera del documento A4 */
-        }
-
-        .a4-container {
-            width: 210mm;
-            height: 600mm;
-            padding: 15mm;
-            /* Espacio interior para el contenido */
-            background: white;
-            /* Fondo blanco para el contenido del A4 */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            /* Sombra para dar efecto de página */
-        }
+        
+*{
+    font-family: 'Times New Roman', Times, serif;
+}
+        
 
         /* Tus estilos existentes para el contenido */
         .container {
             margin: 15px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            border: 2px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: black;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
         }
 
         /* ...otros estilos... */
@@ -40,7 +53,7 @@
     <div class="a4-container">
         <div class="container">
             <div>
-                <div style="text-align: end;">lunes</div>
+                <div style="text-align: end;">${fecha}</div>
                 <h4 style="text-align: center;">CONTRATO DE COMPRA-VENTA</h4>
             </div>
             <br>
@@ -49,10 +62,10 @@
                 <br>
             </div>
             <div>
-                Comparece, por una parte: <strong>${NOMBRE_NEGGOCIO) (NEXFON)</strong>, con número de RUC
-                <strong>${NUMERO_RUC}</strong>; a quien (es) en
+                Comparece, por una parte: <strong>NEXFON</strong>, con número de RUC
+                <strong>1754580247001</strong>; a quien (es) en
                 adelante se le(s) identificará como <strong>LA PARTE VENDEDORA</strong>, y por otra parte
-                <strong>APELLIDO APELLIDO NOMBRE NOMBRE</strong>,
+                <strong>${APELLIDO_2} ${APELLIDO} ${NOMBRE} ${NOMBRE_2}</strong>,
                 con número de cédula <strong>${CEDULA}</strong>; a quien(es) en adelante se le(s) identificará como LA
                 PARTE COMPRADORA;
                 quienes libre y voluntariamente, con plena capacidad libertad y conocimiento, convienen en celebrar el
@@ -87,20 +100,10 @@
                 América; mismos que son cancelados de la siguiente forma:
             </div>
             <br />
-            <table border="02" align="center">
-                <tr>
-                    <th>Detalle</th>
-                    <th>Valor</th>
-                    <th>Fecha de Corte</th>
-                    <th>Estado</th>
-                </tr>
-                <tr>
-                    <td>Entrada</td>
-                    <td>${PRECIO}</td>
-                    <td>${FECHA}</td>
-                    <td>${ESTADO}</td>
-                </tr>
-            </table>
+            <div id="tabla-amortizacion">
+                <!-- Aquí va la tabla de amortización que quieres reemplazar -->
+            </div>
+
             <br>
             <div><strong>QUINTA: </strong></div>
             <br>
@@ -161,10 +164,10 @@
                 <h4 style="text-align: center;">VENDEDORES</h4>
                 <div>
                     <ul>
-                        <li>Nombre: ${NOMBRE_NEGOCIO}</li>
+                        <li>Nombre: Nexfon</li>
                         <li>Dirección: ${DIRECCION_NEGOCIO}</li>
                         <li>Teléfono: ${TELEFONO_NEGOCIO}</li>
-                        <li>Correo: ${CORREO_NEGOCIO}</li>
+                        <li>Correo: Nexfonenterprice@gmail.com</li>
                     </ul>
                 </div>
             </div>
@@ -174,8 +177,8 @@
                     <ul>
                         <li>Nombre: ${NOMBRE_NEGOCIO}</li>
                         <li>Dirección: ${DIRECCION_NEGOCIO}</li>
-                        <li>Teléfono: ${TELEFONO_NEGOCIO}</li>
-                        <li>Correo: ${CORREO_NEGOCIO}</li>
+                        <li>Teléfono: ${DIRECCION}</li>
+                        <li>Correo: ${CORREO}</li>
                     </ul>
                 </div>
             </div>

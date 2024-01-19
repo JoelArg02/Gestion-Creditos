@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./CreditManagementHome.css";
 import Select from "react-select";
 import CreditForm from "./CreditForm/CreditFormUser";
-import Calculadora from "./Extras/Calculadora.js";
-import Contratos from "./Extras/Contratos.js";
+import Calculadora from "./CreditForm/Calculadora.js";
+import Contratos from "./CreditForm/Contratos.js";
 import Loading from "../../general/loading.js";
 import { getUsers } from "../../api/api";
 import { getSolById } from "../../api/solicitud";
@@ -17,6 +17,15 @@ const CreditManagementHome = () => {
   const [activeComponent, setActive] = useState(null);
   const [loading, setLoading] = useState(false);
   const [idFormularioCliente, setIdFormularioCliente] = useState(null);
+  const [amortizationData, setAmortizationData] = useState([]);
+
+  const handleAmortizationData = (data) => {
+    setAmortizationData(data);
+  };
+
+  const handleSetActiveComponent = (componentName) => {
+    setActive(componentName);
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -66,11 +75,13 @@ const CreditManagementHome = () => {
                   ...personData,
                 }));
                 try {
-                  const referenceData = await getReferenceById(personData.id_referencia_persona);
-                setUserData((prevUserData) => ({
-                  ...prevUserData,
-                  ...referenceData,
-                }));
+                  const referenceData = await getReferenceById(
+                    personData.id_referencia_persona
+                  );
+                  setUserData((prevUserData) => ({
+                    ...prevUserData,
+                    ...referenceData,
+                  }));
                 } catch (error) {
                   console.error(
                     "Error al obtener detalles de la referencia:",
@@ -117,6 +128,10 @@ const CreditManagementHome = () => {
     setSelectedOption(option);
   };
 
+  const handleApproval = () => {
+    setActive("Calculadora");
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -137,10 +152,22 @@ const CreditManagementHome = () => {
         <CreditForm
           userData={userData}
           idFormularioCliente={idFormularioCliente}
+          changeComponent={handleSetActiveComponent}
         />
       )}
-      {activeComponent === "Calculadora" && <Calculadora />}
-      {activeComponent === "Contratos" && <Contratos userData={userData} />}
+      {activeComponent === "Calculadora" && (
+        <Calculadora
+          changeComponent={handleSetActiveComponent}
+          setAmortizationData={handleAmortizationData}
+        />
+      )}
+      {activeComponent === "Contratos" && (
+        <Contratos
+          userData={userData}
+          amortizationData={amortizationData}
+          changeComponent={handleSetActiveComponent}
+        />
+      )}
     </div>
   );
 };

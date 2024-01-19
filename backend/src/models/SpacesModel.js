@@ -30,6 +30,7 @@ class SpacesModel {
 
     if (fileExtension === "pdf") {
       params.ContentDisposition = "inline";
+      params.ContentType = "application/pdf"; // Asegúrate de que el tipo de contenido sea PDF
     }
 
     try {
@@ -88,7 +89,7 @@ class SpacesModel {
       throw err;
     }
   }
-  
+
   async getFileStream(fileName) {
     const params = {
       Bucket: this.bucketName,
