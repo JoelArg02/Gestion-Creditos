@@ -282,7 +282,49 @@ function Dashboard() {
               </div>
             </Card>
           </Col>
-        </Row>
+        </Row> <div className="col-lg-4">
+          <h2>Herramientas Rápidas</h2>
+          <ul className="list-group mb-4">
+            <li
+              className="list-group-item"
+              
+            >
+              Formulario de Crédito
+            </li>
+            <li
+              className="list-group-item"
+              
+            >
+              Calculadora de Créditos
+            </li>
+            <li
+              className="list-group-item"
+              
+            >
+              Gestión de Contratos
+            </li>
+          </ul>
+          <div className="dashboard-info-cards">
+            <div className="card bg-primary text-black mb-3">
+              <div className="card-body">
+                <h5 className="card-title">Total Usuarios</h5>
+                <p className="card-text">52</p>
+              </div>
+            </div>
+            <div className="card bg-success text-black mb-3">
+              <div className="card-body">
+                <h5 className="card-title">Créditos Activos</h5>
+                <p className="card-text">28</p>
+              </div>
+            </div>
+            <div className="card bg-warning text-black mb-3">
+              <div className="card-body">
+                <h5 className="card-title">Pendientes de Aprobación</h5>
+                <p className="card-text">15</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </Container>
     </>
   );

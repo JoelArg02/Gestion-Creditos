@@ -34,6 +34,7 @@ CREATE TABLE solicitudes (
     apellido_cliente VARCHAR(255) NOT NULL,
     cedula_cliente VARCHAR(255) NOT NULL,
     email_cliente VARCHAR(255) NOT NULL,
+    whatsapp_cliente VARCHAR(255) NOT NULL,
     monto_solicitado DECIMAL NOT NULL,
     detalles TEXT,
     estado VARCHAR(50) DEFAULT 'pendiente',
@@ -52,6 +53,7 @@ CREATE TABLE referencias (
     telefono_trabajo_c VARCHAR(255) NOT NULL,
     imagen_hogar VARCHAR(255) NOT NULL,
     rol_pago VARCHAR(255) NOT NULL
+    doc_serv VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE personas (
@@ -107,7 +109,6 @@ CREATE TABLE creditos (
     interes DECIMAL(5, 2) NOT NULL,
     entrada DECIMAL(10, 2) NOT NULL,
     fecha_inicio DATE NOT NULL,
-    fecha_vencimiento DATE NOT NULL,
     estado BOOLEAN NOT NULL,
     detalle_credito int NOT NULL,
     FOREIGN KEY (detalle_credito) REFERENCES detalle_credito(id_detalle_credito),

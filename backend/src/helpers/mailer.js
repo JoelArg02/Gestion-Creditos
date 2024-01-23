@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
       "967394478850-ho3clgo567dcu24dculqkvnn3jmcn9ed.apps.googleusercontent.com",
     clientSecret: "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",
     refreshToken:
-      "1//04nau1WJyI2aQCgYIARAAGAQSNwF-L9IrPiBhkuejrutrbD3dSprJm9ObBDLmKqIhxoOddQc-5sL6F7Prg8tbw_S0HrpJRrvZwD4",
+      "1//04mf3FM8XKxgtCgYIARAAGAQSNwF-L9IrHp3QXqDCfqIl-SexOE8djsnS2Dvm9MHX7og3nQ3CJsfpVnKxHeEGYuXYk3A0wt17ulI",
   },
 });
 

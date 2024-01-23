@@ -3,7 +3,6 @@ const poolc = require("../config/db");
 const Solicitud = {};
 
 Solicitud.crear = (datosSolicitud, callback) => {
-
   const estado = "pendiente";
   const {
     nombreCliente,
@@ -13,17 +12,19 @@ Solicitud.crear = (datosSolicitud, callback) => {
     valorDinero,
     detalles,
     idFormularioCliente,
+    whatsappCliente,
   } = datosSolicitud;
   poolc.query(
-    "INSERT INTO solicitudes (nombre_cliente, apellido_Cliente, cedula_cliente, email_cliente, monto_solicitado, detalles, id_formulario_cliente, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+    "INSERT INTO solicitudes (nombre_cliente, apellido_Cliente, cedula_cliente, email_cliente, monto_solicitado, detalles, id_formulario_cliente, whatsapp_cliente, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
     [
       nombreCliente,
       apellidoCliente,
-      cedulaCliente,   
+      cedulaCliente,
       emailCliente,
       valorDinero,
       detalles,
       idFormularioCliente,
+      whatsappCliente,
       estado,
     ],
     (err, results) => {
@@ -46,7 +47,6 @@ Solicitud.actualizarEstado = (
 ) => {
   let query = "UPDATE solicitudes SET estado = $1";
   let parametros = [nuevoEstado];
-
   if (fechaExpiracion) {
     query += ", fecha_expiracion = $2 WHERE id = $3 RETURNING *";
     parametros.push(fechaExpiracion, idSolicitud);
@@ -56,10 +56,14 @@ Solicitud.actualizarEstado = (
   }
 
   poolc.query(query, parametros, (error, results) => {
-    if (error) {
-      callback(error, null);
+    if (typeof callback === "function") {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, results.rows[0]);
+      }
     } else {
-      callback(null, results.rows[0]);
+      console.error("Error: callback no es una función");
     }
   });
 };
@@ -101,14 +105,17 @@ Solicitud.GetAllSol = (callback) => {
   });
 };
 
-
 Solicitud.getById = (id, callback) => {
-  poolc.query("SELECT * FROM solicitudes WHERE id = $1", [id], (error, results) => {
-    if (error) {
-      callback(error, null);
-    } else {
-      callback(null, results.rows[0]);
+  poolc.query(
+    "SELECT * FROM solicitudes WHERE id = $1",
+    [id],
+    (error, results) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, results.rows[0]);
+      }
     }
-  });
+  );
 };
 module.exports = Solicitud;

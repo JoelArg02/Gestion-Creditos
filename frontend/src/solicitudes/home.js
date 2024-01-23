@@ -12,37 +12,7 @@ const Home = ({ userRole }) => {
   // Estado para controlar qué componente se muestra
   const [mostrarVendedor, setMostrarVendedor] = useState(false);
   const [mostrarContador, setMostrarContador] = useState(false);
-  const ResumenEstadisticas = () => (
-    <Row className="my-4">
-      <Col md={4}>
-        <Card className="text-center shadow">
-          <Card.Body>
-            <Card.Title>Total Solicitudes</Card.Title>
-            <Card.Text>50</Card.Text>
-            {/* Puedes poner aquí contenido dinámico */}
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={4}>
-        <Card className="text-center shadow">
-          <Card.Body>
-            <Card.Title>Créditos Aprobados</Card.Title>
-            <Card.Text>30</Card.Text>
-            {/* Puedes poner aquí contenido dinámico */}
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={4}>
-        <Card className="text-center shadow">
-          <Card.Body>
-            <Card.Title>Créditos Pendientes</Card.Title>
-            <Card.Text>20</Card.Text>
-            {/* Puedes poner aquí contenido dinámico */}
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-  );
+  
 
   return (
     <Container>
@@ -78,15 +48,6 @@ const Home = ({ userRole }) => {
             </Card.Body>
           </Card>
         </div>
-      )}
-
-      {esAdmin && !mostrarVendedor && !mostrarContador && (
-        <>
-          <ResumenEstadisticas />
-          <div className="d-flex flex-row justify-content-center">
-            {/* Tus tarjetas de Panel */}
-          </div>
-        </>
       )}
 
       {esVendedor || esCobrador || (esAdmin && mostrarVendedor) ? (

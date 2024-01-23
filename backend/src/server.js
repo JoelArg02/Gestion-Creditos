@@ -1,7 +1,6 @@
 require('dotenv').config({ path: 'src/.env' });
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const app = express();
 const port = 5200;
 
@@ -18,6 +17,7 @@ const mailerRoutes = require('./routes/mailerRoutes');
 const solicitudRoutes = require('./routes/solicitudRoutes');
 const SpacesRoutes = require('./routes/SpacesRoutes');
 const webhookRoutes = require('./routes/webhookRoutes');
+const whatsappRoutes = require('./routes/Whatsapp-iRoutes');
 
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
@@ -26,8 +26,7 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
-// Parsear el cuerpo de las solicitudes como JSON
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Ruta principal
 app.get('/', (req, res) => {
@@ -44,10 +43,6 @@ app.put('/', (req, res) => {
 
 
 app.set('trust proxy', true); // trust first proxy
-
-// Ruta de whatsapp
-
-app.use('/api/whatsapp', webhookRoutes);
 
 
 // Ruta de Negocios
@@ -79,6 +74,9 @@ app.use('/api/solicitud', solicitudRoutes);
 
 // Rutas de Spaces
 app.use('/api/spaces', SpacesRoutes);
+
+// Rutas de whatsapp I
+app.use('/api/whatsapp', whatsappRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {

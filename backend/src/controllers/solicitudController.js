@@ -13,7 +13,7 @@ function cargarContenidoHtml(nombreArchivo) {
 
 exports.actualizarEstado = (req, res) => {
   const { id } = req.params;
-  const { estado } = req.body;
+  const { estado } = req.body; // Se elimina whatsapp_cliente de aquí
   let fechaExpiracion = null;
 
   Solicitud.actualizarEstado(
@@ -27,6 +27,7 @@ exports.actualizarEstado = (req, res) => {
           .send("Error al actualizar la solicitud: " + err.message);
       }
 
+      // Envío de correos según el estado
       if (estado === "aprobado") {
         enviarCorreoCliente(
           solicitudActualizada.email_cliente,
@@ -37,8 +38,32 @@ exports.actualizarEstado = (req, res) => {
       } else if (estado === "rechazado") {
         enviarCorreoRechazo(solicitudActualizada.email_cliente);
       }
+      const whatsappController = require("../controllers/Whatsapp-iController");
 
-      res.status(200).json(solicitudActualizada);
+      // Envío de mensaje de WhatsApp
+      if (estado === "aprobado" || estado === "rechazado") {
+        const whatsapp_cliente = req.body.whatsapp_cliente;
+        const message =
+          estado === "aprobado"
+            ? "Su solicitud de crédito ha sido aprobada."
+            : "Su solicitud de crédito ha sido rechazada.";
+
+        whatsappController
+          .sendMessage(whatsapp_cliente, message)
+          .then(() => {
+            res.status(200).json({
+              status: "success",
+              message: `Estado actualizado y mensaje de WhatsApp enviado a ${whatsapp_cliente}.`,
+              solicitudActualizada,
+            });
+          })
+          .catch((error) => {
+            console.error("Error al enviar mensaje de WhatsApp:", error);
+            res.status(500).send("Error al enviar mensaje de WhatsApp.");
+          });
+      } else {
+        res.status(200).json(solicitudActualizada);
+      }
     }
   );
 };
@@ -47,12 +72,15 @@ function enviarCorreoCliente(email, idFormularioCliente, fechaExpiracion) {
   const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${idFormularioCliente}`;
   let contenidoHtml = cargarContenidoHtml("cliente-aprobado.html");
 
-  contenidoHtml = contenidoHtml.replace("${enlaceFormularioCliente}", enlaceFormularioCliente);
-  contenidoHtml = contenidoHtml.replace("${fechaExpiracion.toLocaleDateString()}", fechaExpiracion.toLocaleDateString());
-  
-  
+  contenidoHtml = contenidoHtml.replace(
+    "${enlaceFormularioCliente}",
+    enlaceFormularioCliente
+  );
+  contenidoHtml = contenidoHtml.replace(
+    "${fechaExpiracion.toLocaleDateString()}",
+    fechaExpiracion.toLocaleDateString()
+  );
 
-  
   mailer.sendEmail(
     email,
     "Solicitud de Crédito Aprobada",
@@ -83,6 +111,11 @@ function enviarCorreoRechazo(email) {
 
 exports.crearSolicitud = (req, res) => {
   console.log(req.body);
+  const emailsContador = [
+    emailContador,
+    "joel.darguello@gmail.com",
+    "nexfonenterprice@gmail.com",
+  ];
   const idFormularioCliente = uuidv4(); // Generar un UUID para la solicitud
   const datosSolicitud = {
     ...req.body,
@@ -97,12 +130,12 @@ exports.crearSolicitud = (req, res) => {
         .send("Error al crear la solicitud: " + err.message);
     }
 
-    enviarCorreoContador(emailContador, nuevaSolicitud);
+    enviarCorreoContador(emailsContador, nuevaSolicitud);
     res.status(201).json(nuevaSolicitud);
   });
 };
 
-function enviarCorreoContador(email, nuevaSolicitud) {
+function enviarCorreoContador(emailsContador, nuevaSolicitud) {
   let contenidoHtml = cargarContenidoHtml("contador.html");
 
   contenidoHtml = contenidoHtml.replace(
@@ -115,16 +148,18 @@ function enviarCorreoContador(email, nuevaSolicitud) {
   );
   contenidoHtml = contenidoHtml.replace("${detalles}", nuevaSolicitud.detalles);
 
-  mailer.sendEmail(
-    email,
-    "Nueva Solicitud de Crédito Pendiente",
-    contenidoHtml,
-    (error, info) => {
-      if (error) {
-        console.error("Error al enviar email al contador:", error);
+  emailsContador.forEach((email) => {
+    mailer.sendEmail(
+      email,
+      "Nueva Solicitud de Crédito Pendiente",
+      contenidoHtml,
+      (error, info) => {
+        if (error) {
+          console.error("Error al enviar email al contador:", error);
+        }
       }
-    }
-  );
+    );
+  });
 }
 
 exports.getSolicitudByFormularioId = (req, res) => {
@@ -161,7 +196,7 @@ exports.obtenerSolicitudes = (req, res) => {
       res.status(200).json(solicitudes);
     }
   });
-}
+};
 
 exports.getSolicitudById = (req, res) => {
   const id = req.params.id;
@@ -177,4 +212,4 @@ exports.getSolicitudById = (req, res) => {
     }
     res.status(200).json(solicitud);
   });
-}
+};

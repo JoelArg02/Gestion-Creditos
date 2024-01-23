@@ -160,9 +160,9 @@ const CreditManagementHome = () => {
   }
 
   return (
-    <div className="container my-4">
+    <div className="container">
       <div className="row">
-        <div className="col-lg-8">
+        <div className="col">
           <h1>Bienvenido al Gestor de Créditos</h1>
           <p>
             Seleccione un usuario para comenzar la gestión de créditos o utilice
@@ -180,49 +180,7 @@ const CreditManagementHome = () => {
           </div>
           <div className="content">{renderContent()}</div>
         </div>
-        <div className="col-lg-4">
-          <h2>Herramientas Rápidas</h2>
-          <ul className="list-group mb-4">
-            <li
-              className="list-group-item"
-              onClick={() => handleSetActiveComponent("CreditForm")}
-            >
-              Formulario de Crédito
-            </li>
-            <li
-              className="list-group-item"
-              onClick={() => handleSetActiveComponent("Calculadora")}
-            >
-              Calculadora de Créditos
-            </li>
-            <li
-              className="list-group-item"
-              onClick={() => handleSetActiveComponent("Contratos")}
-            >
-              Gestión de Contratos
-            </li>
-          </ul>
-          <div className="dashboard-info-cards">
-            <div className="card bg-primary text-black mb-3">
-              <div className="card-body">
-                <h5 className="card-title">Total Usuarios</h5>
-                <p className="card-text">52</p>
-              </div>
-            </div>
-            <div className="card bg-success text-black mb-3">
-              <div className="card-body">
-                <h5 className="card-title">Créditos Activos</h5>
-                <p className="card-text">28</p>
-              </div>
-            </div>
-            <div className="card bg-warning text-black mb-3">
-              <div className="card-body">
-                <h5 className="card-title">Pendientes de Aprobación</h5>
-                <p className="card-text">15</p>
-              </div>
-            </div>
-          </div>
-        </div>
+       
       </div>
     </div>
   );

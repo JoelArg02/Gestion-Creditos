@@ -1,3 +1,83 @@
-.custom-buttom{
-    margin-left: 75%;
-}
+.detalle-solicitud-card {
+    margin-top: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .detalle-solicitud-titulo {
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 1rem;
+  }
+  
+  .detalle-solicitud-contenido {
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 0.5rem;
+  }
+  
+  .detalle-solicitud-tabla {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  .detalle-solicitud-tabla th,
+  .detalle-solicitud-tabla td {
+    padding: 0.5rem;
+    vertical-align: top;
+  }
+  
+  .detalle-solicitud-tabla th {
+    text-align: left;
+    color: #333;
+    width: 40%;
+  }
+  
+  .detalle-solicitud-tabla td {
+    text-align: right;
+    color: #666;
+    font-weight: bold;
+  }
+  
+  .detalle-solicitud-tabla td:not(:last-child) {
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .botones-accion {
+    display: flex;
+    justify-content: space-between; /* Separa los botones equitativamente */
+    align-items: center;
+    margin-top: 1rem; /* Espacio por encima de los botones */
+  }
+  
+  /* Estilos para el botón de actualizar */
+  .btn-actualizar {
+    background-color: #333; /* Color de fondo */
+    border-color: white; /* Color del borde */
+    color: white; /* Color del texto */
+    padding: 0.5rem 1.5rem; /* Padding para hacer el botón más grande */
+    font-size: 1rem; /* Tamaño de la fuente */
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+  }
+  
+  .btn-actualizar:hover {
+    background-color:#545b62; /* Color de fondo al pasar el ratón */
+    border-color: white; /* Color del borde al pasar el ratón */
+  }
+  
+  /* Estilos para el botón de volver */
+  .btn-volver {
+    color: white;
+    border-color: #6c757d; /* Color del borde */
+    padding: 0.5rem 1.5rem; /* Padding para hacer el botón más grande */
+    font-size: 1rem; /* Tamaño de la fuente */
+    transition: color 0.3s ease; /* Transición suave para el hover */
+  }
+  
+  .btn-volver:hover {
+    color: #545b62; /* Color del texto al pasar el ratón */
+    border-color: #545b62; /* Color del borde al pasar el ratón */
+    background-color: transparent; /* Fondo transparente al pasar el ratón */
+  }
+  
