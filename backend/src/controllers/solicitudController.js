@@ -27,7 +27,6 @@ exports.actualizarEstado = (req, res) => {
           .send("Error al actualizar la solicitud: " + err.message);
       }
 
-      // Envío de correos según el estado
       if (estado === "aprobado") {
         enviarCorreoCliente(
           solicitudActualizada.email_cliente,
@@ -40,14 +39,14 @@ exports.actualizarEstado = (req, res) => {
       }
       const whatsappController = require("../controllers/Whatsapp-iController");
 
-      // Envío de mensaje de WhatsApp
       if (estado === "aprobado" || estado === "rechazado") {
         const whatsapp_cliente = req.body.whatsapp_cliente;
         const message =
           estado === "aprobado"
-            ? "Su solicitud de crédito ha sido aprobada."
+            ? "Su solicitud de crédito ha sido aprobada. Por favor, ingrese al siguiente enlace para completar el formulario: https://joeltest.tech/formulario-cliente/" + idFormularioCliente
             : "Su solicitud de crédito ha sido rechazada.";
 
+            
         whatsappController
           .sendMessage(whatsapp_cliente, message)
           .then(() => {
@@ -110,7 +109,7 @@ function enviarCorreoRechazo(email) {
 }
 
 exports.crearSolicitud = (req, res) => {
-  console.log(req.body);
+  console.log("Creando solicitud:", req.body)
   const emailsContador = [
     emailContador,
     "joel.darguello@gmail.com",
@@ -149,6 +148,7 @@ function enviarCorreoContador(emailsContador, nuevaSolicitud) {
   contenidoHtml = contenidoHtml.replace("${detalles}", nuevaSolicitud.detalles);
 
   emailsContador.forEach((email) => {
+    console.log("Enviando correo a:", email);
     mailer.sendEmail(
       email,
       "Nueva Solicitud de Crédito Pendiente",

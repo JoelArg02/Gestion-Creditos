@@ -70,7 +70,6 @@ const FormVendor = () => {
   if (loading) {
     return <Loading />;
   }
-
   return (
     <Card className="mt-4">
       <Card.Body>

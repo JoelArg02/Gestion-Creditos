@@ -65,9 +65,11 @@ const FormularioCliente = () => {
 
   useEffect(() => {
     const cargarDatosFormulario = async () => {
+      
       setLoading(true);
       try {
         const datos = await getSolicitudById(id);
+        console.log(datos)
         setFormData({
           id_solicitud: datos.id,
           nombreCliente: datos.nombre_cliente,

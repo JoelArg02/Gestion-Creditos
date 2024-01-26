@@ -1,7 +1,7 @@
 const poolc = require("../config/db");
 
 const Solicitud = {};
-
+console.log("Solicitud:", Solicitud);
 Solicitud.crear = (datosSolicitud, callback) => {
   const estado = "pendiente";
   const {
