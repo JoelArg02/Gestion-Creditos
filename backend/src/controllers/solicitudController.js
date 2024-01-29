@@ -38,30 +38,31 @@ exports.actualizarEstado = (req, res) => {
       } else if (estado === "rechazado") {
         enviarCorreoRechazo(solicitudActualizada.email_cliente);
       }
-      const whatsappController = require("../controllers/Whatsapp-iController");
 
-      // Envío de mensaje de WhatsApp
-      if (estado === "aprobado" || estado === "rechazado") {
-        const whatsapp_cliente = req.body.whatsapp_cliente;
-        const message =
-          estado === "aprobado"
-            ? "Su solicitud de crédito ha sido aprobada."
-            : "Su solicitud de crédito ha sido rechazada.";
+      // const whatsappController = require("../controllers/Whatsapp-iController");
 
-        whatsappController
-          .sendMessage(whatsapp_cliente, message)
-          .then(() => {
-            res.status(200).json({
-              status: "success",
-              message: `Estado actualizado y mensaje de WhatsApp enviado a ${whatsapp_cliente}.`,
-              solicitudActualizada,
-            });
-          })
-          .catch((error) => {
-            console.error("Error al enviar mensaje de WhatsApp:", error);
-            res.status(500).send("Error al enviar mensaje de WhatsApp.");
-          });
-      } else {
+      // // Envío de mensaje de WhatsApp
+      // if (estado === "aprobado" || estado === "rechazado") {
+      //   const whatsapp_cliente = req.body.whatsapp_cliente;
+      //   const message =
+      //     estado === "aprobado"
+      //       ? "Su solicitud de crédito ha sido aprobada."
+      //       : "Su solicitud de crédito ha sido rechazada.";
+
+      //   whatsappController
+      //     .sendMessage(whatsapp_cliente, message)
+      //     .then(() => {
+      //       res.status(200).json({
+      //         status: "success",
+      //         message: `Estado actualizado y mensaje de WhatsApp enviado a ${whatsapp_cliente}.`,
+      //         solicitudActualizada,
+      //       });
+      //     })
+      //     .catch((error) => {
+      //       console.error("Error al enviar mensaje de WhatsApp:", error);
+      //       res.status(500).send("Error al enviar mensaje de WhatsApp.");
+      //     });
+      else {
         res.status(200).json(solicitudActualizada);
       }
     }
