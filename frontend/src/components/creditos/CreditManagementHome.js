@@ -180,7 +180,6 @@ const CreditManagementHome = () => {
           </div>
           <div className="content">{renderContent()}</div>
         </div>
-       
       </div>
     </div>
   );
