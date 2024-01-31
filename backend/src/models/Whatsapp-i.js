@@ -1,39 +1,46 @@
-const { EventEmitter } = require('events');
-const fs = require('fs');
-const path = require('path');
-const { Client } = require('whatsapp-web.js');
+const { EventEmitter } = require("events");
+const fs = require("fs");
+const path = require("path");
+const { Client } = require("whatsapp-web.js");
 
 class WhatsappModel extends EventEmitter {
-    constructor() {
-        super();
-        
-        this.client = new Client();
-        this.isReady = false;
+  constructor() {
+    super();
 
-        this.client.on('qr', (qrCode) => {
-            this.qrCode = qrCode;
-            this.emit('qr', qrCode);
-        });
+    const puppeteerOptions = {
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    };
 
-        this.client.on('ready', () => {
-            this.isReady = true;
-            this.emit('ready');
-        });
-
-        this.client.initialize();
-    }
-
+    this.client = new Client({
+      puppeteer: puppeteerOptions,
+    });
     
+    this.isReady = false;
 
-    sendMessage(to, messageContent) {
-        if (this.isReady) {
-            this.client.sendMessage(to, messageContent);
-        } else {
-            throw new Error('El cliente de WhatsApp no está listo para enviar mensajes.');
-        }
+    this.client.on("qr", (qrCode) => {
+      this.qrCode = qrCode;
+      this.emit("qr", qrCode);
+    });
+
+    this.client.on("ready", () => {
+      this.isReady = true;
+      this.emit("ready");
+    });
+
+    this.client.initialize();
+  }
+
+  sendMessage(to, messageContent) {
+    if (this.isReady) {
+      this.client.sendMessage(to, messageContent);
+    } else {
+      throw new Error(
+        "El cliente de WhatsApp no está listo para enviar mensajes."
+      );
     }
+  }
 
-    // Otros métodos relevantes...
+  // Otros métodos relevantes...
 }
 
 module.exports = WhatsappModel;

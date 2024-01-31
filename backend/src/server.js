@@ -76,7 +76,7 @@ app.use('/api/solicitud', solicitudRoutes);
 app.use('/api/spaces', SpacesRoutes);
 
 // Rutas de whatsapp I
-// app.use('/api/whatsapp', whatsappRoutes);
+app.use('/api/whatsapp', whatsappRoutes);
 
 // Manejo de errores
 app.use((err, req, res, next) => {
