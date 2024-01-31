@@ -38,30 +38,33 @@ exports.actualizarEstado = (req, res) => {
         enviarCorreoRechazo(solicitudActualizada.email_cliente);
       }
 
-      // const whatsappController = require("../controllers/Whatsapp-iController");
+      const whatsappController = require("../controllers/Whatsapp-iController");
 
-      // // Envío de mensaje de WhatsApp
-      // if (estado === "aprobado" || estado === "rechazado") {
-      //   const whatsapp_cliente = req.body.whatsapp_cliente;
-      //   const message =
-      //     estado === "aprobado"
-      //       ? "Su solicitud de crédito ha sido aprobada."
-      //       : "Su solicitud de crédito ha sido rechazada.";
+      if (estado === "aprobado" || estado === "rechazado") {
+        const whatsapp_cliente = req.body.whatsapp_cliente;
+        const enlaceFormularioCliente = `https://joeltest.tech/formulario-cliente/${solicitudActualizada.id_formulario_cliente}`;
+        let message = "";
 
-      //   whatsappController
-      //     .sendMessage(whatsapp_cliente, message)
-      //     .then(() => {
-      //       res.status(200).json({
-      //         status: "success",
-      //         message: `Estado actualizado y mensaje de WhatsApp enviado a ${whatsapp_cliente}.`,
-      //         solicitudActualizada,
-      //       });
-      //     })
-      //     .catch((error) => {
-      //       console.error("Error al enviar mensaje de WhatsApp:", error);
-      //       res.status(500).send("Error al enviar mensaje de WhatsApp.");
-      //     });
-      else {
+        if (estado === "aprobado") {
+          message = `Su solicitud de crédito ha sido aprobada. Por favor, complete los pasos siguientes en el siguiente enlace: ${enlaceFormularioCliente}. Tienes hasta ** ${fechaExpiracion.toLocaleDateString()} ** para completarlo.`;
+        } else {
+          message = "Su solicitud de crédito ha sido rechazada.";
+        }
+
+        whatsappController
+          .sendMessage(whatsapp_cliente, message)
+          .then(() => {
+            res.status(200).json({
+              status: "success",
+              message: `Estado actualizado y mensaje de WhatsApp enviado a ${whatsapp_cliente}.`,
+              solicitudActualizada,
+            });
+          })
+          .catch((error) => {
+            console.error("Error al enviar mensaje de WhatsApp:", error);
+            res.status(500).send("Error al enviar mensaje de WhatsApp.");
+          });
+      } else {
         res.status(200).json(solicitudActualizada);
       }
     }
@@ -110,7 +113,7 @@ function enviarCorreoRechazo(email) {
 }
 
 exports.crearSolicitud = (req, res) => {
-  console.log("Creando solicitud:", req.body)
+  console.log("Creando solicitud:", req.body);
   const emailsContador = [
     emailContador,
     "joel.darguello@gmail.com",
