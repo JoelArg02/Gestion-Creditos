@@ -145,10 +145,19 @@ const CreditManagementHome = () => {
           />
         );
       case "Calculadora":
-        return <Calculadora setAmortizationData={handleAmortizationData} />;
+        return (
+          <Calculadora
+            setAmortizationData={handleAmortizationData}
+            changeComponent={setActive}
+          />
+        );
       case "Contratos":
         return (
-          <Contratos userData={userData} amortizationData={amortizationData} />
+          <Contratos
+            userData={userData}
+            amortizationData={amortizationData}
+            changeComponent={setActive}
+          />
         );
       default:
         return <div>Seleccione una opción para comenzar</div>;

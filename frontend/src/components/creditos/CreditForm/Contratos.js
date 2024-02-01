@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Contratos.css";
 import { Loading } from "../../../general/loading";
-const HtmlViewer = (props) => {
+const HtmlViewer = (props, changeComponent) => {
   const [htmlContent, setHtmlContent] = useState("");
   const [loading, setLoading] = useState(false);
   useEffect(() => {

@@ -136,7 +136,6 @@ function CreditCalculator(props) {
   };
 
   const goToContract = () => {
-    // Obtén todos los campos del formulario y sus valores actuales
     const formData = {
       cashPrice,
       entryPercentage,
@@ -148,24 +147,22 @@ function CreditCalculator(props) {
       entryQuota,
       startDate,
       endDate,
-      // Agrega aquí todos los campos adicionales que deseas incluir
     };
-
-    // Crea una copia de amortizationData
+  
     const updatedAmortizationData = [...amortizationData];
 
-    // Agrega el objeto formData a amortizationData
     updatedAmortizationData.push(formData);
 
-    // Llama a la función para pasar el prop amortizationData a Contratos
     props.setAmortizationData(updatedAmortizationData);
 
-    // Cambia al componente "Contratos"
+    props.changeComponent("Contratos");
+
   };
 
   const goToCreditForm = () => {
     props.changeComponent("CreditForm");
   };
+
   return (
     <Container className="card-custom">
       <Card style={cardStyle}>

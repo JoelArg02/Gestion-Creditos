@@ -1,3 +1,4 @@
+
 -- Eliminar la base de datos si existe y crear una nueva
 -- En PostgreSQL, no es común manejar la creación de bases de datos en scripts SQL,
 -- se asume que ya está creada y se utiliza directamente.
@@ -44,8 +45,6 @@ CREATE TABLE solicitudes (
     id_formulario_cliente UUID NOT NULL
 );
 
-
--- Nota: La tabla 'referencia' debe crearse antes de 'personas' para establecer la clave foránea
 CREATE TABLE referencias (
     id_referencia SERIAL PRIMARY KEY,
     nombre_trabajo VARCHAR(255) NOT NULL,

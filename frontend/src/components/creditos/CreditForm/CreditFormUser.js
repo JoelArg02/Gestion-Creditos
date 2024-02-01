@@ -11,12 +11,10 @@ import {
 import ImageModal from "./Modal/ImageModal"; // Ajusta la ruta según sea necesario
 import PdfModal from "./Modal/PdfModal";
 const AddCreditForm = ({ userData, changeComponent }) => {
-  console.log(userData);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showImageModal, setShowImageModal] = useState(false);
   const [showPdfModal, setShowPdfModal] = useState(false);
-  console.log(userData);
   const handleShowImageModal = () => setShowImageModal(true);
   const handleCloseImageModal = () => setShowImageModal(false);
 
@@ -26,9 +24,11 @@ const AddCreditForm = ({ userData, changeComponent }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   };
+  
   const goToCalculadora = () => {
     changeComponent("Calculadora");
   };
+
   if (!userData) {
     return <p>No se encontraron datos para la solicitud.</p>;
   }
