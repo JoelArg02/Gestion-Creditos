@@ -8,3 +8,4 @@ node_modules
 /db/data
 sudo cp -r /root/Gestion-Creditos/frontend/build/* /var/www/myapp/
 db.js
+./backend/src/.wwebjs_cache
