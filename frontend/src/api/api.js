@@ -2,6 +2,8 @@
 import axios from "axios";
 import apiConfig from "./apiConfig";
 
+const getToken = () => localStorage.getItem('token');
+
 const getUsers = async () => {
   try {
     const response = await axios.get(`${apiConfig.baseURL}/usuarios`);

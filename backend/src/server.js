@@ -5,7 +5,6 @@ const app = express();
 const port = 5200;
 
 
-// Suponiendo que tienes estos archivos y rutas correctamente definidos
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const creditoRoutes = require('./routes/creditoRoutes');
 const referenciaRoutes = require('./routes/referenciaRoutes');
@@ -18,6 +17,8 @@ const solicitudRoutes = require('./routes/solicitudRoutes');
 const SpacesRoutes = require('./routes/SpacesRoutes');
 const webhookRoutes = require('./routes/webhookRoutes');
 const whatsappRoutes = require('./routes/Whatsapp-iRoutes');
+const verifyToken = require('./middleware/authMiddleware'); // Asegúrate de que la ruta sea correcta
+
 
 // Configuración de CORS para permitir solicitudes de cualquier origen
 app.use(cors({
@@ -49,7 +50,7 @@ app.set('trust proxy', true); // trust first proxy
 
 app.use('/api/mail', mailerRoutes);
 
-app.use('/api/business', businessRoutes);
+app.use('/api/business', verifyToken, businessRoutes);
 
 // Rutas de referencia
 app.use('/api/referencia', referenciaRoutes);

@@ -3,7 +3,7 @@ const poolc = require("../config/db"); // Asegúrate de que la ruta sea correcta
 const Usuario = require("../models/Usuario");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const secretKey = process.env.SECRET_KEY || "secretKey";
+const secretKey = process.env.SECRET_KEY;
 const mailer = require("../helpers/mailer.js");
 const mailerController = require("./mailerController");
 const { sendEmail } = require("../helpers/mailer.js");
@@ -145,11 +145,9 @@ const createUserWithUniqueUsername = async (
 
   while (true) {
     try {
-      // Espera la resolución de la promesa
       await createUserPromise(uniqueUsername);
       return uniqueUsername;
     } catch (error) {
-      // Manejo de errores
       if (
         error.code === "23505" &&
         error.constraint === "usuarios_usuario_key"
@@ -215,7 +213,6 @@ exports.login = (req, res) => {
           userId: user.id_usuario,
           userName: user.usuario,
           userRole: user.id_rol,
-
           userMail: user.email,
           personName: user.nombre,
           personLastName: user.apellido,

@@ -1,9 +1,16 @@
 import axios from "axios";
 import apiConfig from "./apiConfig";
 
+const getToken = () => localStorage.getItem('token');
+
 const getReferenceById = async (id) => {
     try {
-        const response = await axios.get(`${apiConfig.baseURL}/referencia/id/${id}`);
+        const token = getToken(); 
+        const response = await axios.get(`${apiConfig.baseURL}/referencia/id/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         throw error;
@@ -12,9 +19,15 @@ const getReferenceById = async (id) => {
 
 const createReference = async (referenceData) => {
     try {
+        const token = getToken(); 
         const response = await axios.post(
             `${apiConfig.baseURL}/referencia/create`,
-            referenceData
+            referenceData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
         return response.data;
     } catch (error) {
@@ -22,4 +35,4 @@ const createReference = async (referenceData) => {
     }
 };
 
-export { getReferenceById, createReference};
+export { getReferenceById, createReference };
